@@ -341,7 +341,7 @@ var documenterSearchIndex = {"docs": [
     "page": "Reference",
     "title": "MathOptInterface.write",
     "category": "Function",
-    "text": "write(model::ModelLike, filename::String)\n\nWrites the current model data to the given file. Supported file types depend on the solver or standalone instance type.\n\n\n\n"
+    "text": "write(model::ModelLike, filename::String)\n\nWrites the current model data to the given file. Supported file types depend on the model type.\n\n\n\n"
 },
 
 {
@@ -349,7 +349,7 @@ var documenterSearchIndex = {"docs": [
     "page": "Reference",
     "title": "MathOptInterface.read!",
     "category": "Function",
-    "text": "read!(model::ModelLike, filename::String)\n\nRead the file filename into the instance instance. If m is non-empty, this may throw an error.\n\nSupported file types depend on the instance type.\n\n\n\n"
+    "text": "read!(model::ModelLike, filename::String)\n\nRead the file filename into the model model. If m is non-empty, this may throw an error.\n\nSupported file types depend on the model type.\n\n\n\n"
 },
 
 {
@@ -365,7 +365,7 @@ var documenterSearchIndex = {"docs": [
     "page": "Reference",
     "title": "MathOptInterface.CopyResult",
     "category": "Type",
-    "text": "struct CopyResult{T}\n    status::CopyStatusCode\n    message::String # Human-friendly explanation why the copy failed\n    indexmap::T     # Only valid if status is CopySuccess\nend\n\nA struct returned by copy! to indicate success or failure. If success, also exposes a map between the variable and constraint indices of the two instances.\n\n\n\n"
+    "text": "struct CopyResult{T}\n    status::CopyStatusCode\n    message::String # Human-friendly explanation why the copy failed\n    indexmap::T     # Only valid if status is CopySuccess\nend\n\nA struct returned by copy! to indicate success or failure. If success, also exposes a map between the variable and constraint indices of the two models.\n\n\n\n"
 },
 
 {
@@ -373,7 +373,7 @@ var documenterSearchIndex = {"docs": [
     "page": "Reference",
     "title": "MathOptInterface.CopyStatusCode",
     "category": "Type",
-    "text": "CopyStatusCode\n\nAn Enum of possible statuses returned by a copy! operation through the CopyResult struct.\n\nCopySuccess: The copy was successful.\nCopyUnsupportedAttribute: The copy failed because the destination does not support an attribute present in the source.\nCopyUnsupportedConstraint: The copy failed because the destination does not support a constraint present in the source.\nCopyOtherError: The copy failed for a different reason.\n\nIn the failure cases:\n\nSee the corresponding message field of the CopyResult for an explanation of the failure.\nThe state of the destination instance is undefined.\n\n\n\n"
+    "text": "CopyStatusCode\n\nAn Enum of possible statuses returned by a copy! operation through the CopyResult struct.\n\nCopySuccess: The copy was successful.\nCopyUnsupportedAttribute: The copy failed because the destination does not support an attribute present in the source.\nCopyUnsupportedConstraint: The copy failed because the destination does not support a constraint present in the source.\nCopyOtherError: The copy failed for a different reason.\n\nIn the failure cases:\n\nSee the corresponding message field of the CopyResult for an explanation of the failure.\nThe state of the destination model is undefined.\n\n\n\n"
 },
 
 {
@@ -469,7 +469,7 @@ var documenterSearchIndex = {"docs": [
     "page": "Reference",
     "title": "MathOptInterface.AbstractOptimizer",
     "category": "Type",
-    "text": "AbstractOptimizer\n\nAbstract supertype for objects representing an instance of an optimization problem tied to a particular solver. This is typically a solver's in-memory representation. In addition to ModelLike, AbstractOptimizer objects let you solve the instance and query the solution.\n\n\n\n"
+    "text": "AbstractOptimizer\n\nAbstract supertype for objects representing an instance of an optimization problem tied to a particular solver. This is typically a solver's in-memory representation. In addition to ModelLike, AbstractOptimizer objects let you solve the model and query the solution.\n\n\n\n"
 },
 
 {
