@@ -1077,7 +1077,7 @@ var documenterSearchIndex = {"docs": [
     "page": "Reference",
     "title": "MathOptInterface.Interval",
     "category": "Type",
-    "text": "Interval{T <: Real}(lower::T,upper::T)\n\nThe interval lower upper subseteq mathbbR. If lower or upper is -Inf or Inf, respectively, the set is interpreted as a one-sided interval.\n\n\n\n"
+    "text": "Interval{T <: Real}(lower::T,upper::T)\n\nThe interval lower upper subseteq mathbbR. If lower or upper is -Inf or Inf, respectively, the set is interpreted as a one-sided interval.\n\nInterval(s::GreaterThan{<:AbstractFloat})\n\nConstruct a (right-unbounded) Interval equivalent to the given GreaterThan set.\n\nInterval(s::LessThan{<:AbstractFloat})\n\nConstruct a (left-unbounded) Interval equivalent to the given LessThan set.\n\nInterval(s::EqualTo{<:Real})\n\nConstruct a (degenerate) Interval equivalent to the given EqualTo set.\n\n\n\n"
 },
 
 {
