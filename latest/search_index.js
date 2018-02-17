@@ -1117,7 +1117,7 @@ var documenterSearchIndex = {"docs": [
     "page": "Reference",
     "title": "MathOptInterface.EqualTo",
     "category": "Type",
-    "text": "EqualTo{T <: Real}(value::T)\n\nThe set containing the single point x in mathbbR where x is given by value.\n\n\n\n"
+    "text": "EqualTo{T <: Number}(value::T)\n\nThe set containing the single point x in mathbbR where x is given by value.\n\n\n\n"
 },
 
 {
