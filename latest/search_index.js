@@ -453,7 +453,7 @@ var documenterSearchIndex = {"docs": [
     "page": "Reference",
     "title": "MathOptInterface.ListOfVariableIndices",
     "category": "Type",
-    "text": "ListOfVariableIndices()\n\nA Vector{VariableIndex} indexing all variables present in the model (i.e., of length equal to the value of NumberOfVariables()).\n\n\n\n"
+    "text": "ListOfVariableIndices()\n\nA Vector{VariableIndex} containing all variable indices present in the model (i.e., of length equal to the value of NumberOfVariables()) in the order in which they were added.\n\n\n\n"
 },
 
 {
@@ -477,7 +477,7 @@ var documenterSearchIndex = {"docs": [
     "page": "Reference",
     "title": "MathOptInterface.ListOfConstraintIndices",
     "category": "Type",
-    "text": "ListOfConstraintIndices{F,S}()\n\nA Vector{ConstraintIndex{F,S}} indexing all constraints of type F-inS in the model (i.e., of length equal to the value of NumberOfConstraints{F,S}()).\n\n\n\n"
+    "text": "ListOfConstraintIndices{F,S}()\n\nA Vector{ConstraintIndex{F,S}} containing all constraint indices of type F-inS in the model (i.e., of length equal to the value of NumberOfConstraints{F,S}()) in the order in which they were added.\n\n\n\n"
 },
 
 {
