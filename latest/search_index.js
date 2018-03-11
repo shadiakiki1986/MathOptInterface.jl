@@ -1445,7 +1445,7 @@ var documenterSearchIndex = {"docs": [
     "page": "Reference",
     "title": "MathOptInterface.eval_constraint_jacobian",
     "category": "function",
-    "text": "eval_constraint_jacobian(d::AbstractNLPEvaluator, J, x)\n\nEvaluates the sparse Jacobian matrix `J_g(x) = \\left[ \\begin{array}{c} \\nabla g_1(x) \\\\ \\nabla g_2(x) \\\\ \\vdots \\\\ \\nabla g_m(x) \\end{array}\\right]. The result is stored in the vector J in the same order as the indices returned by jac_structure.\n\n\n\n"
+    "text": "eval_constraint_jacobian(d::AbstractNLPEvaluator, J, x)\n\nEvaluates the sparse Jacobian matrix J_g(x) = left beginarrayc nabla g_1(x)  nabla g_2(x)  vdots  nabla g_m(x) endarrayright. The result is stored in the vector J in the same order as the indices returned by jac_structure.\n\n\n\n"
 },
 
 {
