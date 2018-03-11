@@ -537,6 +537,14 @@ var documenterSearchIndex = {"docs": [
 },
 
 {
+    "location": "apireference.html#MathOptInterface.SolverName",
+    "page": "Reference",
+    "title": "MathOptInterface.SolverName",
+    "category": "type",
+    "text": "SolverName()\n\nA string identifying the solver.\n\n\n\n"
+},
+
+{
     "location": "apireference.html#MathOptInterface.RawSolver",
     "page": "Reference",
     "title": "MathOptInterface.RawSolver",
@@ -645,7 +653,7 @@ var documenterSearchIndex = {"docs": [
     "page": "Reference",
     "title": "Optimizers",
     "category": "section",
-    "text": "AbstractOptimizer\noptimize!\nfree!List of attributes useful for optimizersRawSolver\nResultCount\nObjectiveFunction\nObjectiveValue\nObjectiveBound\nRelativeGap\nSolveTime\nSimplexIterations\nBarrierIterations\nNodeCount\nTerminationStatus\nPrimalStatus\nDualStatus"
+    "text": "AbstractOptimizer\noptimize!\nfree!List of attributes optimizers attributesSolverNameList of attributes useful for optimizersRawSolver\nResultCount\nObjectiveFunction\nObjectiveValue\nObjectiveBound\nRelativeGap\nSolveTime\nSimplexIterations\nBarrierIterations\nNodeCount\nTerminationStatus\nPrimalStatus\nDualStatus"
 },
 
 {
