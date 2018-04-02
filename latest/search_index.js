@@ -1345,11 +1345,19 @@ var documenterSearchIndex = {"docs": [
 },
 
 {
+    "location": "apireference.html#MathOptInterface.NLPBoundsPair",
+    "page": "Reference",
+    "title": "MathOptInterface.NLPBoundsPair",
+    "category": "type",
+    "text": "NLPBoundsPair(lower,upper)\n\nA struct holding a pair of lower and upper bounds. -Inf and Inf can be used to indicate no lower or upper bound, respectively.\n\n\n\n"
+},
+
+{
     "location": "apireference.html#MathOptInterface.NLPBlockData",
     "page": "Reference",
     "title": "MathOptInterface.NLPBlockData",
     "category": "type",
-    "text": "struct NLPBlockData\n    lb::Vector{Float64}\n    ub::Vector{Float64}\n    evaluator::AbstractNLPEvaluator\n    has_objective::Bool\nend\n\nA struct encoding a set of nonlinear constraints of the form lb le g(x) le ub and, if has_objective == true, a nonlinear objective function f(x). It is an error to set both a nonlinear objective function and another objective function using an ObjectiveFunction attribute. The evaluator is a callback object that is used to query function values, derivatives, and expression graphs. If has_objective == false, then it is an error to query properties of the objective function, and in Hessian-of-the-Lagrangian queries, σ must be set to zero. Throughout the evaluator, all variables are ordered according to ListOfVariableIndices().\n\n\n\n"
+    "text": "struct NLPBlockData\n    constraint_bounds::Vector{NLPBoundsPair}\n    evaluator::AbstractNLPEvaluator\n    has_objective::Bool\nend\n\nA struct encoding a set of nonlinear constraints of the form lb le g(x) le ub and, if has_objective == true, a nonlinear objective function f(x). constraint_bounds holds the pairs of lb and ub elements. It is an error to set both a nonlinear objective function and another objective function using an ObjectiveFunction attribute. The evaluator is a callback object that is used to query function values, derivatives, and expression graphs. If has_objective == false, then it is an error to query properties of the objective function, and in Hessian-of-the-Lagrangian queries, σ must be set to zero. Throughout the evaluator, all variables are ordered according to ListOfVariableIndices(). \n\n\n\n"
 },
 
 {
@@ -1373,7 +1381,7 @@ var documenterSearchIndex = {"docs": [
     "page": "Reference",
     "title": "Attributes",
     "category": "section",
-    "text": "NLPBlock\nNLPBlockData\nNLPBlockDual\nNLPBlockDualStart"
+    "text": "NLPBlock\nNLPBoundsPair\nNLPBlockData\nNLPBlockDual\nNLPBlockDualStart"
 },
 
 {
@@ -1429,7 +1437,7 @@ var documenterSearchIndex = {"docs": [
     "page": "Reference",
     "title": "MathOptInterface.jacobian_structure",
     "category": "function",
-    "text": "jacobian_structure(d::AbstractNLPEvaluator)\n\nReturns the sparsity structure of the Jacobian matrix J_g(x) = left beginarrayc nabla g_1(x)  nabla g_2(x)  vdots  nabla g_m(x) endarrayright where g_i is the itextth component of g. The sparsity structure is assumed to be independent of the point x. Returns a tuple (I,J) where I contains the row indices and J contains the column indices of each structurally nonzero element. These indices are not required to be sorted and can contain duplicates, in which case the solver should combine the corresponding elements by adding them together.\n\n\n\n"
+    "text": "jacobian_structure(d::AbstractNLPEvaluator)::Vector{Tuple{Int64,Int64}}\n\nReturns the sparsity structure of the Jacobian matrix J_g(x) = left beginarrayc nabla g_1(x)  nabla g_2(x)  vdots  nabla g_m(x) endarrayright where g_i is the itextth component of g. The sparsity structure is assumed to be independent of the point x. Returns a vector of tuples, (row, column), where each indicates the position of a structurally nonzero element. These indices are not required to be sorted and can contain duplicates, in which case the solver should combine the corresponding elements by adding them together.\n\n\n\n"
 },
 
 {
@@ -1437,7 +1445,7 @@ var documenterSearchIndex = {"docs": [
     "page": "Reference",
     "title": "MathOptInterface.hessian_lagrangian_structure",
     "category": "function",
-    "text": "hessian_lagrangian_structure(d::AbstractNLPEvaluator)\n\nReturns the sparsity structure of the Hessian-of-the-Lagrangian matrix nabla^2 f + sum_i=1^m nabla^2 g_i as a tuple (I,J) where I contains the row indices and J contains the column indices of each structurally nonzero element. These indices are not required to be sorted and can contain duplicates, in which case the solver should combine the corresponding elements by adding them together. Any mix of lower and upper-triangular indices is valid. Elements (i,j) and (j,i), if both present, should be treated as duplicates.\n\n\n\n"
+    "text": "hessian_lagrangian_structure(d::AbstractNLPEvaluator)::Vector{Tuple{Int64,Int64}}\n\nReturns the sparsity structure of the Hessian-of-the-Lagrangian matrix nabla^2 f + sum_i=1^m nabla^2 g_i as a vector of tuples, where each indicates the position of a structurally nonzero element. These indices are not required to be sorted and can contain duplicates, in which case the solver should combine the corresponding elements by adding them together. Any mix of lower and upper-triangular indices is valid. Elements (i,j) and (j,i), if both present, should be treated as duplicates.\n\n\n\n"
 },
 
 {
