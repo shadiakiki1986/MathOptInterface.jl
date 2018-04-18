@@ -245,7 +245,7 @@ var documenterSearchIndex = {"docs": [
     "page": "Manual",
     "title": "canXXX",
     "category": "section",
-    "text": "For most operations, MOI provides a function canXXX that can be used to check if the operation XXX is allowed.  For example, addconstraint!(model::ModelLike, func::F, set::S) has the corresponding function canaddconstraint(model, ::Type{F}, ::Type{S})::Bool.  If canaddconstraint returns false, then calling addconstraint! must throw an error (likewise with all XXX and canXXX pairs). Note that even if canaddconstraint returns true, addconstraint! may still throw an error if, for example, the constraint function does not meet some sparsity conditions, one of the coefficients is NaN, or an invalid variable index is provided. This is because (in most cases) the canXXX method receives type information instead of the actual arguments."
+    "text": "For most operations, MOI provides a function canXXX that can be used to check if the operation XXX is allowed. For example, addconstraint!(model::ModelLike, func::F, set::S) has the corresponding function canaddconstraint(model, ::Type{F}, ::Type{S})::Bool. If canaddconstraint returns false, then calling addconstraint! must throw an error (likewise with all XXX and canXXX pairs). Note that even if canaddconstraint returns true, addconstraint! may still throw an error if, for example, the constraint function does not meet some sparsity conditions, one of the coefficients is NaN, or an invalid variable index is provided. This is because (in most cases) the canXXX method receives type information instead of the actual arguments."
 },
 
 {
