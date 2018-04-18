@@ -733,7 +733,7 @@ var documenterSearchIndex = {"docs": [
     "page": "Reference",
     "title": "MathOptInterface.candelete",
     "category": "function",
-    "text": "candelete(model::ModelLike, index::Index)::Bool\n\nReturn a Bool indicating whether the object referred to by index can be removed from the model model.\n\n\n\n"
+    "text": "MOI.candelete(model::MOI.ModelLike, b::AbstractBridge)\n\nReturn a Bool indicating whether the bridge b can be removed from the model model.\n\n\n\ncandelete(model::ModelLike, index::Index)::Bool\n\nReturn a Bool indicating whether the object referred to by index can be removed from the model model.\n\n\n\n"
 },
 
 {
