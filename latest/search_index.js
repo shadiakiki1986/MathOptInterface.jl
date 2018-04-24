@@ -201,6 +201,14 @@ var documenterSearchIndex = {"docs": [
 },
 
 {
+    "location": "apimanual.html#Constraint-bridges-1",
+    "page": "Manual",
+    "title": "Constraint bridges",
+    "category": "section",
+    "text": "A constraint often possess different equivalent formulations, but a solver may only support one of them. It would be duplicate work to implement rewritting rules in every solver wrapper for every different formulation of the constraint to express it in the form supported by the solver. Constraint bridges provide a way to define a rewritting rule on top of the MOI interface which can be used by any optimizer. Some rules also implement constraint modifications and constraint primal and duals translations.For example, the SplitIntervalBridge defines the reformulation of a ScalarAffineFunction-in-Interval constraint into a ScalarAffineFunction-in-GreaterThan and a ScalarAffineFunction-in-LessThan constraint. The SplitInterval is the bridge optimizer that applies the SplitIntervalBridge rewritting rule. Given an optimizer optimizer implementing ScalarAffineFunction-in-GreaterThan and ScalarAffineFunction-in-LessThan, the optimizerbridgedoptimizer = SplitInterval(optimizer)will additionally support ScalarAffineFunction-in-Interval."
+},
+
+{
     "location": "apimanual.html#Implementing-a-solver-interface-1",
     "page": "Manual",
     "title": "Implementing a solver interface",
@@ -253,7 +261,15 @@ var documenterSearchIndex = {"docs": [
     "page": "Manual",
     "title": "Package Naming",
     "category": "section",
-    "text": "MOI solver interfaces may be in the same package as the solver itself (either the C wrapper if the solver is accessible through C, or the Julia code if the solver is written in Julia, for example). In some cases it may be more appropriate to host the MOI wrapper in its own package; in this case it is recommended that the MOI wrapper package be named MathOptInterfaceXXX where XXX is the solver name."
+    "text": "MOI solver interfaces may be in the same package as the solver itself (either the C wrapper if the solver is accessible through C, or the Julia code if the solver is written in Julia, for example). The guideline for naming the file containing the MOI wrapper is src/MOIWrapper.jl and test/MOIWrapper.jl for the tests. In some cases it may be more appropriate to host the MOI wrapper in its own package; in this case it is recommended that the MOI wrapper package be named MathOptInterfaceXXX where XXX is the solver name."
+},
+
+{
+    "location": "apimanual.html#Testing-guideline-1",
+    "page": "Manual",
+    "title": "Testing guideline",
+    "category": "section",
+    "text": "The skeleton below can be used for the wrapper test file of a solver name FooBar. A few bridges are used to give examples, you can find more bridges in the Bridges section.using MathOptInterface\nconst MOI = MathOptInterface\nconst MOIT = MOI.Test\nconst MOIB = MOI.Bridges\n\nconst optimizer = FooBarOptimizer()\nconst config = MOIT.TestConfig(atol=1e-6, rtol=1e-6)\n\n@testset \"MOI Continuous Linear\" begin\n    # If `optimizer` does not support the `Interval` set,\n    # the `SplitInterval` bridge can be used to split each `f`-in-`Interval(lb, ub)` constraint into\n    # a constraint `f`-in-`GreaterThan(lb)` and a constraint `f`-in-`LessThan(ub)`\n    MOIT.contlineartest(MOIB.SplitInterval{Float64}(optimizer), config)\nend\n\n@testset \"MOI Continuous Conic\" begin\n    # If the solver supports rotated second order cone, the `GeoMean` bridge can be used to make it support geometric mean cone constraints.\n    # If it additionally support positive semidefinite cone constraints, the `RootDet` bridge can be used to make it support root-det cone constraints.\n    MOIT.contlineartest(MOIB.RootDet{Float64}(MOIB.GeoMean{Float64}(optimizer)), config)\nend\n\n@testset \"MOI Integer Conic\" begin\n    MOIT.intconictest(optimizer, config)\nendIf the wrapper does not support building the model incrementally (i.e. with addvariable! and addconstraint!), the line const optimizer = FooBarOptimizer() can be replaced withconst MOIU = MOI.Utilities\n# Include here the functions/sets supported by the solver wrapper (not those that are supported through bridges)\nMOIU.@model FooBarModelData () (EqualTo, GreaterThan, LessThan) (Zeros, Nonnegatives, Nonpositives) () (SingleVariable,) (ScalarAffineFunction,) (VectorOfVariables,) (VectorAffineFunction,)\nconst optimizer = MOIU.CachingOptimizer(FooBarModelData{Float64}(), FooBarOptimizer())"
 },
 
 {
@@ -1510,6 +1526,86 @@ var documenterSearchIndex = {"docs": [
     "title": "NLP evaluator methods",
     "category": "section",
     "text": "AbstractNLPEvaluator\ninitialize!\nfeatures_available\neval_objective\neval_constraint\neval_objective_gradient\njacobian_structure\nhessian_lagrangian_structure\neval_constraint_jacobian\neval_constraint_jacobian_product\neval_constraint_jacobian_transpose_product\neval_hessian_lagrangian\neval_hessian_lagrangian_product\nobjective_expr\nconstraint_expr"
+},
+
+{
+    "location": "apireference.html#MathOptInterface.Bridges.AbstractBridge",
+    "page": "Reference",
+    "title": "MathOptInterface.Bridges.AbstractBridge",
+    "category": "type",
+    "text": "AbstractBridge\n\nA bridge represents a bridged constraint in an AbstractBridgeOptimizer. It contains the indices of the constraints that it has created in the model. These can be obtained using MOI.NumberOfConstraints and MOI.ListOfConstraintIndices and using the bridge in place of a ModelLike. Attributes of the bridged model such as MOI.ConstraintDual and MOI.ConstraintPrimal, can be obtained using the bridge in place of the constraint index. These calls are used by the AbstractBridgeOptimizer to communicate with the bridge so they should be implemented by the bridge.\n\n\n\n"
+},
+
+{
+    "location": "apireference.html#MathOptInterface.Bridges.AbstractBridgeOptimizer",
+    "page": "Reference",
+    "title": "MathOptInterface.Bridges.AbstractBridgeOptimizer",
+    "category": "type",
+    "text": "AbstractBridgeOptimizer\n\nA bridge optimizer applies a given constraint bridge to a given optimizer. The attributes of the bridge optimizer are automatically computed to make the bridges transparent, e.g. the variables and constraints created by the bridges are hidden.\n\n\n\n"
+},
+
+{
+    "location": "apireference.html#MathOptInterface.Bridges.SplitIntervalBridge",
+    "page": "Reference",
+    "title": "MathOptInterface.Bridges.SplitIntervalBridge",
+    "category": "type",
+    "text": "SplitIntervalBridge{T}\n\nThe SplitIntervalBridge splits a constraint l  a x +   u into the constraints a x +   l and a x +   u.\n\n\n\n"
+},
+
+{
+    "location": "apireference.html#MathOptInterface.Bridges.RSOCBridge",
+    "page": "Reference",
+    "title": "MathOptInterface.Bridges.RSOCBridge",
+    "category": "type",
+    "text": "RSOCBridge{T}\n\nThe RotatedSecondOrderCone is SecondOrderCone representable; see [1, p. 104]. Indeed, we have 2tu = (t2 + u2)^2 - (t2 - u2)^2 hence\n\n2tu ge  x _2^2\n\nis equivalent to\n\n(t2 + u2)^2 ge  x _2^2 + (t2 - u2)^2\n\nWe can therefore use the transformation (t u x) mapsto (t2+u2 t2-u2 x). Note that the linear transformation is a symmetric involution (i.e. it is its own transpose and its own inverse). That means in particular that the norm is of constraint primal and duals are preserved by the tranformation.\n\n[1] Ben-Tal, Aharon, and Arkadi Nemirovski. Lectures on modern convex optimization: analysis, algorithms, and engineering applications. Society for Industrial and Applied Mathematics, 2001.\n\n\n\n"
+},
+
+{
+    "location": "apireference.html#MathOptInterface.Bridges.GeoMeanBridge",
+    "page": "Reference",
+    "title": "MathOptInterface.Bridges.GeoMeanBridge",
+    "category": "type",
+    "text": "GeoMeanBridge{T}\n\nThe GeometricMeanCone is SecondOrderCone representable; see [1, p. 105]. The reformulation is best described in an example. Consider the cone of dimension 4\n\nt le sqrt3x_1 x_2 x_3\n\nThis can be rewritten as exists x_21 ge 0 such that\n\nbeginalign*\n  t  le x_21\n  x_21^4  le x_1 x_2 x_3 x_21\nendalign*\n\nNote that we need to create x_21 and not use t^4 directly as t is allowed to be negative. Now, this is equivalent to\n\nbeginalign*\n  t  le x_21sqrt4\n  x_21^2  le 2x_11 x_12\n  x_11^2  le 2x_1 x_2  x_21^2  le 2x_3(x_21sqrt4)\nendalign*\n\n[1] Ben-Tal, Aharon, and Arkadi Nemirovski. Lectures on modern convex optimization: analysis, algorithms, and engineering applications. Society for Industrial and Applied Mathematics, 2001.\n\n\n\n"
+},
+
+{
+    "location": "apireference.html#MathOptInterface.Bridges.RootDetBridge",
+    "page": "Reference",
+    "title": "MathOptInterface.Bridges.RootDetBridge",
+    "category": "type",
+    "text": "RootDetBridge{T}\n\nThe RootDetConeTriangle is representable by a PositiveSemidefiniteConeTriangle and an GeometricMeanCone constraints; see [1, p. 149]. Indeed, t le det(X)^(1n) if and only if there exists a lower triangular matrix  such that\n\nbeginalign*\n  beginpmatrix\n    X  \n    ^top  mathrmDiag()\n  endpmatrix  succeq 0\n  t  le (_11 _22 cdots _nn)^1n\nendalign*\n\n[1] Ben-Tal, Aharon, and Arkadi Nemirovski. Lectures on modern convex optimization: analysis, algorithms, and engineering applications. Society for Industrial and Applied Mathematics, 2001.\n\n\n\n"
+},
+
+{
+    "location": "apireference.html#MathOptInterface.Bridges.LogDetBridge",
+    "page": "Reference",
+    "title": "MathOptInterface.Bridges.LogDetBridge",
+    "category": "type",
+    "text": "LogDetBridge{T}\n\nThe LogDetConeTriangle is representable by a PositiveSemidefiniteConeTriangle and ExponentialCone constraints. Indeed, logdet(X) = log(delta_1) + cdots + log(delta_n) where delta_1, ..., delta_n are the eigenvalues of X. Adapting, the method from [1, p. 149], we see that t le log(det(X)) if and only if there exists a lower triangular matrix  such that\n\nbeginalign*\n  beginpmatrix\n    X  \n    ^top  mathrmDiag()\n  endpmatrix  succeq 0\n  t  le log(_11) + log(_22) + cdots + log(_nn)\nendalign*\n\n[1] Ben-Tal, Aharon, and Arkadi Nemirovski. Lectures on modern convex optimization: analysis, algorithms, and engineering applications. Society for Industrial and Applied Mathematics, 2001. ```\n\n\n\n"
+},
+
+{
+    "location": "apireference.html#MathOptInterface.Bridges.SOCtoPSDCBridge",
+    "page": "Reference",
+    "title": "MathOptInterface.Bridges.SOCtoPSDCBridge",
+    "category": "type",
+    "text": "The SOCtoPSDCBridge transforms the second order cone constraint lVert x rVert le t into the semidefinite cone constraints\n\nbeginpmatrix\n  t  x^top\n  x  tI\nendpmatrix succeq 0\n\nIndeed by the Schur Complement, it is positive definite iff\n\nbeginalign*\n  tI  succ 0\n  t - x^top (tI)^-1 x  succ 0\nendalign*\n\nwhich is equivalent to\n\nbeginalign*\n  t   0\n  t^2   x^top x\nendalign*\n\n\n\n"
+},
+
+{
+    "location": "apireference.html#MathOptInterface.Bridges.RSOCtoPSDCBridge",
+    "page": "Reference",
+    "title": "MathOptInterface.Bridges.RSOCtoPSDCBridge",
+    "category": "type",
+    "text": "The RSOCtoPSDCBridge transforms the second order cone constraint lVert x rVert le 2tu with u ge 0 into the semidefinite cone constraints\n\nbeginpmatrix\n  t  x^top\n  x  2uI\nendpmatrix succeq 0\n\nIndeed by the Schur Complement, it is positive definite iff\n\nbeginalign*\n  uI  succ 0\n  t - x^top (2uI)^-1 x  succ 0\nendalign*\n\nwhich is equivalent to\n\nbeginalign*\n  u   0\n  2tu   x^top x\nendalign*\n\n\n\n"
+},
+
+{
+    "location": "apireference.html#Bridges-1",
+    "page": "Reference",
+    "title": "Bridges",
+    "category": "section",
+    "text": "Bridges can be used for automatic reformulation of a certain constraint type into equivalent constraints.Bridges.AbstractBridge\nBridges.AbstractBridgeOptimizerBelow is the list of bridges implemented in this package. Bridge optimizers are also available with the same name but \"Bridge\" suffix, e.g. SplitInterval is an AbstractBridgeOptimizer for the SplitIntervalBridge.Bridges.SplitIntervalBridge\nBridges.RSOCBridge\nBridges.GeoMeanBridge\nBridges.RootDetBridge\nBridges.LogDetBridge\nBridges.SOCtoPSDCBridge\nBridges.RSOCtoPSDCBridge"
 },
 
 ]}
