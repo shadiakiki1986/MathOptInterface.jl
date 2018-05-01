@@ -749,7 +749,7 @@ var documenterSearchIndex = {"docs": [
     "page": "Reference",
     "title": "MathOptInterface.candelete",
     "category": "function",
-    "text": "MOI.candelete(model::MOI.ModelLike, b::AbstractBridge)\n\nReturn a Bool indicating whether the bridge b can be removed from the model model.\n\n\n\ncandelete(model::ModelLike, index::Index)::Bool\n\nReturn a Bool indicating whether the object referred to by index can be removed from the model model.\n\n\n\n"
+    "text": "MOI.candelete(model::MOI.ModelLike, b::AbstractBridge)\n\nReturn a Bool indicating whether the bridge b can be removed from the model model.\n\n\n\ncandelete(model::ModelLike, index::Index)::Bool\n\nReturn a Bool indicating whether the object referred to by index can be removed from the model model.\n\n\n\ncandelete(model::ModelLike, indices::Vector{<:Index})::Bool\n\nReturn a Bool indicating whether all the objects referred to by indices can be removed from the model model.\n\n\n\n"
 },
 
 {
@@ -765,7 +765,7 @@ var documenterSearchIndex = {"docs": [
     "page": "Reference",
     "title": "Base.delete!",
     "category": "method",
-    "text": "delete!(model::ModelLike, index::Index)\n\nDelete the referenced object from the model.\n\ndelete!{R}(model::ModelLike, indices::Vector{R<:Index})\n\nDelete the referenced objects in the vector indices from the model. It may be assumed that R is a concrete type.\n\n\n\n"
+    "text": "delete!(model::ModelLike, index::Index)\n\nDelete the referenced object from the model.\n\n\n\n"
 },
 
 {
