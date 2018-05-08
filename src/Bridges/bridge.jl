@@ -210,11 +210,11 @@ macro bridge(modelname, bridge, ss, sst, vs, vst, sf, sft, vf, vft)
         end
 
         # References
-        $MOI.candelete(b::$modelname{T}, ci::$CI{<:$bridgedfuns, <:$bridgedsets}) where T = $MOI.candelete(b.bridged, ci) && $MOI.candelete(b.model, $MOIB.bridge(b, ci))
+        $MOI.candelete(b::$modelname, ci::$CI{<:$bridgedfuns, <:$bridgedsets}) = $MOI.candelete(b.bridged, ci) && $MOI.candelete(b.model, $MOIB.bridge(b, ci))
 
-        $MOI.isvalid(b::$modelname{T}, ci::$CI{<:$bridgedfuns, <:$bridgedsets}) where T = $MOI.isvalid(b.bridged, ci)
+        $MOI.isvalid(b::$modelname, ci::$CI{<:$bridgedfuns, <:$bridgedsets}) = $MOI.isvalid(b.bridged, ci)
 
-        function $MOI.delete!(b::$modelname{T}, ci::$CI{<:$bridgedfuns, <:$bridgedsets}) where T
+        function $MOI.delete!(b::$modelname, ci::$CI{<:$bridgedfuns, <:$bridgedsets})
             $MOI.delete!(b.model, $MOIB.bridge(b, ci))
             delete!(b.bridges, ci.value)
             $MOI.delete!(b.bridged, ci)
