@@ -1009,11 +1009,27 @@ var documenterSearchIndex = {"docs": [
 },
 
 {
+    "location": "apireference.html#MathOptInterface.ScalarAffineTerm",
+    "page": "Reference",
+    "title": "MathOptInterface.ScalarAffineTerm",
+    "category": "type",
+    "text": "struct ScalarAffineTerm{T}\n    coefficient::T\n    variable_index::VariableIndex\nend\n\nRepresents c x_i where c is coefficient and x_i is the variable identified by variable_index.\n\n\n\n"
+},
+
+{
     "location": "apireference.html#MathOptInterface.ScalarAffineFunction",
     "page": "Reference",
     "title": "MathOptInterface.ScalarAffineFunction",
     "category": "type",
-    "text": "ScalarAffineFunction{T}(variables, coefficients, constant)\n\nThe scalar-valued affine function a^T x + b, where:\n\na is a sparse vector specified in tuple form by variables::Vector{VariableIndex} and coefficients::Vector{T}\nb is a scalar specified by constant::T\n\nDuplicate variable indices in variables are accepted, and the corresponding coefficients are summed together.\n\n\n\n"
+    "text": "ScalarAffineFunction{T}(terms, constant)\n\nThe scalar-valued affine function a^T x + b, where:\n\na is a sparse vector specified by a list of ScalarAffineTerm structs.\nb is a scalar specified by constant::T\n\nDuplicate variable indices in terms are accepted, and the corresponding coefficients are summed together.\n\n\n\n"
+},
+
+{
+    "location": "apireference.html#MathOptInterface.VectorAffineTerm",
+    "page": "Reference",
+    "title": "MathOptInterface.VectorAffineTerm",
+    "category": "type",
+    "text": "struct VectorAffineTerm{T}\n    output_index::Int64\n    scalar_term::ScalarAffineTerm{T}\nend\n\nA ScalarAffineTerm plus its index of the output component of a VectorAffineFunction or VectorQuadraticFunction. output_index can also be interpreted as a row index into a sparse matrix, where the scalar_term contains the column index and coefficient.\n\n\n\n"
 },
 
 {
@@ -1021,7 +1037,15 @@ var documenterSearchIndex = {"docs": [
     "page": "Reference",
     "title": "MathOptInterface.VectorAffineFunction",
     "category": "type",
-    "text": "VectorAffineFunction{T}(outputindex, variables, coefficients, constant)\n\nThe vector-valued affine function A x + b, where:\n\nA is a sparse matrix specified in triplet form by outputindex, variables, coefficients\nb is a vector specified by constant\n\nDuplicate indices in the A are accepted, and the corresponding coefficients are summed together.\n\n\n\n"
+    "text": "VectorAffineFunction{T}(terms, constants)\n\nThe vector-valued affine function A x + b, where:\n\nA is a sparse matrix specified by a list of VectorAffineTerm objects.\nb is a vector specified by constants\n\nDuplicate indices in the A are accepted, and the corresponding coefficients are summed together.\n\n\n\n"
+},
+
+{
+    "location": "apireference.html#MathOptInterface.ScalarQuadraticTerm",
+    "page": "Reference",
+    "title": "MathOptInterface.ScalarQuadraticTerm",
+    "category": "type",
+    "text": "struct ScalarQuadraticTerm{T}\n    coefficient::T\n    variable_index_1::VariableIndex\n    variable_index_2::VariableIndex\nend\n\nRepresents c x_i x_j where c is coefficient, x_i is the variable identified by variable_index_1 and x_j is the variable identified by variable_index_2.\n\n\n\n"
 },
 
 {
@@ -1029,7 +1053,15 @@ var documenterSearchIndex = {"docs": [
     "page": "Reference",
     "title": "MathOptInterface.ScalarQuadraticFunction",
     "category": "type",
-    "text": "ScalarQuadraticFunction{T}(affine_variables, affine_coefficients, quadratic_rowvariables, quadratic_colvariables, quadratic_coefficients, constant)\n\nThe scalar-valued quadratic function frac12x^TQx + a^T x + b, where:\n\na is a sparse vector specified in tuple form by affine_variables, affine_coefficients\nb is a scalar specified by constant\nQ is a symmetric matrix specified in triplet form by quadratic_rowvariables, quadratic_colvariables, quadratic_coefficients\n\nDuplicate indices in a or Q are accepted, and the corresponding coefficients are summed together. \"Mirrored\" indices (q,r) and (r,q) (where r and q are VariableIndexes) are considered duplicates; only one need be specified.\n\n\n\n"
+    "text": "ScalarQuadraticFunction{T}(affine_terms, quadratic_terms, constant)\n\nThe scalar-valued quadratic function frac12x^TQx + a^T x + b, where:\n\na is a sparse vector specified by a list of ScalarAffineTerm structs.\nb is a scalar specified by constant.\nQ is a symmetric matrix specified by a list of ScalarQuadraticTerm structs.\n\nDuplicate indices in a or Q are accepted, and the corresponding coefficients are summed together. \"Mirrored\" indices (q,r) and (r,q) (where r and q are VariableIndexes) are considered duplicates; only one need be specified.\n\n\n\n"
+},
+
+{
+    "location": "apireference.html#MathOptInterface.VectorQuadraticTerm",
+    "page": "Reference",
+    "title": "MathOptInterface.VectorQuadraticTerm",
+    "category": "type",
+    "text": "struct VectorQuadraticTerm{T}\n    output_index::Int64\n    scalar_term::ScalarQuadraticTerm{T}\nend\n\nA ScalarQuadraticTerm plus its index of the output component of a VectorQuadraticFunction. Each output component corresponds to a distinct sparse matrix Q_i.\n\n\n\n"
 },
 
 {
@@ -1037,7 +1069,7 @@ var documenterSearchIndex = {"docs": [
     "page": "Reference",
     "title": "MathOptInterface.VectorQuadraticFunction",
     "category": "type",
-    "text": "VectorQuadraticFunction{T}(affine_outputindex, affine_variables, affine_coefficients, quadratic_outputindex, quadratic_rowvariables, quadratic_colvariables, quadratic_coefficients, constant)\n\nThe vector-valued quadratic function with ith component (\"output index\") defined as frac12x^TQ_ix + a_i^T x + b_i, where:\n\na_i is a sparse vector specified in tuple form by the subset of affine_variables, affine_coefficients for the indices k where affine_outputindex[k] == i.\nb_i is a scalar specified by constant[i]\nQ_i is a symmetric matrix specified in triplet form by the subset of quadratic_rowvariables, quadratic_colvariables, quadratic_coefficients for the indices k where quadratic_outputindex[k] == i\n\nDuplicate indices in a_i or Q_i are accepted, and the corresponding coefficients are summed together. \"Mirrored\" indices (q,r) and (r,q) (where r and q are VariableIndexes) are considered duplicates; only one need be specified.\n\n\n\n"
+    "text": "VectorQuadraticFunction{T}(affine_terms, quadratic_terms, constant)\n\nThe vector-valued quadratic function with ith component (\"output index\") defined as frac12x^TQ_ix + a_i^T x + b_i, where:\n\na_i is a sparse vector specified by the VectorAffineTerms with output_index == i.\nb_i is a scalar specified by constants[i]\nQ_i is a symmetric matrix specified by the VectorQuadraticTerm with output_index == i.\n\nDuplicate indices in a_i or Q_i are accepted, and the corresponding coefficients are summed together. \"Mirrored\" indices (q,r) and (r,q) (where r and q are VariableIndexes) are considered duplicates; only one need be specified.\n\n\n\n"
 },
 
 {
@@ -1069,7 +1101,7 @@ var documenterSearchIndex = {"docs": [
     "page": "Reference",
     "title": "MathOptInterface.MultirowChange",
     "category": "type",
-    "text": "MultirowChange{T}(variable, rows, new_coefficients)\n\nA struct used to request a change in the linear coefficients of a single variable in a vector-valued function. Applicable to VectorAffineFunction and VectorQuadraticFunction.\n\n\n\n"
+    "text": "MultirowChange{T}(variable, new_coefficients)\n\nA struct used to request a change in the linear coefficients of a single variable in a vector-valued function. New coefficients are specified by (output_index, coefficient) tuples. Applicable to VectorAffineFunction and VectorQuadraticFunction.\n\n\n\n"
 },
 
 {
@@ -1077,7 +1109,7 @@ var documenterSearchIndex = {"docs": [
     "page": "Reference",
     "title": "Functions and function modifications",
     "category": "section",
-    "text": "List of recognized functions.AbstractFunction\nSingleVariable\nVectorOfVariables\nScalarAffineFunction\nVectorAffineFunction\nScalarQuadraticFunction\nVectorQuadraticFunctionList of function modifications.ScalarConstantChange\nVectorConstantChange\nScalarCoefficientChange\nMultirowChange"
+    "text": "List of recognized functions.AbstractFunction\nSingleVariable\nVectorOfVariables\nScalarAffineTerm\nScalarAffineFunction\nVectorAffineTerm\nVectorAffineFunction\nScalarQuadraticTerm\nScalarQuadraticFunction\nVectorQuadraticTerm\nVectorQuadraticFunctionList of function modifications.ScalarConstantChange\nVectorConstantChange\nScalarCoefficientChange\nMultirowChange"
 },
 
 {
