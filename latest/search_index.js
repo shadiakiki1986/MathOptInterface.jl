@@ -1073,6 +1073,14 @@ var documenterSearchIndex = {"docs": [
 },
 
 {
+    "location": "apireference.html#MathOptInterface.output_dimension",
+    "page": "Reference",
+    "title": "MathOptInterface.output_dimension",
+    "category": "function",
+    "text": "output_dimension(f::AbstractFunction)\n\nReturn 1 if f has a scalar output and the number of output components if f has a vector output.\n\n\n\n"
+},
+
+{
     "location": "apireference.html#MathOptInterface.ScalarConstantChange",
     "page": "Reference",
     "title": "MathOptInterface.ScalarConstantChange",
@@ -1109,7 +1117,7 @@ var documenterSearchIndex = {"docs": [
     "page": "Reference",
     "title": "Functions and function modifications",
     "category": "section",
-    "text": "List of recognized functions.AbstractFunction\nSingleVariable\nVectorOfVariables\nScalarAffineTerm\nScalarAffineFunction\nVectorAffineTerm\nVectorAffineFunction\nScalarQuadraticTerm\nScalarQuadraticFunction\nVectorQuadraticTerm\nVectorQuadraticFunctionList of function modifications.ScalarConstantChange\nVectorConstantChange\nScalarCoefficientChange\nMultirowChange"
+    "text": "List of recognized functions.AbstractFunction\nSingleVariable\nVectorOfVariables\nScalarAffineTerm\nScalarAffineFunction\nVectorAffineTerm\nVectorAffineFunction\nScalarQuadraticTerm\nScalarQuadraticFunction\nVectorQuadraticTerm\nVectorQuadraticFunctionFunctions for getting and setting properties of sets.output_dimensionList of function modifications.ScalarConstantChange\nVectorConstantChange\nScalarCoefficientChange\nMultirowChange"
 },
 
 {
@@ -1341,7 +1349,7 @@ var documenterSearchIndex = {"docs": [
     "page": "Reference",
     "title": "MathOptInterface.dimension",
     "category": "function",
-    "text": "dimension(s::AbstractSet)\n\nReturn the output dimension that an AbstractFunction should have to be used with the set s.\n\nExamples\n\njulia> dimension(Reals(4))\n4\n\njulia> dimension(LessThan(3.0))\n1\n\njulia> dimension(PositiveSemidefiniteConeTriangle(2))\n3\n\n\n\n"
+    "text": "dimension(s::AbstractSet)\n\nReturn the output_dimension that an AbstractFunction should have to be used with the set s.\n\nExamples\n\njulia> dimension(Reals(4))\n4\n\njulia> dimension(LessThan(3.0))\n1\n\njulia> dimension(PositiveSemidefiniteConeTriangle(2))\n3\n\n\n\n"
 },
 
 {
