@@ -169,6 +169,78 @@ var documenterSearchIndex = {"docs": [
 },
 
 {
+    "location": "apimanual.html#Problem-modification-1",
+    "page": "Manual",
+    "title": "Problem modification",
+    "category": "section",
+    "text": "In addition to adding and deleting constraints and variables, MathOptInterface supports modifying, in-place, coefficients in the constraints and the objective function of a model. These modifications can be grouped into two categories: modifications which replace the set of function of a constraint with a new set or function; and modifications which change, in-place, a component of a function.In the following, we detail the various ways this can be achieved. Readers should note that some solvers will not support problem modification."
+},
+
+{
+    "location": "apimanual.html#Replacements-1",
+    "page": "Manual",
+    "title": "Replacements",
+    "category": "section",
+    "text": "First, we discuss how to replace the set or function of a constraint with a new instance of the same type."
+},
+
+{
+    "location": "apimanual.html#The-set-of-a-constraint-1",
+    "page": "Manual",
+    "title": "The set of a constraint",
+    "category": "section",
+    "text": "Given a constraint of type F-in-S (see Constraints by function-set pairs  above for an explanation), we can modify parameters (but not the type) of the  set S by replacing it with a new instance of the same type. For example,  given the variable bound x le 1:c = addconstraint(m, SingleVariable(x), LessThan(1.0))we can modify the set so that the bound now x le 2 as follows:set!(m, ConstraintSet(), c, LessThan(2.0))where m is our ModelLike model. However, the following will fail as the new set (GreaterThan) is of a different type to the original set (LessThan):set!(m, ConstraintSet(), c, GreaterThan(2.0))  # errorsIf our constraint is an affine inequality, then this corresponds to modifying the right-hand side of a constraint in linear programming.In some special cases, solvers may support efficiently changing the set of a constraint (for example, from LessThan to GreaterThan). For these cases, MathOptInterface provides the transform! method. For example, instead of the error we observed above, the following will work:c2 = transform!(m, c, GreaterThan(1.0))The transform! function returns a new constraint index, and the old constraint index (i.e., c) is no longer valid:isvalid(m, c)   # false\nisvalid(m, c2)  # trueAlso note that transform! cannot be called with a set of the same type; set! should be used instead."
+},
+
+{
+    "location": "apimanual.html#The-function-of-a-constraint-1",
+    "page": "Manual",
+    "title": "The function of a constraint",
+    "category": "section",
+    "text": "Given a constraint of type F-in-S (see Constraints by function-set pairs above for an explanation), it is also  possible to modify the function of type F by replacing it with a new instance of the same type. For example, given the variable bound x le 1:c = addconstraint(m, SingleVariable(x), LessThan(1.0))we can modify the function so that the bound now y le 1 as follows:set!(m, ConstraintFunction(), c, SingleVariable(y))where m is our ModelLike model. However, the following will fail as the new function is of a different type to the original function:set!(m, ConstraintFunction(), c,\n    ScalarAffineFunction([ScalarAffineTerm(1.0, x)], 0.0)\n)"
+},
+
+{
+    "location": "apimanual.html#In-place-modification-1",
+    "page": "Manual",
+    "title": "In-place modification",
+    "category": "section",
+    "text": "The second type of problem modifications allow the user to modify, in-place, the coefficients of a function. Currently, four modifications are supported by MathOptInterface. They are:change the constant term in a scalar function;\nchange the constant term in a vector function;\nchange the affine coefficients in a scalar function; and\nchange the affine coefficients in a vector function.To distinguish between the replacement of the function with a new instance (described above) and the modification of an existing function, the in-place modifications use the  modify! method:modify!(model, index, change::AbstractFunctionModification)modify! takes three arguments. The first is the ModelLike model model, the second is the constraint index, and the third is an instance of an AbstractFunctionModification.We now detail each of these four in-place modifications."
+},
+
+{
+    "location": "apimanual.html#Constant-term-in-a-scalar-function-1",
+    "page": "Manual",
+    "title": "Constant term in a scalar function",
+    "category": "section",
+    "text": "MathOptInterface supports is the ability to modify the constant term within a ScalarAffineFunction and a ScalarQuadraticFunction using the ScalarConstantChange subtype of AbstractFunctionModification. This includes the objective function, as well as the function in a function-pair constraint.For example, consider a problem m with the objective max 10x + 00:set!(m,\n    ObjectiveFunction{ScalarAffineFunction{Float64}}(),\n    ScalarAffineFunction([ScalarAffineTerm(1.0, x)], 0.0)\n)We can modify the constant term in the objective function as follows:modify!(m,\n    ObjectiveFunction{ScalarAffineFunction{Float64}}(),\n    ScalarConstantChange(1.0)\n)The objective function will now be max 10x + 10."
+},
+
+{
+    "location": "apimanual.html#Constant-terms-in-a-vector-function-1",
+    "page": "Manual",
+    "title": "Constant terms in a vector function",
+    "category": "section",
+    "text": "We can modify the constant terms in a VectorAffineFunction or a VectorQuadraticFunction using the VectorConstantChange subtype of AbstractFunctionModification.For example, consider a model with the following VectorAffineFunction-in-Nonpositives constraint:c = addconstraint!(m,\n    VectorAffineFunction([\n            VectorAffineTerm(1, ScalarAffineTerm(1.0, x)),\n            VectorAffineTerm(1, ScalarAffineTerm(2.0, y))\n        ],\n        [0.0, 0.0]\n    ),\n    Nonpositives(2)\n)We can modify the constant vector in the VectorAffineFunction from [0.0, 0.0] to [1.0, 2.0] as follows:modify!(m, c, VectorConstantChange([1.0, 2.0])\n)The constraints are now 10x + 10 le 00 and 20y + 20 le 00."
+},
+
+{
+    "location": "apimanual.html#Affine-coefficients-in-a-scalar-function-1",
+    "page": "Manual",
+    "title": "Affine coefficients in a scalar function",
+    "category": "section",
+    "text": "In addition to modifying the constant terms in a function, we can also modify the affine variable coefficients in an ScalarAffineFunction or a ScalarQuadraticFunction using the ScalarCoefficientChange subtype of AbstractFunctionModification.For example, given the constraint 10x = 10:c = addconstraint!(m,\n    ScalarAffineFunction([ScalarAffineTerm(1.0, x)], 0.0),\n    LessThan(1.0)\n)we can modify the coefficient of the x variable so that the constraint becomes 20x = 10 as follows:modify!(m, c, ScalarCoefficientChange(x, 2.0))ScalarCoefficientChange can also be used to modify the objective function by passing an instance of ObjectiveFunction instead of the constraint index c as we saw above."
+},
+
+{
+    "location": "apimanual.html#Affine-coefficients-in-a-vector-function-1",
+    "page": "Manual",
+    "title": "Affine coefficients in a vector function",
+    "category": "section",
+    "text": "Finally, the last modification supported by MathOptInterface is the ability to modify the affine coefficients of a single variable in a VectorAffineFunction or a VectorQuadraticFunction using the MultirowChange subtype of AbstractFunctionModification.For example, given the constraint Ax in mathbbR^2_+, where A = 10 20^top:c = addconstraint!(m,\n    VectorAffineFunction([\n            VectorAffineTerm(1, ScalarAffineTerm(1.0, x)),\n            VectorAffineTerm(1, ScalarAffineTerm(2.0, x))\n        ],\n        [0.0, 0.0]\n    ),\n    Nonnegatives(2)\n)we can modify the coefficients of the x variable so that the A matrix becomes A = 30 40^top as follows:modify!(m, c, MultirowChange(x, [3.0, 4.0]))"
+},
+
+{
     "location": "apimanual.html#Advanced-1",
     "page": "Manual",
     "title": "Advanced",
@@ -190,14 +262,6 @@ var documenterSearchIndex = {"docs": [
     "title": "Duality and scalar product",
     "category": "section",
     "text": "The scalar product is different from the canonical one for the sets PositiveSemidefiniteConeTriangle, LogDetConeTriangle, RootDetConeTriangle. If the set C_i of the section Duals is one of these three cones, then the rows of the matrix A_i corresponding to off-diagonal entries are twice the value of the coefficients field in the VectorAffineFunction for the corresponding rows. See PositiveSemidefiniteConeTriangle for details."
-},
-
-{
-    "location": "apimanual.html#Modifying-a-model-1",
-    "page": "Manual",
-    "title": "Modifying a model",
-    "category": "section",
-    "text": "[Explain modifyconstraint! and modifyobjective!.]"
 },
 
 {
@@ -349,7 +413,7 @@ var documenterSearchIndex = {"docs": [
     "page": "Reference",
     "title": "MathOptInterface.canset",
     "category": "function",
-    "text": "canset(optimizer::AbstractOptimizer, attr::AbstractOptimizerAttribute)::Bool\n\nReturn a Bool indicating whether it is possible to set the attribute attr to the optimizer optimizer.\n\ncanset(model::ModelLike, attr::AbstractModelAttribute)::Bool\n\nReturn a Bool indicating whether it is possible to set the attribute attr to the model model.\n\ncanset(model::ModelLike, attr::AbstractVariableAttribute, R::Type{VariableIndex})::Bool\ncanset(model::ModelLike, attr::AbstractConstraintAttribute, R::Type{ConstraintIndex{F,S})::Bool\n\nReturn a Bool indicating whether it is possible to set attribute attr applied to the index type R in the model model.\n\nExamples\n\ncanset(model, ObjectiveValue())\ncanset(model, VariablePrimalStart(), VariableIndex)\ncanset(model, ConstraintPrimal(), ConstraintIndex{VectorAffineFunction{Float64},Nonnegatives})\n\n\n\n"
+    "text": "canset(optimizer::AbstractOptimizer, attr::AbstractOptimizerAttribute)::Bool\n\nReturn a Bool indicating whether it is possible to set the attribute attr to the optimizer optimizer.\n\ncanset(model::ModelLike, attr::AbstractModelAttribute)::Bool\n\nReturn a Bool indicating whether it is possible to set the attribute attr to the model model.\n\ncanset(model::ModelLike, attr::AbstractVariableAttribute, R::Type{VariableIndex})::Bool\ncanset(model::ModelLike, attr::AbstractConstraintAttribute, R::Type{ConstraintIndex{F,S})::Bool\n\nReturn a Bool indicating whether it is possible to set attribute attr applied to the index type R in the model model.\n\ncanset(model::ModelLike, ::ConstraintSet, ::Type{ConstraintIndex{F,S}})::Bool\n\nReturn a Bool indicating whether the set in a constraint of type F-in-S can be replaced by another set of the same type S as the original set.\n\ncanset(model::ModelLike, ::ConstraintFunction, ::Type{ConstraintIndex{F,S}})::Bool\n\nReturn a Bool indicating whether the function in a constraint of type F-in-S can be replaced by another set of the same type F as the original function.\n\nExamples\n\ncanset(model, ObjectiveValue())\ncanset(model, VariablePrimalStart(), VariableIndex)\ncanset(model, ConstraintPrimal(), ConstraintIndex{VectorAffineFunction{Float64},Nonnegatives})\n\n\n\n"
 },
 
 {
@@ -357,7 +421,7 @@ var documenterSearchIndex = {"docs": [
     "page": "Reference",
     "title": "MathOptInterface.set!",
     "category": "function",
-    "text": "set!(optimizer::AbstractOptimizer, attr::AbstractOptimizerAttribute, value)\n\nAssign value to the attribute attr of the optimizer optimizer.\n\nset!(model::ModelLike, attr::AbstractModelAttribute, value)\n\nAssign value to the attribute attr of the model model.\n\nset!(model::ModelLike, attr::AbstractVariableAttribute, v::VariableIndex, value)\n\nAssign value to the attribute attr of variable v in model model.\n\nset!(model::ModelLike, attr::AbstractVariableAttribute, v::Vector{VariableIndex}, vector_of_values)\n\nAssign a value respectively to the attribute attr of each variable in the collection v in model model.\n\nset!(model::ModelLike, attr::AbstractConstraintAttribute, c::ConstraintIndex, value)\n\nAssign a value to the attribute attr of constraint c in model model.\n\nset!(model::ModelLike, attr::AbstractConstraintAttribute, c::Vector{ConstraintIndex{F,S}}, vector_of_values)\n\nAssign a value respectively to the attribute attr of each constraint in the collection c in model model.\n\n\n\n"
+    "text": "set!(optimizer::AbstractOptimizer, attr::AbstractOptimizerAttribute, value)\n\nAssign value to the attribute attr of the optimizer optimizer.\n\nset!(model::ModelLike, attr::AbstractModelAttribute, value)\n\nAssign value to the attribute attr of the model model.\n\nset!(model::ModelLike, attr::AbstractVariableAttribute, v::VariableIndex, value)\n\nAssign value to the attribute attr of variable v in model model.\n\nset!(model::ModelLike, attr::AbstractVariableAttribute, v::Vector{VariableIndex}, vector_of_values)\n\nAssign a value respectively to the attribute attr of each variable in the collection v in model model.\n\nset!(model::ModelLike, attr::AbstractConstraintAttribute, c::ConstraintIndex, value)\n\nAssign a value to the attribute attr of constraint c in model model.\n\nset!(model::ModelLike, attr::AbstractConstraintAttribute, c::Vector{ConstraintIndex{F,S}}, vector_of_values)\n\nAssign a value respectively to the attribute attr of each constraint in the collection c in model model.\n\nReplace set in a constraint\n\nset!(model::ModelLike, ::ConstraintSet, c::ConstraintIndex{F,S}, set::S)\n\nChange the set of constraint c to the new set set which should be of the same type as the original set.\n\nExamples\n\nIf c is a ConstraintIndex{F,Interval}\n\nset!(model, ConstraintSet(), c, Interval(0, 5))\nset!(model, ConstraintSet(), c, GreaterThan(0.0))  # Error\n\nReplace function in a constraint\n\nset!(model::ModelLike, ::ConstraintFunction, c::ConstraintIndex{F,S}, func::F)\n\nReplace the function in constraint c with func. F must match the original function type used to define the constraint.\n\nExamples\n\nIf c is a ConstraintIndex{ScalarAffineFunction,S} and v1 and v2 are VariableIndex objects,\n\nset!(model, ConstraintFunction(), c, ScalarAffineFunction([v1,v2],[1.0,2.0],5.0))\nset!(model, ConstraintFunction(), c, SingleVariable(v1)) # Error\n\n\n\n"
 },
 
 {
@@ -873,35 +937,35 @@ var documenterSearchIndex = {"docs": [
 },
 
 {
-    "location": "apireference.html#MathOptInterface.modifyconstraint!",
+    "location": "apireference.html#MathOptInterface.modify!",
     "page": "Reference",
-    "title": "MathOptInterface.modifyconstraint!",
+    "title": "MathOptInterface.modify!",
     "category": "function",
-    "text": "Modify Function\n\nmodifyconstraint!(model::ModelLike, c::ConstraintIndex{F,S}, func::F)\n\nReplace the function in constraint c with func. F must match the original function type used to define the constraint.\n\nExamples\n\nIf c is a ConstraintIndex{ScalarAffineFunction,S} and v1 and v2 are VariableIndex objects,\n\nmodifyconstraint!(model, c, ScalarAffineFunction([v1,v2],[1.0,2.0],5.0))\nmodifyconstraint!(model, c, SingleVariable(v1)) # Error\n\nModify Set\n\nmodifyconstraint!(model::ModelLike, c::ConstraintIndex{F,S}, set::S)\n\nChange the set of constraint c to the new set set which should be of the same type as the original set.\n\nExamples\n\nIf c is a ConstraintIndex{F,Interval}\n\nmodifyconstraint!(model, c, Interval(0, 5))\nmodifyconstraint!(model, c, NonPositives) # Error\n\nPartial Modifications\n\nmodifyconstraint!(model::ModelLike, c::ConstraintIndex, change::AbstractFunctionModification)\n\nApply the modification specified by change to the function of constraint c.\n\nExamples\n\nmodifyconstraint!(model, c, ScalarConstantChange(10.0))\n\n\n\n"
+    "text": "Constraint Function\n\nmodify!(model::ModelLike, c::ConstraintIndex, change::AbstractFunctionModification)\n\nApply the modification specified by change to the function of constraint c.\n\nExamples\n\nmodify!(model, c, ScalarConstantChange(10.0))\n\nObjective Function\n\nmodify!(model::ModelLike, ::ObjectiveFunction, change::AbstractFunctionModification)\n\nApply the modification specified by change to the objective function of model. To change the function completely, call set! instead.\n\nExamples\n\nmodify!(model, ObjectiveFunction{ScalarAffineFunction{Float64}}(), ScalarConstantChange(10.0))\n\n\n\n"
 },
 
 {
-    "location": "apireference.html#MathOptInterface.canmodifyconstraint",
+    "location": "apireference.html#MathOptInterface.canmodify",
     "page": "Reference",
-    "title": "MathOptInterface.canmodifyconstraint",
+    "title": "MathOptInterface.canmodify",
     "category": "function",
-    "text": "Modify Function\n\ncanmodifyconstraint(model::ModelLike, c::ConstraintIndex{F,S}, ::Type{F})::Bool\n\nReturn a Bool indicating whether the function in constraint c can be replaced by another function of the same type F as the original function.\n\nModify Set\n\ncanmodifyconstraint(model::ModelLike, c::ConstraintIndex{F,S}, ::Type{S})::Bool\n\nReturn a Bool indicating whether the set in constraint c can be replaced by another set of the same type S as the original set.\n\nPartial Modifications\n\ncanmodifyconstraint(model::ModelLike, c::ConstraintIndex, ::Type{M})::Bool where M<:AbstractFunctionModification\n\nReturn a Bool indicating whether it is possible to apply a modification of type M to the function of constraint c.\n\nExamples\n\ncanmodifyconstraint(model, c, ScalarConstantChange{Float64})\n\n\n\n"
+    "text": "Constraint Function\n\ncanmodify(model::ModelLike, ::Type{CI}, ::Type{M})::Bool where CI<:ConstraintIndex where M<:AbstractFunctionModification\n\nReturn a Bool indicating whether it is possible to apply a modification of type M to the function of constraint of type CI.\n\nExamples\n\ncanmodify(model, MOI.ConstraintIndex{MOI.ScalarAffineFunction{Float64}, MOI.LessThan{Float64}}, ScalarConstantChange{Float64})\n\nObjective Function\n\ncanmodify(model::ModelLike, ::ObjectiveFunction, ::Type{M})::Bool where M<:AbstractFunctionModification\n\nReturn a Bool indicating whether it is possible to apply a modification of type M to the objective function of model model.\n\nExamples\n\ncanmodify(model, ObjectiveFunction{ScalarAffineFunction{Float64}}(), ScalarConstantChange{Float64})\n\n\n\n"
 },
 
 {
-    "location": "apireference.html#MathOptInterface.transformconstraint!",
+    "location": "apireference.html#MathOptInterface.transform!",
     "page": "Reference",
-    "title": "MathOptInterface.transformconstraint!",
+    "title": "MathOptInterface.transform!",
     "category": "function",
-    "text": "Transform Constraint Set\n\ntransformconstraint!(model::ModelLike, c::ConstraintIndex{F,S1}, newset::S2)::ConstraintIndex{F,S2}\n\nReplace the set in constraint c with newset. The constraint index c will no longer be valid, and the function returns a new constraint index with the correct type.\n\nSolvers may only support a subset of constraint transforms that they perform efficiently (for example, changing from a LessThan to GreaterThan set). In addition, set modification (where S1 = S2) should be performed via the modifyconstraint! function.\n\nTypically, the user should delete the constraint and add a new one.\n\nExamples\n\nIf c is a ConstraintIndex{ScalarAffineFunction{Float64},LessThan{Float64}},\n\nc2 = transformconstraint!(model, c, GreaterThan(0.0))\ntransformconstraint!(model, c, LessThan(0.0)) # errors\n\n\n\n"
+    "text": "Transform Constraint Set\n\ntransform!(model::ModelLike, c::ConstraintIndex{F,S1}, newset::S2)::ConstraintIndex{F,S2}\n\nReplace the set in constraint c with newset. The constraint index c will no longer be valid, and the function returns a new constraint index with the correct type.\n\nSolvers may only support a subset of constraint transforms that they perform efficiently (for example, changing from a LessThan to GreaterThan set). In addition, set modification (where S1 = S2) should be performed via the modify! function.\n\nTypically, the user should delete the constraint and add a new one.\n\nExamples\n\nIf c is a ConstraintIndex{ScalarAffineFunction{Float64},LessThan{Float64}},\n\nc2 = transform!(model, c, GreaterThan(0.0))\ntransform!(model, c, LessThan(0.0)) # errors\n\n\n\n"
 },
 
 {
-    "location": "apireference.html#MathOptInterface.cantransformconstraint",
+    "location": "apireference.html#MathOptInterface.cantransform",
     "page": "Reference",
-    "title": "MathOptInterface.cantransformconstraint",
+    "title": "MathOptInterface.cantransform",
     "category": "function",
-    "text": "Transform Constraint Set\n\ncantransformconstraint(model::ModelLike, c::ConstraintIndex{F,S1}, ::Type{S2})::Bool where S2<:AbstractSet\n\nReturn a Bool indicating whether the set of type S1 in constraint c can be replaced by a set of type S2.\n\nExamples\n\nIf c is a ConstraintIndex{ScalarAffineFunction{Float64},LessThan{Float64}},\n\ncantransformconstraint(model, c, GreaterThan(0.0)) # true\ncantransformconstraint(model, c, ZeroOne())        # false\n\n\n\n"
+    "text": "Transform Constraint Set\n\ncantransform(model::ModelLike, c::ConstraintIndex{F,S1}, ::Type{S2})::Bool where S2<:AbstractSet\n\nReturn a Bool indicating whether the set of type S1 in constraint c can be replaced by a set of type S2.\n\nExamples\n\nIf c is a ConstraintIndex{ScalarAffineFunction{Float64},LessThan{Float64}},\n\ncantransform(model, c, GreaterThan(0.0)) # true\ncantransform(model, c, ZeroOne())        # it is expected that most solvers will\n                                         # return false, but this does not\n                                         # preclude solvers from supporting\n                                         # constraints such as this.\n\n\n\n"
 },
 
 {
@@ -941,7 +1005,7 @@ var documenterSearchIndex = {"docs": [
     "page": "Reference",
     "title": "MathOptInterface.ConstraintPrimal",
     "category": "type",
-    "text": "ConstraintPrimal(N)\nConstraintPrimal()\n\nThe assignment to the constraint primal values in result N. If N is omitted, it is 1 by default.\n\nGiven a constraint function-in-set, the ConstraintPrimal is the value of the function evaluated at the primal solution of the variables. For example, given the constraint ScalarAffineFunction([x,y], [1, 2], 3)-in-Interval(0, 20) and  a primal solution of (x,y) = (4,5), the ConstraintPrimal solution of the  constraint is 1 * 4 + 2 * 5 + 3 = 17.\n\n\n\n"
+    "text": "ConstraintPrimal(N)\nConstraintPrimal()\n\nThe assignment to the constraint primal values in result N. If N is omitted, it is 1 by default.\n\nGiven a constraint function-in-set, the ConstraintPrimal is the value of the function evaluated at the primal solution of the variables. For example, given the constraint ScalarAffineFunction([x,y], [1, 2], 3)-in-Interval(0, 20) and a primal solution of (x,y) = (4,5), the ConstraintPrimal solution of the constraint is 1 * 4 + 2 * 5 + 3 = 17.\n\n\n\n"
 },
 
 {
@@ -981,7 +1045,7 @@ var documenterSearchIndex = {"docs": [
     "page": "Reference",
     "title": "Constraints",
     "category": "section",
-    "text": "Functions for adding and modifying constraints.isvalid(::ModelLike,::ConstraintIndex)\ncanaddconstraint\naddconstraint!\naddconstraints!\nmodifyconstraint!\ncanmodifyconstraint\ntransformconstraint!\ncantransformconstraint\nsupportsconstraintList of attributes associated with constraints. [category AbstractConstraintAttribute] Calls to get and set! should include as an argument a single ConstraintIndex or a vector of ConstraintIndex{F,S} objects.ConstraintName\nConstraintPrimalStart\nConstraintDualStart\nConstraintPrimal\nConstraintDual\nConstraintBasisStatus\nConstraintFunction\nConstraintSet"
+    "text": "Functions for adding and modifying constraints.isvalid(::ModelLike,::ConstraintIndex)\ncanaddconstraint\naddconstraint!\naddconstraints!\nmodify!\ncanmodify\ntransform!\ncantransform\nsupportsconstraintList of attributes associated with constraints. [category AbstractConstraintAttribute] Calls to get and set! should include as an argument a single ConstraintIndex or a vector of ConstraintIndex{F,S} objects.ConstraintName\nConstraintPrimalStart\nConstraintDualStart\nConstraintPrimal\nConstraintDual\nConstraintBasisStatus\nConstraintFunction\nConstraintSet"
 },
 
 {
@@ -1081,6 +1145,14 @@ var documenterSearchIndex = {"docs": [
 },
 
 {
+    "location": "apireference.html#MathOptInterface.AbstractFunctionModification",
+    "page": "Reference",
+    "title": "MathOptInterface.AbstractFunctionModification",
+    "category": "type",
+    "text": "AbstractFunctionModification\n\nAn abstract supertype for structs which specify partial modifications to functions, to be used for making small modifications instead of replacing the functions entirely.\n\n\n\n"
+},
+
+{
     "location": "apireference.html#MathOptInterface.ScalarConstantChange",
     "page": "Reference",
     "title": "MathOptInterface.ScalarConstantChange",
@@ -1117,7 +1189,7 @@ var documenterSearchIndex = {"docs": [
     "page": "Reference",
     "title": "Functions and function modifications",
     "category": "section",
-    "text": "List of recognized functions.AbstractFunction\nSingleVariable\nVectorOfVariables\nScalarAffineTerm\nScalarAffineFunction\nVectorAffineTerm\nVectorAffineFunction\nScalarQuadraticTerm\nScalarQuadraticFunction\nVectorQuadraticTerm\nVectorQuadraticFunctionFunctions for getting and setting properties of sets.output_dimensionList of function modifications.ScalarConstantChange\nVectorConstantChange\nScalarCoefficientChange\nMultirowChange"
+    "text": "List of recognized functions.AbstractFunction\nSingleVariable\nVectorOfVariables\nScalarAffineTerm\nScalarAffineFunction\nVectorAffineTerm\nVectorAffineFunction\nScalarQuadraticTerm\nScalarQuadraticFunction\nVectorQuadraticTerm\nVectorQuadraticFunctionFunctions for getting and setting properties of sets.output_dimensionList of function modifications.AbstractFunctionModification\nScalarConstantChange\nVectorConstantChange\nScalarCoefficientChange\nMultirowChange"
 },
 
 {
@@ -1361,27 +1433,11 @@ var documenterSearchIndex = {"docs": [
 },
 
 {
-    "location": "apireference.html#MathOptInterface.modifyobjective!",
-    "page": "Reference",
-    "title": "MathOptInterface.modifyobjective!",
-    "category": "function",
-    "text": "modifyobjective!(model::ModekLike, change::AbstractFunctionModification)\n\nApply the modification specified by change to the objective function of model. To change the function completely, call setobjective! instead.\n\nExamples\n\nmodifyobjective!(model, ScalarConstantChange(10.0))\n\n\n\n"
-},
-
-{
-    "location": "apireference.html#MathOptInterface.canmodifyobjective",
-    "page": "Reference",
-    "title": "MathOptInterface.canmodifyobjective",
-    "category": "function",
-    "text": "canmodifyobjective(model::ModelLike, ::Type{M})::Bool where M<:AbstractFunctionModification\n\nReturn a Bool indicating whether it is possible to apply a modification of type M to the objective function of model model.\n\nExamples\n\ncanmodifyobjective(model, ScalarConstantChange{Float64})\n\n\n\n"
-},
-
-{
     "location": "apireference.html#Objective-modifications-1",
     "page": "Reference",
     "title": "Objective modifications",
     "category": "section",
-    "text": "Functions for modifying objective functions. Use ObjectiveFunction and ObjectiveSense to set and query the objective function.modifyobjective!\ncanmodifyobjective"
+    "text": "Functions for modifying objective functions. Use ObjectiveFunction and ObjectiveSense to set and query the objective function.modify!\ncanmodify"
 },
 
 {
