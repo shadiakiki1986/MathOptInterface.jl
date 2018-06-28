@@ -937,22 +937,6 @@ var documenterSearchIndex = {"docs": [
 },
 
 {
-    "location": "apireference.html#MathOptInterface.modify!",
-    "page": "Reference",
-    "title": "MathOptInterface.modify!",
-    "category": "function",
-    "text": "Constraint Function\n\nmodify!(model::ModelLike, c::ConstraintIndex, change::AbstractFunctionModification)\n\nApply the modification specified by change to the function of constraint c.\n\nExamples\n\nmodify!(model, c, ScalarConstantChange(10.0))\n\nObjective Function\n\nmodify!(model::ModelLike, ::ObjectiveFunction, change::AbstractFunctionModification)\n\nApply the modification specified by change to the objective function of model. To change the function completely, call set! instead.\n\nExamples\n\nmodify!(model, ObjectiveFunction{ScalarAffineFunction{Float64}}(), ScalarConstantChange(10.0))\n\n\n\n"
-},
-
-{
-    "location": "apireference.html#MathOptInterface.canmodify",
-    "page": "Reference",
-    "title": "MathOptInterface.canmodify",
-    "category": "function",
-    "text": "Constraint Function\n\ncanmodify(model::ModelLike, ::Type{CI}, ::Type{M})::Bool where CI<:ConstraintIndex where M<:AbstractFunctionModification\n\nReturn a Bool indicating whether it is possible to apply a modification of type M to the function of constraint of type CI.\n\nExamples\n\ncanmodify(model, MOI.ConstraintIndex{MOI.ScalarAffineFunction{Float64}, MOI.LessThan{Float64}}, ScalarConstantChange{Float64})\n\nObjective Function\n\ncanmodify(model::ModelLike, ::ObjectiveFunction, ::Type{M})::Bool where M<:AbstractFunctionModification\n\nReturn a Bool indicating whether it is possible to apply a modification of type M to the objective function of model model.\n\nExamples\n\ncanmodify(model, ObjectiveFunction{ScalarAffineFunction{Float64}}(), ScalarConstantChange{Float64})\n\n\n\n"
-},
-
-{
     "location": "apireference.html#MathOptInterface.transform!",
     "page": "Reference",
     "title": "MathOptInterface.transform!",
@@ -1045,7 +1029,7 @@ var documenterSearchIndex = {"docs": [
     "page": "Reference",
     "title": "Constraints",
     "category": "section",
-    "text": "Functions for adding and modifying constraints.isvalid(::ModelLike,::ConstraintIndex)\ncanaddconstraint\naddconstraint!\naddconstraints!\nmodify!\ncanmodify\ntransform!\ncantransform\nsupportsconstraintList of attributes associated with constraints. [category AbstractConstraintAttribute] Calls to get and set! should include as an argument a single ConstraintIndex or a vector of ConstraintIndex{F,S} objects.ConstraintName\nConstraintPrimalStart\nConstraintDualStart\nConstraintPrimal\nConstraintDual\nConstraintBasisStatus\nConstraintFunction\nConstraintSet"
+    "text": "Functions for adding and modifying constraints.isvalid(::ModelLike,::ConstraintIndex)\ncanaddconstraint\naddconstraint!\naddconstraints!\ntransform!\ncantransform\nsupportsconstraintList of attributes associated with constraints. [category AbstractConstraintAttribute] Calls to get and set! should include as an argument a single ConstraintIndex or a vector of ConstraintIndex{F,S} objects.ConstraintName\nConstraintPrimalStart\nConstraintDualStart\nConstraintPrimal\nConstraintDual\nConstraintBasisStatus\nConstraintFunction\nConstraintSet"
 },
 
 {
@@ -1145,51 +1129,11 @@ var documenterSearchIndex = {"docs": [
 },
 
 {
-    "location": "apireference.html#MathOptInterface.AbstractFunctionModification",
-    "page": "Reference",
-    "title": "MathOptInterface.AbstractFunctionModification",
-    "category": "type",
-    "text": "AbstractFunctionModification\n\nAn abstract supertype for structs which specify partial modifications to functions, to be used for making small modifications instead of replacing the functions entirely.\n\n\n\n"
-},
-
-{
-    "location": "apireference.html#MathOptInterface.ScalarConstantChange",
-    "page": "Reference",
-    "title": "MathOptInterface.ScalarConstantChange",
-    "category": "type",
-    "text": "ScalarConstantChange{T}(new_constant::T)\n\nA struct used to request a change in the constant term of a scalar-valued function. Applicable to ScalarAffineFunction and ScalarQuadraticFunction.\n\n\n\n"
-},
-
-{
-    "location": "apireference.html#MathOptInterface.VectorConstantChange",
-    "page": "Reference",
-    "title": "MathOptInterface.VectorConstantChange",
-    "category": "type",
-    "text": "VectorConstantChange{T}(new_constant::Vector{T})\n\nA struct used to request a change in the constant vector of a vector-valued function. Applicable to VectorAffineFunction and VectorQuadraticFunction.\n\n\n\n"
-},
-
-{
-    "location": "apireference.html#MathOptInterface.ScalarCoefficientChange",
-    "page": "Reference",
-    "title": "MathOptInterface.ScalarCoefficientChange",
-    "category": "type",
-    "text": "ScalarCoefficientChange{T}(variable::VariableIndex, new_coefficient::T)\n\nA struct used to request a change in the linear coefficient of a single variable in a scalar-valued function. Applicable to ScalarAffineFunction and ScalarQuadraticFunction.\n\n\n\n"
-},
-
-{
-    "location": "apireference.html#MathOptInterface.MultirowChange",
-    "page": "Reference",
-    "title": "MathOptInterface.MultirowChange",
-    "category": "type",
-    "text": "MultirowChange{T}(variable::VariableIndex, new_coefficients::Vector{Tuple{Int64, T}})\n\nA struct used to request a change in the linear coefficients of a single variable in a vector-valued function. New coefficients are specified by (output_index, coefficient) tuples. Applicable to VectorAffineFunction and VectorQuadraticFunction.\n\n\n\n"
-},
-
-{
     "location": "apireference.html#Functions-and-function-modifications-1",
     "page": "Reference",
     "title": "Functions and function modifications",
     "category": "section",
-    "text": "List of recognized functions.AbstractFunction\nSingleVariable\nVectorOfVariables\nScalarAffineTerm\nScalarAffineFunction\nVectorAffineTerm\nVectorAffineFunction\nScalarQuadraticTerm\nScalarQuadraticFunction\nVectorQuadraticTerm\nVectorQuadraticFunctionFunctions for getting and setting properties of sets.output_dimensionList of function modifications.AbstractFunctionModification\nScalarConstantChange\nVectorConstantChange\nScalarCoefficientChange\nMultirowChange"
+    "text": "List of recognized functions.AbstractFunction\nSingleVariable\nVectorOfVariables\nScalarAffineTerm\nScalarAffineFunction\nVectorAffineTerm\nVectorAffineFunction\nScalarQuadraticTerm\nScalarQuadraticFunction\nVectorQuadraticTerm\nVectorQuadraticFunctionFunctions for getting and setting properties of sets.output_dimension"
 },
 
 {
@@ -1433,11 +1377,67 @@ var documenterSearchIndex = {"docs": [
 },
 
 {
-    "location": "apireference.html#Objective-modifications-1",
+    "location": "apireference.html#MathOptInterface.modify!",
     "page": "Reference",
-    "title": "Objective modifications",
+    "title": "MathOptInterface.modify!",
+    "category": "function",
+    "text": "Constraint Function\n\nmodify!(model::ModelLike, c::ConstraintIndex, change::AbstractFunctionModification)\n\nApply the modification specified by change to the function of constraint c.\n\nExamples\n\nmodify!(model, c, ScalarConstantChange(10.0))\n\nObjective Function\n\nmodify!(model::ModelLike, ::ObjectiveFunction, change::AbstractFunctionModification)\n\nApply the modification specified by change to the objective function of model. To change the function completely, call set! instead.\n\nExamples\n\nmodify!(model, ObjectiveFunction{ScalarAffineFunction{Float64}}(), ScalarConstantChange(10.0))\n\n\n\n"
+},
+
+{
+    "location": "apireference.html#MathOptInterface.canmodify",
+    "page": "Reference",
+    "title": "MathOptInterface.canmodify",
+    "category": "function",
+    "text": "Constraint Function\n\ncanmodify(model::ModelLike, ::Type{CI}, ::Type{M})::Bool where CI<:ConstraintIndex where M<:AbstractFunctionModification\n\nReturn a Bool indicating whether it is possible to apply a modification of type M to the function of constraint of type CI.\n\nExamples\n\ncanmodify(model, MOI.ConstraintIndex{MOI.ScalarAffineFunction{Float64}, MOI.LessThan{Float64}}, ScalarConstantChange{Float64})\n\nObjective Function\n\ncanmodify(model::ModelLike, ::ObjectiveFunction, ::Type{M})::Bool where M<:AbstractFunctionModification\n\nReturn a Bool indicating whether it is possible to apply a modification of type M to the objective function of model model.\n\nExamples\n\ncanmodify(model, ObjectiveFunction{ScalarAffineFunction{Float64}}(), ScalarConstantChange{Float64})\n\n\n\n"
+},
+
+{
+    "location": "apireference.html#MathOptInterface.AbstractFunctionModification",
+    "page": "Reference",
+    "title": "MathOptInterface.AbstractFunctionModification",
+    "category": "type",
+    "text": "AbstractFunctionModification\n\nAn abstract supertype for structs which specify partial modifications to functions, to be used for making small modifications instead of replacing the functions entirely.\n\n\n\n"
+},
+
+{
+    "location": "apireference.html#MathOptInterface.ScalarConstantChange",
+    "page": "Reference",
+    "title": "MathOptInterface.ScalarConstantChange",
+    "category": "type",
+    "text": "ScalarConstantChange{T}(new_constant::T)\n\nA struct used to request a change in the constant term of a scalar-valued function. Applicable to ScalarAffineFunction and ScalarQuadraticFunction.\n\n\n\n"
+},
+
+{
+    "location": "apireference.html#MathOptInterface.VectorConstantChange",
+    "page": "Reference",
+    "title": "MathOptInterface.VectorConstantChange",
+    "category": "type",
+    "text": "VectorConstantChange{T}(new_constant::Vector{T})\n\nA struct used to request a change in the constant vector of a vector-valued function. Applicable to VectorAffineFunction and VectorQuadraticFunction.\n\n\n\n"
+},
+
+{
+    "location": "apireference.html#MathOptInterface.ScalarCoefficientChange",
+    "page": "Reference",
+    "title": "MathOptInterface.ScalarCoefficientChange",
+    "category": "type",
+    "text": "ScalarCoefficientChange{T}(variable::VariableIndex, new_coefficient::T)\n\nA struct used to request a change in the linear coefficient of a single variable in a scalar-valued function. Applicable to ScalarAffineFunction and ScalarQuadraticFunction.\n\n\n\n"
+},
+
+{
+    "location": "apireference.html#MathOptInterface.MultirowChange",
+    "page": "Reference",
+    "title": "MathOptInterface.MultirowChange",
+    "category": "type",
+    "text": "MultirowChange{T}(variable::VariableIndex, new_coefficients::Vector{Tuple{Int64, T}})\n\nA struct used to request a change in the linear coefficients of a single variable in a vector-valued function. New coefficients are specified by (output_index, coefficient) tuples. Applicable to VectorAffineFunction and VectorQuadraticFunction.\n\n\n\n"
+},
+
+{
+    "location": "apireference.html#Modifications-1",
+    "page": "Reference",
+    "title": "Modifications",
     "category": "section",
-    "text": "Functions for modifying objective functions. Use ObjectiveFunction and ObjectiveSense to set and query the objective function.modify!\ncanmodify"
+    "text": "Functions for modifying objective and constraint functions.modify!\ncanmodify\nAbstractFunctionModification\nScalarConstantChange\nVectorConstantChange\nScalarCoefficientChange\nMultirowChange"
 },
 
 {
