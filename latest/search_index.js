@@ -477,7 +477,7 @@ var documenterSearchIndex = {"docs": [
     "page": "Reference",
     "title": "MathOptInterface.read!",
     "category": "function",
-    "text": "read!(model::ModelLike, filename::String)\n\nRead the file filename into the model model. If m is non-empty, this may throw an error.\n\nSupported file types depend on the model type.\n\nNote\n\nOnce the contents of the file are loaded into the model, users can query the variables via get(model, ListOfVariableIndices()). However, some filetypes, such as LP files, do not maintain an explicit ordering of the variables. Therefore, the returned list may be in an arbitrary order. To avoid depending on the order of the indices, users should look up each variable index by name: get(model, VariableIndex, \"name\").\n\n\n\n"
+    "text": "read!(model::ModelLike, filename::String)\n\nRead the file filename into the model model. If model is non-empty, this may throw an error.\n\nSupported file types depend on the model type.\n\nNote\n\nOnce the contents of the file are loaded into the model, users can query the variables via get(model, ListOfVariableIndices()). However, some filetypes, such as LP files, do not maintain an explicit ordering of the variables. Therefore, the returned list may be in an arbitrary order. To avoid depending on the order of the indices, users should look up each variable index by name: get(model, VariableIndex, \"name\").\n\n\n\n"
 },
 
 {
@@ -1309,7 +1309,7 @@ var documenterSearchIndex = {"docs": [
     "page": "Reference",
     "title": "MathOptInterface.RootDetConeSquare",
     "category": "type",
-    "text": "RootDetConeSquare(dimension)\n\nThe Root-Determinant cone  (t X) in mathbbR^1 + d^2  t le det(X)^1d X text symmetric  where the matrix X is represented in the same format as in the PositiveSemidefiniteConeSquare. Similarly to PositiveSemidefiniteConeSquare, constraints are added to ensures that X is symmetric. The argument dimension is the side dimension of the matrix X, i.e., its number of rows or columns.\n\n\n\n"
+    "text": "RootDetConeSquare(dimension)\n\nThe Root-Determinant cone  (t X) in mathbbR^1 + d^2  t le det(X)^1d X text symmetric  where the matrix X is represented in the same format as in the PositiveSemidefiniteConeSquare. Similarly to PositiveSemidefiniteConeSquare, constraints are added to ensure that X is symmetric. The argument dimension is the side dimension of the matrix X, i.e., its number of rows or columns.\n\n\n\n"
 },
 
 {
