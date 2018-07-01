@@ -509,7 +509,7 @@ var documenterSearchIndex = {"docs": [
     "page": "Reference",
     "title": "MathOptInterface.Name",
     "category": "type",
-    "text": "Name()\n\nA string identifying the model.\n\n\n\n"
+    "text": "Name()\n\nA model attribute for the string identifying the model.\n\n\n\n"
 },
 
 {
@@ -517,7 +517,7 @@ var documenterSearchIndex = {"docs": [
     "page": "Reference",
     "title": "MathOptInterface.ObjectiveSense",
     "category": "type",
-    "text": "ObjectiveSense()\n\nThe sense of the objective function, an OptimizationSense with value MinSense, MaxSense, or FeasiblitySense.\n\n\n\n"
+    "text": "ObjectiveSense()\n\nA model attribute for the OptimizationSense of the objective function, which can be MinSense, MaxSense, or FeasiblitySense.\n\n\n\n"
 },
 
 {
@@ -525,7 +525,7 @@ var documenterSearchIndex = {"docs": [
     "page": "Reference",
     "title": "MathOptInterface.NumberOfVariables",
     "category": "type",
-    "text": "NumberOfVariables()\n\nThe number of variables in the model.\n\n\n\n"
+    "text": "NumberOfVariables()\n\nA model attribute for the number of variables in the model.\n\n\n\n"
 },
 
 {
@@ -533,7 +533,7 @@ var documenterSearchIndex = {"docs": [
     "page": "Reference",
     "title": "MathOptInterface.ListOfVariableIndices",
     "category": "type",
-    "text": "ListOfVariableIndices()\n\nA Vector{VariableIndex} containing all variable indices present in the model (i.e., of length equal to the value of NumberOfVariables()) in the order in which they were added.\n\n\n\n"
+    "text": "ListOfVariableIndices()\n\nA model attribute for the Vector{VariableIndex} of all variable indices present in the model (i.e., of length equal to the value of NumberOfVariables()) in the order in which they were added.\n\n\n\n"
 },
 
 {
@@ -541,7 +541,7 @@ var documenterSearchIndex = {"docs": [
     "page": "Reference",
     "title": "MathOptInterface.ListOfConstraints",
     "category": "type",
-    "text": "ListOfConstraints()\n\nA list of tuples of the form (F,S), where F is a function type and S is a set type indicating that the attribute NumberOfConstraints{F,S}() has value greater than zero.\n\n\n\n"
+    "text": "ListOfConstraints()\n\nA model attribute for the list of tuples of the form (F,S), where F is a function type and S is a set type indicating that the attribute NumberOfConstraints{F,S}() has value greater than zero.\n\n\n\n"
 },
 
 {
@@ -549,7 +549,7 @@ var documenterSearchIndex = {"docs": [
     "page": "Reference",
     "title": "MathOptInterface.NumberOfConstraints",
     "category": "type",
-    "text": "NumberOfConstraints{F,S}()\n\nThe number of constraints of the type F-in-S present in the model.\n\n\n\n"
+    "text": "NumberOfConstraints{F,S}()\n\nA model attribute for the number of constraints of the type F-in-S present in the model.\n\n\n\n"
 },
 
 {
@@ -557,7 +557,7 @@ var documenterSearchIndex = {"docs": [
     "page": "Reference",
     "title": "MathOptInterface.ListOfConstraintIndices",
     "category": "type",
-    "text": "ListOfConstraintIndices{F,S}()\n\nA Vector{ConstraintIndex{F,S}} containing all constraint indices of type F-in-S in the model (i.e., of length equal to the value of NumberOfConstraints{F,S}()) in the order in which they were added.\n\n\n\n"
+    "text": "ListOfConstraintIndices{F,S}()\n\nA model attribute for the Vector{ConstraintIndex{F,S}} of all constraint indices of type F-in-S in the model (i.e., of length equal to the value of NumberOfConstraints{F,S}()) in the order in which they were added.\n\n\n\n"
 },
 
 {
@@ -565,7 +565,7 @@ var documenterSearchIndex = {"docs": [
     "page": "Reference",
     "title": "MathOptInterface.ListOfModelAttributesSet",
     "category": "type",
-    "text": "ListOfModelAttributesSet()\n\nA Vector{AbstractModelAttribute} of all model attributes that were set to the model.\n\n\n\n"
+    "text": "ListOfModelAttributesSet()\n\nA model attribute for the Vector{AbstractModelAttribute} of all model attributes that were set to the model.\n\n\n\n"
 },
 
 {
@@ -573,7 +573,7 @@ var documenterSearchIndex = {"docs": [
     "page": "Reference",
     "title": "MathOptInterface.ListOfVariableAttributesSet",
     "category": "type",
-    "text": "ListOfVariableAttributesSet()\n\nA Vector{AbstractVariableAttribute} of all variable attributes that were set to the model.\n\n\n\n"
+    "text": "ListOfVariableAttributesSet()\n\nA model attribute for the Vector{AbstractVariableAttribute} of all variable attributes that were set to the model.\n\n\n\n"
 },
 
 {
@@ -581,7 +581,7 @@ var documenterSearchIndex = {"docs": [
     "page": "Reference",
     "title": "MathOptInterface.ListOfConstraintAttributesSet",
     "category": "type",
-    "text": "ListOfConstraintAttributesSet{F, S}()\n\nA Vector{AbstractConstraintAttribute} of all constraint attributes that were set to F-in-S constraints.\n\n\n\n"
+    "text": "ListOfConstraintAttributesSet{F, S}()\n\nA model attribute for the Vector{AbstractConstraintAttribute} of all constraint attributes that were set to F-in-S constraints.\n\n\n\n"
 },
 
 {
@@ -621,7 +621,7 @@ var documenterSearchIndex = {"docs": [
     "page": "Reference",
     "title": "MathOptInterface.SolverName",
     "category": "type",
-    "text": "SolverName()\n\nA string identifying the solver.\n\n\n\n"
+    "text": "SolverName()\n\nAn optimizer attribute for the string identifying the solver/optimizer.\n\n\n\n"
 },
 
 {
@@ -629,7 +629,7 @@ var documenterSearchIndex = {"docs": [
     "page": "Reference",
     "title": "MathOptInterface.RawSolver",
     "category": "type",
-    "text": "RawSolver()\n\nAn object that may be used to access a solver-specific API for this optimizer.\n\n\n\n"
+    "text": "RawSolver()\n\nA model attribute for the object that may be used to access a solver-specific API for this optimizer.\n\n\n\n"
 },
 
 {
@@ -637,7 +637,7 @@ var documenterSearchIndex = {"docs": [
     "page": "Reference",
     "title": "MathOptInterface.ResultCount",
     "category": "type",
-    "text": "ResultCount()\n\nThe number of results available.\n\n\n\n"
+    "text": "ResultCount()\n\nA model attribute for the number of results available.\n\n\n\n"
 },
 
 {
@@ -645,7 +645,7 @@ var documenterSearchIndex = {"docs": [
     "page": "Reference",
     "title": "MathOptInterface.ObjectiveFunction",
     "category": "type",
-    "text": "ObjectiveFunction{F<:AbstractScalarFunction}()\n\nAn F model which represents the objective function. It is guaranteed to be equivalent but not necessarily identical to the function provided by the user. Throws an InexactError if the objective function cannot be converted to F, e.g. the objective function is quadratic and F is ScalarAffineFunction{Float64} or it has non-integer coefficient and F is ScalarAffineFunction{Int}.\n\n\n\n"
+    "text": "ObjectiveFunction{F<:AbstractScalarFunction}()\n\nA model attribute for the objective function which has a type F<:AbstractScalarFunction. F should be guaranteed to be equivalent but not necessarily identical to the function type provided by the user. Throws an InexactError if the objective function cannot be converted to F, e.g. the objective function is quadratic and F is ScalarAffineFunction{Float64} or it has non-integer coefficient and F is ScalarAffineFunction{Int}.\n\n\n\n"
 },
 
 {
@@ -653,7 +653,7 @@ var documenterSearchIndex = {"docs": [
     "page": "Reference",
     "title": "MathOptInterface.ObjectiveValue",
     "category": "type",
-    "text": "ObjectiveValue(resultidx::Int=1)\n\nThe objective value of the resultindexth primal result.\n\n\n\n"
+    "text": "ObjectiveValue(resultidx::Int=1)\n\nA model attribute for the objective value of the resultindexth primal result.\n\n\n\n"
 },
 
 {
@@ -661,7 +661,7 @@ var documenterSearchIndex = {"docs": [
     "page": "Reference",
     "title": "MathOptInterface.ObjectiveBound",
     "category": "type",
-    "text": "ObjectiveBound()\n\nThe best known bound on the optimal objective value.\n\n\n\n"
+    "text": "ObjectiveBound()\n\nA model attribute for the best known bound on the optimal objective value.\n\n\n\n"
 },
 
 {
@@ -669,7 +669,7 @@ var documenterSearchIndex = {"docs": [
     "page": "Reference",
     "title": "MathOptInterface.RelativeGap",
     "category": "type",
-    "text": "RelativeGap()\n\nThe final relative optimality gap, defined as fracb-ff, where b is the best bound and f is the best feasible objective value.\n\n\n\n"
+    "text": "RelativeGap()\n\nA model attribute for the final relative optimality gap, defined as fracb-ff, where b is the best bound and f is the best feasible objective value.\n\n\n\n"
 },
 
 {
@@ -677,7 +677,7 @@ var documenterSearchIndex = {"docs": [
     "page": "Reference",
     "title": "MathOptInterface.SolveTime",
     "category": "type",
-    "text": "SolveTime()\n\nThe total elapsed solution time (in seconds) as reported by the optimizer.\n\n\n\n"
+    "text": "SolveTime()\n\nA model attribute for the total elapsed solution time (in seconds) as reported by the optimizer.\n\n\n\n"
 },
 
 {
@@ -685,7 +685,7 @@ var documenterSearchIndex = {"docs": [
     "page": "Reference",
     "title": "MathOptInterface.SimplexIterations",
     "category": "type",
-    "text": "SimplexIterations()\n\nThe cumulative number of simplex iterations during the optimization process. In particular, for a mixed-integer program (MIP), the total simplex iterations for all nodes.\n\n\n\n"
+    "text": "SimplexIterations()\n\nA model attribute for the cumulative number of simplex iterations during the optimization process. In particular, for a mixed-integer program (MIP), the total simplex iterations for all nodes.\n\n\n\n"
 },
 
 {
@@ -693,7 +693,7 @@ var documenterSearchIndex = {"docs": [
     "page": "Reference",
     "title": "MathOptInterface.BarrierIterations",
     "category": "type",
-    "text": "BarrierIterations()\n\nThe cumulative number of barrier iterations while solving a problem.\n\n\n\n"
+    "text": "BarrierIterations()\n\nA model attribute for the cumulative number of barrier iterations while solving a problem.\n\n\n\n"
 },
 
 {
@@ -701,7 +701,7 @@ var documenterSearchIndex = {"docs": [
     "page": "Reference",
     "title": "MathOptInterface.NodeCount",
     "category": "type",
-    "text": "NodeCount()\n\nThe total number of branch-and-bound nodes explored while solving a mixed-integer program (MIP).\n\n\n\n"
+    "text": "NodeCount()\n\nA model attribute for the total number of branch-and-bound nodes explored while solving a mixed-integer program (MIP).\n\n\n\n"
 },
 
 {
@@ -709,7 +709,7 @@ var documenterSearchIndex = {"docs": [
     "page": "Reference",
     "title": "MathOptInterface.TerminationStatus",
     "category": "type",
-    "text": "TerminationStatus()\n\nA TerminationStatusCode explaining why the optimizer stopped.\n\n\n\n"
+    "text": "TerminationStatus()\n\nA model attribute for the TerminationStatusCode explaining why the optimizer stopped.\n\n\n\n"
 },
 
 {
@@ -717,7 +717,7 @@ var documenterSearchIndex = {"docs": [
     "page": "Reference",
     "title": "MathOptInterface.PrimalStatus",
     "category": "type",
-    "text": "PrimalStatus(N)\nPrimalStatus()\n\nThe ResultStatusCode of the primal result N. If N is omitted, it defaults to 1.\n\n\n\n"
+    "text": "PrimalStatus(N)\nPrimalStatus()\n\nA model attribute for the ResultStatusCode of the primal result N. If N is omitted, it defaults to 1.\n\n\n\n"
 },
 
 {
@@ -725,7 +725,7 @@ var documenterSearchIndex = {"docs": [
     "page": "Reference",
     "title": "MathOptInterface.DualStatus",
     "category": "type",
-    "text": "DualStatus(N)\nDualStatus()\n\nThe ResultStatusCode of the dual result N. If N is omitted, it defaults to 1.\n\n\n\n"
+    "text": "DualStatus(N)\nDualStatus()\n\nA model attribute for the ResultStatusCode of the dual result N. If N is omitted, it defaults to 1.\n\n\n\n"
 },
 
 {
@@ -781,7 +781,7 @@ var documenterSearchIndex = {"docs": [
     "page": "Reference",
     "title": "MathOptInterface.BasisStatusCode",
     "category": "type",
-    "text": "BasisStatusCode\n\nAn Enum of possible values for the VariableBasisStatus and ConstraintBasisStatus attribute. This explains the status of a given element with respect to an optimal solution basis. Possible values are:\n\nBasic: element is in the basis\nNonbasic: element is not in the basis\nNonbasicAtLower: element is not in the basis and is at its lower bound\nNonbasicAtUpper: element is not in the basis and is at its upper bound\nSuperBasic: element is not in the basis but is also not at one of its bounds\n\n\n\n"
+    "text": "BasisStatusCode\n\nAn Enum of possible values for the VariableBasisStatus and ConstraintBasisStatus attributes. This explains the status of a given element with respect to an optimal solution basis. Possible values are:\n\nBasic: element is in the basis\nNonbasic: element is not in the basis\nNonbasicAtLower: element is not in the basis and is at its lower bound\nNonbasicAtUpper: element is not in the basis and is at its upper bound\nSuperBasic: element is not in the basis but is also not at one of its bounds\n\n\n\n"
 },
 
 {
@@ -869,7 +869,7 @@ var documenterSearchIndex = {"docs": [
     "page": "Reference",
     "title": "MathOptInterface.VariableName",
     "category": "type",
-    "text": "VariableName()\n\nA string identifying the variable. It is invalid for two variables to have the same name.\n\n\n\n"
+    "text": "VariableName()\n\nA variable attribute for the string identifying the variable. It is invalid for two variables to have the same name.\n\n\n\n"
 },
 
 {
@@ -877,7 +877,7 @@ var documenterSearchIndex = {"docs": [
     "page": "Reference",
     "title": "MathOptInterface.VariablePrimalStart",
     "category": "type",
-    "text": "VariablePrimalStart()\n\nAn initial assignment of the variables that the optimizer may use to warm-start the solve.\n\n\n\n"
+    "text": "VariablePrimalStart()\n\nA variable attribute for the initial assignment to some primal variable\'s value that the optimizer may use to warm-start the solve.\n\n\n\n"
 },
 
 {
@@ -885,7 +885,7 @@ var documenterSearchIndex = {"docs": [
     "page": "Reference",
     "title": "MathOptInterface.VariablePrimal",
     "category": "type",
-    "text": "VariablePrimal(N)\nVariablePrimal()\n\nThe assignment to the primal variables in result N. If N is omitted, it is 1 by default.\n\n\n\n"
+    "text": "VariablePrimal(N)\nVariablePrimal()\n\nA variable attribute for the assignment to some primal variable\'s value in result N. If N is omitted, it is 1 by default.\n\n\n\n"
 },
 
 {
@@ -893,7 +893,7 @@ var documenterSearchIndex = {"docs": [
     "page": "Reference",
     "title": "MathOptInterface.VariableBasisStatus",
     "category": "type",
-    "text": "VariableBasisStatus()\n\nReturns the BasisStatusCode of a given variable, with respect to an available optimal solution basis.\n\n\n\n"
+    "text": "VariableBasisStatus()\n\nA variable attribute for the BasisStatusCode of some variable, with respect to an available optimal solution basis.\n\n\n\n"
 },
 
 {
@@ -965,7 +965,7 @@ var documenterSearchIndex = {"docs": [
     "page": "Reference",
     "title": "MathOptInterface.ConstraintName",
     "category": "type",
-    "text": "ConstraintName()\n\nA string identifying the constraint. It is invalid for two constraints of any kind to have the same name.\n\n\n\n"
+    "text": "ConstraintName()\n\nA constraint attribute for the string identifying the constraint. It is invalid for two constraints of any kind to have the same name.\n\n\n\n"
 },
 
 {
@@ -973,7 +973,7 @@ var documenterSearchIndex = {"docs": [
     "page": "Reference",
     "title": "MathOptInterface.ConstraintPrimalStart",
     "category": "type",
-    "text": "ConstraintPrimalStart()\n\nAn initial assignment of the constraint primal values that the optimizer may use to warm-start the solve.\n\n\n\n"
+    "text": "ConstraintPrimalStart()\n\nA constraint attribute for the initial assignment to some constraint\'s primal value(s) that the optimizer may use to warm-start the solve.\n\n\n\n"
 },
 
 {
@@ -981,7 +981,7 @@ var documenterSearchIndex = {"docs": [
     "page": "Reference",
     "title": "MathOptInterface.ConstraintDualStart",
     "category": "type",
-    "text": "ConstraintDualStart()\n\nAn initial assignment of the constraint duals that the optimizer may use to warm-start the solve.\n\n\n\n"
+    "text": "ConstraintDualStart()\n\nA constraint attribute for the initial assignment to some constraint\'s dual value(s) that the optimizer may use to warm-start the solve.\n\n\n\n"
 },
 
 {
@@ -989,7 +989,7 @@ var documenterSearchIndex = {"docs": [
     "page": "Reference",
     "title": "MathOptInterface.ConstraintPrimal",
     "category": "type",
-    "text": "ConstraintPrimal(N)\nConstraintPrimal()\n\nThe assignment to the constraint primal values in result N. If N is omitted, it is 1 by default.\n\nGiven a constraint function-in-set, the ConstraintPrimal is the value of the function evaluated at the primal solution of the variables. For example, given the constraint ScalarAffineFunction([x,y], [1, 2], 3)-in-Interval(0, 20) and a primal solution of (x,y) = (4,5), the ConstraintPrimal solution of the constraint is 1 * 4 + 2 * 5 + 3 = 17.\n\n\n\n"
+    "text": "ConstraintPrimal(N)\nConstraintPrimal()\n\nA constraint attribute for the assignment to some constraint\'s primal value(s) in result N. If N is omitted, it is 1 by default.\n\nGiven a constraint function-in-set, the ConstraintPrimal is the value of the function evaluated at the primal solution of the variables. For example, given the constraint ScalarAffineFunction([x,y], [1, 2], 3)-in-Interval(0, 20) and a primal solution of (x,y) = (4,5), the ConstraintPrimal solution of the constraint is 1 * 4 + 2 * 5 + 3 = 17.\n\n\n\n"
 },
 
 {
@@ -997,7 +997,7 @@ var documenterSearchIndex = {"docs": [
     "page": "Reference",
     "title": "MathOptInterface.ConstraintDual",
     "category": "type",
-    "text": "ConstraintDual(N)\nConstraintDual()\n\nThe assignment to the constraint dual values in result N. If N is omitted, it is 1 by default.\n\n\n\n"
+    "text": "ConstraintDual(N)\nConstraintDual()\n\nA constraint attribute for the assignment to some constraint\'s dual value(s) in result N. If N is omitted, it is 1 by default.\n\n\n\n"
 },
 
 {
@@ -1005,7 +1005,7 @@ var documenterSearchIndex = {"docs": [
     "page": "Reference",
     "title": "MathOptInterface.ConstraintBasisStatus",
     "category": "type",
-    "text": "ConstraintBasisStatus()\n\nReturns the BasisStatusCode of a given constraint, with respect to an available optimal solution basis.\n\n\n\n"
+    "text": "ConstraintBasisStatus()\n\nA constraint attribute for the BasisStatusCode of some constraint, with respect to an available optimal solution basis.\n\n\n\n"
 },
 
 {
@@ -1013,7 +1013,7 @@ var documenterSearchIndex = {"docs": [
     "page": "Reference",
     "title": "MathOptInterface.ConstraintFunction",
     "category": "type",
-    "text": "ConstraintFunction()\n\nReturn the AbstractFunction object used to define the constraint. It is guaranteed to be equivalent but not necessarily identical to the function provided by the user.\n\n\n\n"
+    "text": "ConstraintFunction()\n\nA constraint attribute for the AbstractFunction object used to define the constraint. It is guaranteed to be equivalent but not necessarily identical to the function provided by the user.\n\n\n\n"
 },
 
 {
@@ -1021,7 +1021,7 @@ var documenterSearchIndex = {"docs": [
     "page": "Reference",
     "title": "MathOptInterface.ConstraintSet",
     "category": "type",
-    "text": "ConstraintSet()\n\nReturn the AbstractSet object used to define the constraint.\n\n\n\n"
+    "text": "ConstraintSet()\n\nA constraint attribute for the AbstractSet object used to define the constraint.\n\n\n\n"
 },
 
 {
