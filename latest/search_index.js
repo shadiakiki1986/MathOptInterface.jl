@@ -61,7 +61,7 @@ var documenterSearchIndex = {"docs": [
     "page": "Manual",
     "title": "Variables",
     "category": "section",
-    "text": "All variables in MOI are scalar variables. New scalar variables are created with addvariable! or addvariables!, which return a VariableIndex or Vector{VariableIndex} respectively. VariableIndex objects are type-safe wrappers around integers that refer to a variable in a particular model.One uses VariableIndex objects to set and get variable attributes. For example, the VariablePrimalStart attribute is used to provide an initial starting point for a variable or collection of variables:v = addvariable!(model)\nset!(model, VariablePrimalStart(), v, 10.5)\nv2 = addvariables!(model, 3)\nset!(model, VariablePrimalStart(), v2, [1.3,6.8,-4.6])A variable can be deleted from a model with delete!(::ModelLike, ::VariableIndex). Not all models support deleting variables; the candelete method is used to check if this is supported."
+    "text": "All variables in MOI are scalar variables. New scalar variables are created with addvariable! or addvariables!, which return a VariableIndex or Vector{VariableIndex} respectively. VariableIndex objects are type-safe wrappers around integers that refer to a variable in a particular model.One uses VariableIndex objects to set and get variable attributes. For example, the VariablePrimalStart attribute is used to provide an initial starting point for a variable or collection of variables:v = addvariable!(model)\nset!(model, VariablePrimalStart(), v, 10.5)\nv2 = addvariables!(model, 3)\nset!(model, VariablePrimalStart(), v2, [1.3,6.8,-4.6])A variable can be deleted from a model with delete!(::ModelLike, ::VariableIndex). Not all models support deleting variables; an UnsupportedDeletion error is thrown if this is not supported."
 },
 
 {
@@ -409,19 +409,11 @@ var documenterSearchIndex = {"docs": [
 },
 
 {
-    "location": "apireference.html#MathOptInterface.canset",
-    "page": "Reference",
-    "title": "MathOptInterface.canset",
-    "category": "function",
-    "text": "canset(optimizer::AbstractOptimizer, attr::AbstractOptimizerAttribute)::Bool\n\nReturn a Bool indicating whether it is possible to set the attribute attr to the optimizer optimizer.\n\ncanset(model::ModelLike, attr::AbstractModelAttribute)::Bool\n\nReturn a Bool indicating whether it is possible to set the attribute attr to the model model.\n\ncanset(model::ModelLike, attr::AbstractVariableAttribute, R::Type{VariableIndex})::Bool\ncanset(model::ModelLike, attr::AbstractConstraintAttribute, R::Type{ConstraintIndex{F,S})::Bool\n\nReturn a Bool indicating whether it is possible to set attribute attr applied to the index type R in the model model.\n\ncanset(model::ModelLike, ::ConstraintSet, ::Type{ConstraintIndex{F,S}})::Bool\n\nReturn a Bool indicating whether the set in a constraint of type F-in-S can be replaced by another set of the same type S as the original set.\n\ncanset(model::ModelLike, ::ConstraintFunction, ::Type{ConstraintIndex{F,S}})::Bool\n\nReturn a Bool indicating whether the function in a constraint of type F-in-S can be replaced by another set of the same type F as the original function.\n\nExamples\n\ncanset(model, ObjectiveValue())\ncanset(model, VariablePrimalStart(), VariableIndex)\ncanset(model, ConstraintPrimal(), ConstraintIndex{VectorAffineFunction{Float64},Nonnegatives})\n\n\n\n"
-},
-
-{
     "location": "apireference.html#MathOptInterface.set!",
     "page": "Reference",
     "title": "MathOptInterface.set!",
     "category": "function",
-    "text": "set!(optimizer::AbstractOptimizer, attr::AbstractOptimizerAttribute, value)\n\nAssign value to the attribute attr of the optimizer optimizer.\n\nset!(model::ModelLike, attr::AbstractModelAttribute, value)\n\nAssign value to the attribute attr of the model model.\n\nset!(model::ModelLike, attr::AbstractVariableAttribute, v::VariableIndex, value)\n\nAssign value to the attribute attr of variable v in model model.\n\nset!(model::ModelLike, attr::AbstractVariableAttribute, v::Vector{VariableIndex}, vector_of_values)\n\nAssign a value respectively to the attribute attr of each variable in the collection v in model model.\n\nset!(model::ModelLike, attr::AbstractConstraintAttribute, c::ConstraintIndex, value)\n\nAssign a value to the attribute attr of constraint c in model model.\n\nset!(model::ModelLike, attr::AbstractConstraintAttribute, c::Vector{ConstraintIndex{F,S}}, vector_of_values)\n\nAssign a value respectively to the attribute attr of each constraint in the collection c in model model.\n\nReplace set in a constraint\n\nset!(model::ModelLike, ::ConstraintSet, c::ConstraintIndex{F,S}, set::S)\n\nChange the set of constraint c to the new set set which should be of the same type as the original set.\n\nExamples\n\nIf c is a ConstraintIndex{F,Interval}\n\nset!(model, ConstraintSet(), c, Interval(0, 5))\nset!(model, ConstraintSet(), c, GreaterThan(0.0))  # Error\n\nReplace function in a constraint\n\nset!(model::ModelLike, ::ConstraintFunction, c::ConstraintIndex{F,S}, func::F)\n\nReplace the function in constraint c with func. F must match the original function type used to define the constraint.\n\nExamples\n\nIf c is a ConstraintIndex{ScalarAffineFunction,S} and v1 and v2 are VariableIndex objects,\n\nset!(model, ConstraintFunction(), c, ScalarAffineFunction([v1,v2],[1.0,2.0],5.0))\nset!(model, ConstraintFunction(), c, SingleVariable(v1)) # Error\n\n\n\n"
+    "text": "set!(optimizer::AbstractOptimizer, attr::AbstractOptimizerAttribute, value)\n\nAssign value to the attribute attr of the optimizer optimizer.\n\nset!(model::ModelLike, attr::AbstractModelAttribute, value)\n\nAssign value to the attribute attr of the model model.\n\nset!(model::ModelLike, attr::AbstractVariableAttribute, v::VariableIndex, value)\n\nAssign value to the attribute attr of variable v in model model.\n\nset!(model::ModelLike, attr::AbstractVariableAttribute, v::Vector{VariableIndex}, vector_of_values)\n\nAssign a value respectively to the attribute attr of each variable in the collection v in model model.\n\nset!(model::ModelLike, attr::AbstractConstraintAttribute, c::ConstraintIndex, value)\n\nAssign a value to the attribute attr of constraint c in model model.\n\nset!(model::ModelLike, attr::AbstractConstraintAttribute, c::Vector{ConstraintIndex{F,S}}, vector_of_values)\n\nAssign a value respectively to the attribute attr of each constraint in the collection c in model model.\n\nAn UnsupportedAttribute error is thrown if model does not support setting attributes attr and a CannotSetAttribute error is thrown if it supports setting attributes attr but it cannot set this attribute the current state of the model.\n\nReplace set in a constraint\n\nset!(model::ModelLike, ::ConstraintSet, c::ConstraintIndex{F,S}, set::S)\n\nChange the set of constraint c to the new set set which should be of the same type as the original set.\n\nExamples\n\nIf c is a ConstraintIndex{F,Interval}\n\nset!(model, ConstraintSet(), c, Interval(0, 5))\nset!(model, ConstraintSet(), c, GreaterThan(0.0))  # Error\n\nReplace function in a constraint\n\nset!(model::ModelLike, ::ConstraintFunction, c::ConstraintIndex{F,S}, func::F)\n\nReplace the function in constraint c with func. F must match the original function type used to define the constraint.\n\nExamples\n\nIf c is a ConstraintIndex{ScalarAffineFunction,S} and v1 and v2 are VariableIndex objects,\n\nset!(model, ConstraintFunction(), c, ScalarAffineFunction([v1,v2],[1.0,2.0],5.0))\nset!(model, ConstraintFunction(), c, SingleVariable(v1)) # Error\n\n\n\n"
 },
 
 {
@@ -437,7 +429,7 @@ var documenterSearchIndex = {"docs": [
     "page": "Reference",
     "title": "Attributes",
     "category": "section",
-    "text": "List of attribute categories.AbstractOptimizerAttribute\nAbstractModelAttribute\nAbstractVariableAttribute\nAbstractConstraintAttributeFunctions for getting and setting attributes.canget\nget\nget!\ncanset\nset!\nsupports"
+    "text": "List of attribute categories.AbstractOptimizerAttribute\nAbstractModelAttribute\nAbstractVariableAttribute\nAbstractConstraintAttributeFunctions for getting and setting attributes.canget\nget\nget!\nset!\nsupports"
 },
 
 {
@@ -485,23 +477,7 @@ var documenterSearchIndex = {"docs": [
     "page": "Reference",
     "title": "MathOptInterface.copy!",
     "category": "function",
-    "text": "copy!(dest::ModelLike, src::ModelLike; copynames=true, warnattributes=true)::CopyResult\n\nCopy the model from src into dest. The target dest is emptied, and all previous indices to variables or constraints in dest are invalidated. Returns a CopyResult object. If the copy is successful, the CopyResult contains a dictionary-like object that translates variable and constraint indices from the src model to the corresponding indices in the dest model.\n\nIf copynames is false, the Name, VariableName and ConstraintName attributes are not copied even if they are set in src. If an attribute attr cannot be copied from src to dest then an error is thrown. If an optimizer attribute cannot be copied then:\n\nIf warnattributes is true, a warning is displayed, otherwise,\nThe attribute is silently ignored.\n\nExample\n\n# Given empty `ModelLike` objects `src` and `dest`.\n\nx = addvariable!(src)\n\nisvalid(src, x)   # true\nisvalid(dest, x)  # false (`dest` has no variables)\n\ncopy_result = copy!(dest, src)\nif copy_result.status == CopySuccess\n    index_map = copy_result.indexmap\n    isvalid(dest, x) # false (unless index_map[x] == x)\n    isvalid(dest, index_map[x]) # true\nelse\n    println(\"Copy failed with status \", copy_result.status)\n    println(\"Failure message: \", copy_result.message)\nend\n\n\n\n"
-},
-
-{
-    "location": "apireference.html#MathOptInterface.CopyResult",
-    "page": "Reference",
-    "title": "MathOptInterface.CopyResult",
-    "category": "type",
-    "text": "struct CopyResult{T}\n    status::CopyStatusCode\n    message::String # Human-friendly explanation why the copy failed\n    indexmap::T     # Only valid if status is CopySuccess\nend\n\nA struct returned by copy! to indicate success or failure. If success, also exposes a map between the variable and constraint indices of the two models.\n\n\n\n"
-},
-
-{
-    "location": "apireference.html#MathOptInterface.CopyStatusCode",
-    "page": "Reference",
-    "title": "MathOptInterface.CopyStatusCode",
-    "category": "type",
-    "text": "CopyStatusCode\n\nAn Enum of possible statuses returned by a copy! operation through the CopyResult struct.\n\nCopySuccess: The copy was successful.\nCopyUnsupportedAttribute: The copy failed because the destination does not support an attribute present in the source.\nCopyUnsupportedConstraint: The copy failed because the destination does not support a constraint present in the source.\nCopyOtherError: The copy failed for a different reason.\n\nIn the failure cases:\n\nSee the corresponding message field of the CopyResult for an explanation of the failure.\nThe state of the destination model is undefined.\n\n\n\n"
+    "text": "copy!(dest::ModelLike, src::ModelLike; copynames=true, warnattributes=true)\n\nCopy the model from src into dest. The target dest is emptied, and all previous indices to variables or constraints in dest are invalidated. Returns a dictionary-like object that translates variable and constraint indices from the src model to the corresponding indices in the dest model.\n\nIf copynames is false, the Name, VariableName and ConstraintName attributes are not copied even if they are set in src. If a constraint that is copied from src is not supported by dest then an UnsupportedConstraint error is thrown. Similarly, if a model, variable or constraint attribute that is copied from src is not supported by dest then an UnsupportedAttribute error is thrown. Unsupported optimizer attributes are treated differently:\n\nIf warnattributes is true, a warning is displayed, otherwise,\nthe attribute is silently ignored.\n\nExample\n\n# Given empty `ModelLike` objects `src` and `dest`.\n\nx = addvariable!(src)\n\nisvalid(src, x)   # true\nisvalid(dest, x)  # false (`dest` has no variables)\n\nindex_map = copy!(dest, src)\nisvalid(dest, x) # false (unless index_map[x] == x)\nisvalid(dest, index_map[x]) # true\n\n\n\n"
 },
 
 {
@@ -589,7 +565,7 @@ var documenterSearchIndex = {"docs": [
     "page": "Reference",
     "title": "Model Interface",
     "category": "section",
-    "text": "ModelLike\nisempty\nempty!\nwrite\nread!Copyingcopy!\nCopyResult\nCopyStatusCodeList of model attributesName\nObjectiveSense\nNumberOfVariables\nListOfVariableIndices\nListOfConstraints\nNumberOfConstraints\nListOfConstraintIndices\nListOfModelAttributesSet\nListOfVariableAttributesSet\nListOfConstraintAttributesSet"
+    "text": "ModelLike\nisempty\nempty!\nwrite\nread!Copyingcopy!List of model attributesName\nObjectiveSense\nNumberOfVariables\nListOfVariableIndices\nListOfConstraints\nNumberOfConstraints\nListOfConstraintIndices\nListOfModelAttributesSet\nListOfVariableAttributesSet\nListOfConstraintAttributesSet"
 },
 
 {
@@ -809,14 +785,6 @@ var documenterSearchIndex = {"docs": [
 },
 
 {
-    "location": "apireference.html#MathOptInterface.candelete",
-    "page": "Reference",
-    "title": "MathOptInterface.candelete",
-    "category": "function",
-    "text": "MOI.candelete(model::MOI.ModelLike, b::AbstractBridge)\n\nReturn a Bool indicating whether the bridge b can be removed from the model model.\n\n\n\ncandelete(model::ModelLike, index::Index)::Bool\n\nReturn a Bool indicating whether the object referred to by index can be removed from the model model.\n\n\n\ncandelete(model::ModelLike, indices::Vector{<:Index})::Bool\n\nReturn a Bool indicating whether all the objects referred to by indices can be removed from the model model.\n\n\n\n"
-},
-
-{
     "location": "apireference.html#MathOptInterface.isvalid",
     "page": "Reference",
     "title": "MathOptInterface.isvalid",
@@ -837,15 +805,7 @@ var documenterSearchIndex = {"docs": [
     "page": "Reference",
     "title": "Index types",
     "category": "section",
-    "text": "VariableIndex\nConstraintIndex\ncandelete\nisvalid\ndelete!(::ModelLike,::Index)"
-},
-
-{
-    "location": "apireference.html#MathOptInterface.canaddvariable",
-    "page": "Reference",
-    "title": "MathOptInterface.canaddvariable",
-    "category": "function",
-    "text": "canaddvariable(model::ModelLike)::Bool\n\nReturn a Bool indicating whether it is possible to add a variable to the model model.\n\n\n\n"
+    "text": "VariableIndex\nConstraintIndex\nisvalid\ndelete!(::ModelLike,::Index)"
 },
 
 {
@@ -853,7 +813,7 @@ var documenterSearchIndex = {"docs": [
     "page": "Reference",
     "title": "MathOptInterface.addvariables!",
     "category": "function",
-    "text": "addvariables!(model::ModelLike, n::Int)::Vector{VariableIndex}\n\nAdd n scalar variables to the model, returning a vector of variable indices.\n\n\n\n"
+    "text": "addvariables!(model::ModelLike, n::Int)::Vector{VariableIndex}\n\nAdd n scalar variables to the model, returning a vector of variable indices.\n\nA CannotAddVariable error is thrown if adding variables cannot be done in the current state of the model model.\n\n\n\n"
 },
 
 {
@@ -861,7 +821,7 @@ var documenterSearchIndex = {"docs": [
     "page": "Reference",
     "title": "MathOptInterface.addvariable!",
     "category": "function",
-    "text": "addvariable!(model::ModelLike)::VariableIndex\n\nAdd a scalar variable to the model, returning a variable index.\n\n\n\n"
+    "text": "addvariable!(model::ModelLike)::VariableIndex\n\nAdd a scalar variable to the model, returning a variable index.\n\nA CannotAddVariable error is thrown if adding variables cannot be done in the current state of the model model.\n\n\n\n"
 },
 
 {
@@ -901,7 +861,7 @@ var documenterSearchIndex = {"docs": [
     "page": "Reference",
     "title": "Variables",
     "category": "section",
-    "text": "Functions for adding variables. For deleting, see index types section.canaddvariable\naddvariables!\naddvariable!List of attributes associated with variables. [category AbstractVariableAttribute] Calls to get and set! should include as an argument a single VariableIndex or a vector of VariableIndex objects.VariableName\nVariablePrimalStart\nVariablePrimal\nVariableBasisStatus"
+    "text": "Functions for adding variables. For deleting, see index types section.addvariables!\naddvariable!List of attributes associated with variables. [category AbstractVariableAttribute] Calls to get and set! should include as an argument a single VariableIndex or a vector of VariableIndex objects.VariableName\nVariablePrimalStart\nVariablePrimal\nVariableBasisStatus"
 },
 
 {
@@ -913,19 +873,11 @@ var documenterSearchIndex = {"docs": [
 },
 
 {
-    "location": "apireference.html#MathOptInterface.canaddconstraint",
-    "page": "Reference",
-    "title": "MathOptInterface.canaddconstraint",
-    "category": "function",
-    "text": "canaddconstraint(model::ModelLike, ::Type{F}, ::Type{S})::Bool where {F<:AbstractFunction,S<:AbstractSet}\n\nReturn a Bool indicating whether it is possible to add a constraint f(x) in mathcalS where f is of type F, and mathcalS is of type S.\n\n\n\n"
-},
-
-{
     "location": "apireference.html#MathOptInterface.addconstraint!",
     "page": "Reference",
     "title": "MathOptInterface.addconstraint!",
     "category": "function",
-    "text": "addconstraint!(model::ModelLike, func::F, set::S)::ConstraintIndex{F,S} where {F,S}\n\nAdd the constraint f(x) in mathcalS where f is defined by func, and mathcalS is defined by set.\n\naddconstraint!(model::ModelLike, v::VariableIndex, set::S)::ConstraintIndex{SingleVariable,S} where {S}\naddconstraint!(model::ModelLike, vec::Vector{VariableIndex}, set::S)::ConstraintIndex{VectorOfVariables,S} where {S}\n\nAdd the constraint v in mathcalS where v is the variable (or vector of variables) referenced by v and mathcalS is defined by set.\n\n\n\n"
+    "text": "addconstraint!(model::ModelLike, func::F, set::S)::ConstraintIndex{F,S} where {F,S}\n\nAdd the constraint f(x) in mathcalS where f is defined by func, and mathcalS is defined by set.\n\naddconstraint!(model::ModelLike, v::VariableIndex, set::S)::ConstraintIndex{SingleVariable,S} where {S}\naddconstraint!(model::ModelLike, vec::Vector{VariableIndex}, set::S)::ConstraintIndex{VectorOfVariables,S} where {S}\n\nAdd the constraint v in mathcalS where v is the variable (or vector of variables) referenced by v and mathcalS is defined by set.\n\nAn UnsupportedConstraint error is thrown if model does not support F-in-S constraints and a CannotAddConstraint error is thrown if it supports F-in-S constraints but it cannot add the constraint(s) in its current state.\n\n\n\n"
 },
 
 {
@@ -942,14 +894,6 @@ var documenterSearchIndex = {"docs": [
     "title": "MathOptInterface.transform!",
     "category": "function",
     "text": "Transform Constraint Set\n\ntransform!(model::ModelLike, c::ConstraintIndex{F,S1}, newset::S2)::ConstraintIndex{F,S2}\n\nReplace the set in constraint c with newset. The constraint index c will no longer be valid, and the function returns a new constraint index with the correct type.\n\nSolvers may only support a subset of constraint transforms that they perform efficiently (for example, changing from a LessThan to GreaterThan set). In addition, set modification (where S1 = S2) should be performed via the modify! function.\n\nTypically, the user should delete the constraint and add a new one.\n\nExamples\n\nIf c is a ConstraintIndex{ScalarAffineFunction{Float64},LessThan{Float64}},\n\nc2 = transform!(model, c, GreaterThan(0.0))\ntransform!(model, c, LessThan(0.0)) # errors\n\n\n\n"
-},
-
-{
-    "location": "apireference.html#MathOptInterface.cantransform",
-    "page": "Reference",
-    "title": "MathOptInterface.cantransform",
-    "category": "function",
-    "text": "Transform Constraint Set\n\ncantransform(model::ModelLike, c::ConstraintIndex{F,S1}, ::Type{S2})::Bool where S2<:AbstractSet\n\nReturn a Bool indicating whether the set of type S1 in constraint c can be replaced by a set of type S2.\n\nExamples\n\nIf c is a ConstraintIndex{ScalarAffineFunction{Float64},LessThan{Float64}},\n\ncantransform(model, c, GreaterThan(0.0)) # true\ncantransform(model, c, ZeroOne())        # it is expected that most solvers will\n                                         # return false, but this does not\n                                         # preclude solvers from supporting\n                                         # constraints such as this.\n\n\n\n"
 },
 
 {
@@ -1029,7 +973,7 @@ var documenterSearchIndex = {"docs": [
     "page": "Reference",
     "title": "Constraints",
     "category": "section",
-    "text": "Functions for adding and modifying constraints.isvalid(::ModelLike,::ConstraintIndex)\ncanaddconstraint\naddconstraint!\naddconstraints!\ntransform!\ncantransform\nsupportsconstraintList of attributes associated with constraints. [category AbstractConstraintAttribute] Calls to get and set! should include as an argument a single ConstraintIndex or a vector of ConstraintIndex{F,S} objects.ConstraintName\nConstraintPrimalStart\nConstraintDualStart\nConstraintPrimal\nConstraintDual\nConstraintBasisStatus\nConstraintFunction\nConstraintSet"
+    "text": "Functions for adding and modifying constraints.isvalid(::ModelLike,::ConstraintIndex)\naddconstraint!\naddconstraints!\ntransform!\nsupportsconstraintList of attributes associated with constraints. [category AbstractConstraintAttribute] Calls to get and set! should include as an argument a single ConstraintIndex or a vector of ConstraintIndex{F,S} objects.ConstraintName\nConstraintPrimalStart\nConstraintDualStart\nConstraintPrimal\nConstraintDual\nConstraintBasisStatus\nConstraintFunction\nConstraintSet"
 },
 
 {
@@ -1381,15 +1325,7 @@ var documenterSearchIndex = {"docs": [
     "page": "Reference",
     "title": "MathOptInterface.modify!",
     "category": "function",
-    "text": "Constraint Function\n\nmodify!(model::ModelLike, c::ConstraintIndex, change::AbstractFunctionModification)\n\nApply the modification specified by change to the function of constraint c.\n\nExamples\n\nmodify!(model, c, ScalarConstantChange(10.0))\n\nObjective Function\n\nmodify!(model::ModelLike, ::ObjectiveFunction, change::AbstractFunctionModification)\n\nApply the modification specified by change to the objective function of model. To change the function completely, call set! instead.\n\nExamples\n\nmodify!(model, ObjectiveFunction{ScalarAffineFunction{Float64}}(), ScalarConstantChange(10.0))\n\n\n\n"
-},
-
-{
-    "location": "apireference.html#MathOptInterface.canmodify",
-    "page": "Reference",
-    "title": "MathOptInterface.canmodify",
-    "category": "function",
-    "text": "Constraint Function\n\ncanmodify(model::ModelLike, ::Type{CI}, ::Type{M})::Bool where CI<:ConstraintIndex where M<:AbstractFunctionModification\n\nReturn a Bool indicating whether it is possible to apply a modification of type M to the function of constraint of type CI.\n\nExamples\n\ncanmodify(model, MOI.ConstraintIndex{MOI.ScalarAffineFunction{Float64}, MOI.LessThan{Float64}}, ScalarConstantChange{Float64})\n\nObjective Function\n\ncanmodify(model::ModelLike, ::ObjectiveFunction, ::Type{M})::Bool where M<:AbstractFunctionModification\n\nReturn a Bool indicating whether it is possible to apply a modification of type M to the objective function of model model.\n\nExamples\n\ncanmodify(model, ObjectiveFunction{ScalarAffineFunction{Float64}}(), ScalarConstantChange{Float64})\n\n\n\n"
+    "text": "Constraint Function\n\nmodify!(model::ModelLike, ci::ConstraintIndex, change::AbstractFunctionModification)\n\nApply the modification specified by change to the function of constraint ci.\n\nAn UnsupportedConstraintModification error is thrown if modifying constraints is not supported by the model model.\n\nExamples\n\nmodify!(model, ci, ScalarConstantChange(10.0))\n\nObjective Function\n\nmodify!(model::ModelLike, ::ObjectiveFunction, change::AbstractFunctionModification)\n\nApply the modification specified by change to the objective function of model. To change the function completely, call set! instead.\n\nAn UnsupportedObjectiveModification error is thrown if modifying objectives is not supported by the model model.\n\nExamples\n\nmodify!(model, ObjectiveFunction{ScalarAffineFunction{Float64}}(), ScalarConstantChange(10.0))\n\n\n\n"
 },
 
 {
@@ -1437,7 +1373,7 @@ var documenterSearchIndex = {"docs": [
     "page": "Reference",
     "title": "Modifications",
     "category": "section",
-    "text": "Functions for modifying objective and constraint functions.modify!\ncanmodify\nAbstractFunctionModification\nScalarConstantChange\nVectorConstantChange\nScalarCoefficientChange\nMultirowChange"
+    "text": "Functions for modifying objective and constraint functions.modify!\nAbstractFunctionModification\nScalarConstantChange\nVectorConstantChange\nScalarCoefficientChange\nMultirowChange"
 },
 
 {
@@ -1622,6 +1558,102 @@ var documenterSearchIndex = {"docs": [
     "title": "NLP evaluator methods",
     "category": "section",
     "text": "AbstractNLPEvaluator\ninitialize!\nfeatures_available\neval_objective\neval_constraint\neval_objective_gradient\njacobian_structure\nhessian_lagrangian_structure\neval_constraint_jacobian\neval_constraint_jacobian_product\neval_constraint_jacobian_transpose_product\neval_hessian_lagrangian\neval_hessian_lagrangian_product\nobjective_expr\nconstraint_expr"
+},
+
+{
+    "location": "apireference.html#MathOptInterface.InvalidIndex",
+    "page": "Reference",
+    "title": "MathOptInterface.InvalidIndex",
+    "category": "type",
+    "text": "struct InvalidIndex{IndexType<:Index} <: Exception\n    index::IndexType\nend\n\nAn error indicating that the index index is invalid.\n\n\n\n"
+},
+
+{
+    "location": "apireference.html#MathOptInterface.UnsupportedError",
+    "page": "Reference",
+    "title": "MathOptInterface.UnsupportedError",
+    "category": "type",
+    "text": "UnsupportedError <: Exception\n\nAbstract type for error thrown when an operation is not supported by the model.\n\n\n\n"
+},
+
+{
+    "location": "apireference.html#MathOptInterface.CannotError",
+    "page": "Reference",
+    "title": "MathOptInterface.CannotError",
+    "category": "type",
+    "text": "CannotError <: Exception\n\nAbstract type for error thrown when an operation is supported but cannot be applied in the current state of the model.\n\n\n\n"
+},
+
+{
+    "location": "apireference.html#MathOptInterface.UnsupportedAttribute",
+    "page": "Reference",
+    "title": "MathOptInterface.UnsupportedAttribute",
+    "category": "type",
+    "text": "struct UnsupportedAttribute{AttrType} <: UnsupportedError\n    attr::AttrType\nend\n\nAn error indicating that setting attribute attr is not supported by the model.\n\n\n\n"
+},
+
+{
+    "location": "apireference.html#MathOptInterface.CannotSetAttribute",
+    "page": "Reference",
+    "title": "MathOptInterface.CannotSetAttribute",
+    "category": "type",
+    "text": "struct CannotSetAttribute{AttrType} <: CannotError\n    attr::AttrType\n    message::String # Human-friendly explanation why the attribute cannot be set\nend\n\nAn error indicating that setting attribute attr is supported but cannot be added in the current state of the model.\n\n\n\n"
+},
+
+{
+    "location": "apireference.html#MathOptInterface.CannotAddVariable",
+    "page": "Reference",
+    "title": "MathOptInterface.CannotAddVariable",
+    "category": "type",
+    "text": "struct CannotAddVariable <: CannotError\n    message::String # Human-friendly explanation why the attribute cannot be set\nend\n\nAn error indicating that variables cannot be added in the current state of the model.\n\n\n\n"
+},
+
+{
+    "location": "apireference.html#MathOptInterface.UnsupportedConstraint",
+    "page": "Reference",
+    "title": "MathOptInterface.UnsupportedConstraint",
+    "category": "type",
+    "text": "UnsupportedConstraint{F, S} <: UnsupportedError\n\nAn error indicating that constraints of type F-in-S are not supported by the model.\n\n\n\n"
+},
+
+{
+    "location": "apireference.html#MathOptInterface.CannotAddConstraint",
+    "page": "Reference",
+    "title": "MathOptInterface.CannotAddConstraint",
+    "category": "type",
+    "text": "struct CannotAddConstraint{F<:AbstractFunction, S<:AbstractSet} <: CannotError\n    message::String # Human-friendly explanation why the attribute cannot be set\nend\n\nAn error indicating that constraints of type F-in-S are supported but cannot be added in the current state of the model.\n\n\n\n"
+},
+
+{
+    "location": "apireference.html#MathOptInterface.UnsupportedConstraintModification",
+    "page": "Reference",
+    "title": "MathOptInterface.UnsupportedConstraintModification",
+    "category": "type",
+    "text": "struct UnsupportedConstraintModification{F<:AbstractFunction, S<:AbstractSet,\n                                         C<:AbstractFunctionModification} <: UnsupportedError\n    change::C\nend\n\nAn error indicating that constraints of type F-in-S do not support the constraint modification change.\n\n\n\n"
+},
+
+{
+    "location": "apireference.html#MathOptInterface.UnsupportedObjectiveModification",
+    "page": "Reference",
+    "title": "MathOptInterface.UnsupportedObjectiveModification",
+    "category": "type",
+    "text": "struct UnsupportedObjectiveModification{C<:AbstractFunctionModification} <: UnsupportedError\n    change::C\nend\n\nAn error indicating that the objective function dos not support the constraint modification change.\n\n\n\n"
+},
+
+{
+    "location": "apireference.html#MathOptInterface.UnsupportedDeletion",
+    "page": "Reference",
+    "title": "MathOptInterface.UnsupportedDeletion",
+    "category": "type",
+    "text": "UnsupportedDeletion{IndexType} <: UnsupportedError\n\nAn error indicating that deleting indices of type IndexType is not supported by the model.\n\n\n\n"
+},
+
+{
+    "location": "apireference.html#Errors-1",
+    "page": "Reference",
+    "title": "Errors",
+    "category": "section",
+    "text": "When an MOI call fails on a model, precise errors should be thrown when possible instead of simply calling error with a message. The docstrings for the respective methods describe the errors that the implementation should thrown in certain situations. This error-reporting system allows code to distinguish between internal errors (that should be shown to the user) and unsupported operations which may have automatic workarounds.When an invalid index is used in an MOI call, an InvalidIndex should be thrown:InvalidIndexThe rest of the errors defined in MOI fall in two categories represented by the following two abstract types:UnsupportedError\nCannotErrorThe different UnsupportedError and CannotError are the following errors:UnsupportedAttribute\nCannotSetAttribute\nCannotAddVariable\nUnsupportedConstraint\nCannotAddConstraint\nUnsupportedConstraintModification\nUnsupportedObjectiveModification\nUnsupportedDeletion"
 },
 
 {
