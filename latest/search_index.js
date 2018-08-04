@@ -1589,7 +1589,7 @@ var documenterSearchIndex = {"docs": [
     "page": "Reference",
     "title": "MathOptInterface.UnsupportedAttribute",
     "category": "type",
-    "text": "struct UnsupportedAttribute{AttrType} <: UnsupportedError\n    attr::AttrType\nend\n\nAn error indicating that setting attribute attr is not supported by the model.\n\n\n\n"
+    "text": "struct UnsupportedAttribute{AttrType} <: UnsupportedError\n    attr::AttrType\n    message::String\nend\n\nAn error indicating that setting attribute attr is not supported by the model.\n\n\n\n"
 },
 
 {
@@ -1613,7 +1613,7 @@ var documenterSearchIndex = {"docs": [
     "page": "Reference",
     "title": "MathOptInterface.UnsupportedConstraint",
     "category": "type",
-    "text": "UnsupportedConstraint{F, S} <: UnsupportedError\n\nAn error indicating that constraints of type F-in-S are not supported by the model.\n\n\n\n"
+    "text": "struct UnsupportedConstraint{F<:AbstractFunction, S<:AbstractSet} <: UnsupportedError\n    message::String # Human-friendly explanation why the attribute cannot be set\nend\n\nAn error indicating that constraints of type F-in-S are not supported by the model.\n\n\n\n"
 },
 
 {
@@ -1629,7 +1629,7 @@ var documenterSearchIndex = {"docs": [
     "page": "Reference",
     "title": "MathOptInterface.UnsupportedConstraintModification",
     "category": "type",
-    "text": "struct UnsupportedConstraintModification{F<:AbstractFunction, S<:AbstractSet,\n                                         C<:AbstractFunctionModification} <: UnsupportedError\n    change::C\nend\n\nAn error indicating that constraints of type F-in-S do not support the constraint modification change.\n\n\n\n"
+    "text": "struct UnsupportedConstraintModification{F<:AbstractFunction, S<:AbstractSet,\n                                         C<:AbstractFunctionModification} <: UnsupportedError\n    change::C\n    message::String\nend\n\nAn error indicating that constraints of type F-in-S do not support the constraint modification change.\n\n\n\n"
 },
 
 {
@@ -1637,7 +1637,7 @@ var documenterSearchIndex = {"docs": [
     "page": "Reference",
     "title": "MathOptInterface.UnsupportedObjectiveModification",
     "category": "type",
-    "text": "struct UnsupportedObjectiveModification{C<:AbstractFunctionModification} <: UnsupportedError\n    change::C\nend\n\nAn error indicating that the objective function dos not support the constraint modification change.\n\n\n\n"
+    "text": "struct UnsupportedObjectiveModification{C<:AbstractFunctionModification} <: UnsupportedError\n    change::C\n    message::String\nend\n\nAn error indicating that the objective function does not support the constraint modification change.\n\n\n\n"
 },
 
 {
@@ -1645,7 +1645,7 @@ var documenterSearchIndex = {"docs": [
     "page": "Reference",
     "title": "MathOptInterface.UnsupportedDeletion",
     "category": "type",
-    "text": "UnsupportedDeletion{IndexType} <: UnsupportedError\n\nAn error indicating that deleting indices of type IndexType is not supported by the model.\n\n\n\n"
+    "text": "struct UnsupportedDeletion{IndexType} <: UnsupportedError\n    message::String\nend\n\nAn error indicating that deleting indices of type IndexType is not supported by the model.\n\n\n\n"
 },
 
 {
