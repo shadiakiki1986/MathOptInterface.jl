@@ -625,6 +625,14 @@ var documenterSearchIndex = {"docs": [
 },
 
 {
+    "location": "apireference.html#MathOptInterface.ObjectiveFunctionType",
+    "page": "Reference",
+    "title": "MathOptInterface.ObjectiveFunctionType",
+    "category": "type",
+    "text": "ObjectiveFunctionType()\n\nA model attribute for the type F of the objective function set using the ObjectiveFunction{F} attribute.\n\nExamples\n\nIn the following code, attr should be equal to MOI.SingleVariable:\n\nx = MOI.addvariable!(model)\nMOI.set!(model, MOI.ObjectiveFunction{MOI.SingleVariable}(),\n         MOI.SingleVariable(x))\nattr = MOI.get(model, MOI.ObjectiveFunctionType())\n\n\n\n"
+},
+
+{
     "location": "apireference.html#MathOptInterface.ObjectiveValue",
     "page": "Reference",
     "title": "MathOptInterface.ObjectiveValue",
@@ -709,7 +717,7 @@ var documenterSearchIndex = {"docs": [
     "page": "Reference",
     "title": "Optimizers",
     "category": "section",
-    "text": "AbstractOptimizer\noptimize!\nfree!List of attributes optimizers attributesSolverNameList of attributes useful for optimizersRawSolver\nResultCount\nObjectiveFunction\nObjectiveValue\nObjectiveBound\nRelativeGap\nSolveTime\nSimplexIterations\nBarrierIterations\nNodeCount\nTerminationStatus\nPrimalStatus\nDualStatus"
+    "text": "AbstractOptimizer\noptimize!\nfree!List of attributes optimizers attributesSolverNameList of attributes useful for optimizersRawSolver\nResultCount\nObjectiveFunction\nObjectiveFunctionType\nObjectiveValue\nObjectiveBound\nRelativeGap\nSolveTime\nSimplexIterations\nBarrierIterations\nNodeCount\nTerminationStatus\nPrimalStatus\nDualStatus"
 },
 
 {
