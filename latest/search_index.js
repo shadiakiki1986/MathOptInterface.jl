@@ -593,14 +593,6 @@ var documenterSearchIndex = {"docs": [
 },
 
 {
-    "location": "apireference.html#MathOptInterface.free!",
-    "page": "Reference",
-    "title": "MathOptInterface.free!",
-    "category": "function",
-    "text": "free!(optimizer::AbstractOptimizer)\n\nRelease any resources and memory used by the optimizer. Note that the Julia garbage collector takes care of this automatically, but automatic collection cannot always be forced. This method is useful for more precise control of resources, especially in the case of commercial solvers with licensing restrictions on the number of concurrent runs. Users must discard the optimizer object after this method is invoked.\n\n\n\n"
-},
-
-{
     "location": "apireference.html#MathOptInterface.SolverName",
     "page": "Reference",
     "title": "MathOptInterface.SolverName",
@@ -725,7 +717,7 @@ var documenterSearchIndex = {"docs": [
     "page": "Reference",
     "title": "Optimizers",
     "category": "section",
-    "text": "AbstractOptimizer\noptimize!\nfree!List of attributes optimizers attributesSolverNameList of attributes useful for optimizersRawSolver\nResultCount\nObjectiveFunction\nObjectiveFunctionType\nObjectiveValue\nObjectiveBound\nRelativeGap\nSolveTime\nSimplexIterations\nBarrierIterations\nNodeCount\nTerminationStatus\nPrimalStatus\nDualStatus"
+    "text": "AbstractOptimizer\noptimize!List of attributes optimizers attributesSolverNameList of attributes useful for optimizersRawSolver\nResultCount\nObjectiveFunction\nObjectiveFunctionType\nObjectiveValue\nObjectiveBound\nRelativeGap\nSolveTime\nSimplexIterations\nBarrierIterations\nNodeCount\nTerminationStatus\nPrimalStatus\nDualStatus"
 },
 
 {
