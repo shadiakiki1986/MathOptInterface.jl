@@ -189,7 +189,7 @@ var documenterSearchIndex = {"docs": [
     "page": "Manual",
     "title": "The set of a constraint",
     "category": "section",
-    "text": "Given a constraint of type F-in-S (see Constraints by function-set pairs  above for an explanation), we can modify parameters (but not the type) of the  set S by replacing it with a new instance of the same type. For example,  given the variable bound x le 1:c = add_constraint(m, SingleVariable(x), LessThan(1.0))we can modify the set so that the bound now x le 2 as follows:set(m, ConstraintSet(), c, LessThan(2.0))where m is our ModelLike model. However, the following will fail as the new set (GreaterThan) is of a different type to the original set (LessThan):set(m, ConstraintSet(), c, GreaterThan(2.0))  # errorsIf our constraint is an affine inequality, then this corresponds to modifying the right-hand side of a constraint in linear programming.In some special cases, solvers may support efficiently changing the set of a constraint (for example, from LessThan to GreaterThan). For these cases, MathOptInterface provides the transform! method. For example, instead of the error we observed above, the following will work:c2 = transform!(m, c, GreaterThan(1.0))The transform! function returns a new constraint index, and the old constraint index (i.e., c) is no longer valid:isvalid(m, c)   # false\nisvalid(m, c2)  # trueAlso note that transform! cannot be called with a set of the same type; set should be used instead."
+    "text": "Given a constraint of type F-in-S (see Constraints by function-set pairs  above for an explanation), we can modify parameters (but not the type) of the  set S by replacing it with a new instance of the same type. For example,  given the variable bound x le 1:c = add_constraint(m, SingleVariable(x), LessThan(1.0))we can modify the set so that the bound now x le 2 as follows:set(m, ConstraintSet(), c, LessThan(2.0))where m is our ModelLike model. However, the following will fail as the new set (GreaterThan) is of a different type to the original set (LessThan):set(m, ConstraintSet(), c, GreaterThan(2.0))  # errorsIf our constraint is an affine inequality, then this corresponds to modifying the right-hand side of a constraint in linear programming.In some special cases, solvers may support efficiently changing the set of a constraint (for example, from LessThan to GreaterThan). For these cases, MathOptInterface provides the transform! method. For example, instead of the error we observed above, the following will work:c2 = transform!(m, c, GreaterThan(1.0))The transform! function returns a new constraint index, and the old constraint index (i.e., c) is no longer valid:is_valid(m, c)   # false\nis_valid(m, c2)  # trueAlso note that transform! cannot be called with a set of the same type; set should be used instead."
 },
 
 {
@@ -461,7 +461,7 @@ var documenterSearchIndex = {"docs": [
     "page": "Reference",
     "title": "MathOptInterface.copy!",
     "category": "function",
-    "text": "copy!(dest::ModelLike, src::ModelLike; copynames=true, warnattributes=true)\n\nCopy the model from src into dest. The target dest is emptied, and all previous indices to variables or constraints in dest are invalidated. Returns a dictionary-like object that translates variable and constraint indices from the src model to the corresponding indices in the dest model.\n\nIf copynames is false, the Name, VariableName and ConstraintName attributes are not copied even if they are set in src. If a constraint that is copied from src is not supported by dest then an UnsupportedConstraint error is thrown. Similarly, if a model, variable or constraint attribute that is copied from src is not supported by dest then an UnsupportedAttribute error is thrown. Unsupported optimizer attributes are treated differently:\n\nIf warnattributes is true, a warning is displayed, otherwise,\nthe attribute is silently ignored.\n\nExample\n\n# Given empty `ModelLike` objects `src` and `dest`.\n\nx = add_variable(src)\n\nisvalid(src, x)   # true\nisvalid(dest, x)  # false (`dest` has no variables)\n\nindex_map = copy!(dest, src)\nisvalid(dest, x) # false (unless index_map[x] == x)\nisvalid(dest, index_map[x]) # true\n\n\n\n"
+    "text": "copy!(dest::ModelLike, src::ModelLike; copynames=true, warnattributes=true)\n\nCopy the model from src into dest. The target dest is emptied, and all previous indices to variables or constraints in dest are invalidated. Returns a dictionary-like object that translates variable and constraint indices from the src model to the corresponding indices in the dest model.\n\nIf copynames is false, the Name, VariableName and ConstraintName attributes are not copied even if they are set in src. If a constraint that is copied from src is not supported by dest then an UnsupportedConstraint error is thrown. Similarly, if a model, variable or constraint attribute that is copied from src is not supported by dest then an UnsupportedAttribute error is thrown. Unsupported optimizer attributes are treated differently:\n\nIf warnattributes is true, a warning is displayed, otherwise,\nthe attribute is silently ignored.\n\nExample\n\n# Given empty `ModelLike` objects `src` and `dest`.\n\nx = add_variable(src)\n\nis_valid(src, x)   # true\nis_valid(dest, x)  # false (`dest` has no variables)\n\nindex_map = copy!(dest, src)\nis_valid(dest, x) # false (unless index_map[x] == x)\nis_valid(dest, index_map[x]) # true\n\n\n\n"
 },
 
 {
@@ -777,11 +777,11 @@ var documenterSearchIndex = {"docs": [
 },
 
 {
-    "location": "apireference.html#MathOptInterface.isvalid",
+    "location": "apireference.html#MathOptInterface.is_valid",
     "page": "Reference",
-    "title": "MathOptInterface.isvalid",
+    "title": "MathOptInterface.is_valid",
     "category": "function",
-    "text": "isvalid(model::ModelLike, index::Index)::Bool\n\nReturn a Bool indicating whether this index refers to a valid object in the model model.\n\n\n\n"
+    "text": "is_valid(model::ModelLike, index::Index)::Bool\n\nReturn a Bool indicating whether this index refers to a valid object in the model model.\n\n\n\n"
 },
 
 {
@@ -797,7 +797,7 @@ var documenterSearchIndex = {"docs": [
     "page": "Reference",
     "title": "Index types",
     "category": "section",
-    "text": "VariableIndex\nConstraintIndex\nisvalid\ndelete!(::ModelLike,::Index)"
+    "text": "VariableIndex\nConstraintIndex\nis_valid\ndelete!(::ModelLike,::Index)"
 },
 
 {
@@ -857,11 +857,11 @@ var documenterSearchIndex = {"docs": [
 },
 
 {
-    "location": "apireference.html#MathOptInterface.isvalid-Tuple{MathOptInterface.ModelLike,MathOptInterface.ConstraintIndex}",
+    "location": "apireference.html#MathOptInterface.is_valid-Tuple{MathOptInterface.ModelLike,MathOptInterface.ConstraintIndex}",
     "page": "Reference",
-    "title": "MathOptInterface.isvalid",
+    "title": "MathOptInterface.is_valid",
     "category": "method",
-    "text": "isvalid(model::ModelLike, index::Index)::Bool\n\nReturn a Bool indicating whether this index refers to a valid object in the model model.\n\n\n\n"
+    "text": "is_valid(model::ModelLike, index::Index)::Bool\n\nReturn a Bool indicating whether this index refers to a valid object in the model model.\n\n\n\n"
 },
 
 {
@@ -965,7 +965,7 @@ var documenterSearchIndex = {"docs": [
     "page": "Reference",
     "title": "Constraints",
     "category": "section",
-    "text": "Functions for adding and modifying constraints.isvalid(::ModelLike,::ConstraintIndex)\nadd_constraint\nadd_constraints\ntransform!\nsupportsconstraintList of attributes associated with constraints. [category AbstractConstraintAttribute] Calls to get and set should include as an argument a single ConstraintIndex or a vector of ConstraintIndex{F,S} objects.ConstraintName\nConstraintPrimalStart\nConstraintDualStart\nConstraintPrimal\nConstraintDual\nConstraintBasisStatus\nConstraintFunction\nConstraintSet"
+    "text": "Functions for adding and modifying constraints.is_valid(::ModelLike,::ConstraintIndex)\nadd_constraint\nadd_constraints\ntransform!\nsupportsconstraintList of attributes associated with constraints. [category AbstractConstraintAttribute] Calls to get and set should include as an argument a single ConstraintIndex or a vector of ConstraintIndex{F,S} objects.ConstraintName\nConstraintPrimalStart\nConstraintDualStart\nConstraintPrimal\nConstraintDual\nConstraintBasisStatus\nConstraintFunction\nConstraintSet"
 },
 
 {
