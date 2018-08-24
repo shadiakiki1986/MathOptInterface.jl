@@ -441,19 +441,19 @@ var documenterSearchIndex = {"docs": [
 },
 
 {
-    "location": "apireference.html#MathOptInterface.write",
+    "location": "apireference.html#MathOptInterface.write_to_file",
     "page": "Reference",
-    "title": "MathOptInterface.write",
+    "title": "MathOptInterface.write_to_file",
     "category": "function",
-    "text": "write(model::ModelLike, filename::String)\n\nWrites the current model data to the given file. Supported file types depend on the model type.\n\n\n\n"
+    "text": "write_to_file(model::ModelLike, filename::String)\n\nWrites the current model data to the given file. Supported file types depend on the model type.\n\n\n\n"
 },
 
 {
-    "location": "apireference.html#MathOptInterface.read!",
+    "location": "apireference.html#MathOptInterface.read_from_file",
     "page": "Reference",
-    "title": "MathOptInterface.read!",
+    "title": "MathOptInterface.read_from_file",
     "category": "function",
-    "text": "read!(model::ModelLike, filename::String)\n\nRead the file filename into the model model. If model is non-empty, this may throw an error.\n\nSupported file types depend on the model type.\n\nNote\n\nOnce the contents of the file are loaded into the model, users can query the variables via get(model, ListOfVariableIndices()). However, some filetypes, such as LP files, do not maintain an explicit ordering of the variables. Therefore, the returned list may be in an arbitrary order. To avoid depending on the order of the indices, users should look up each variable index by name: get(model, VariableIndex, \"name\").\n\n\n\n"
+    "text": "read_from_file(model::ModelLike, filename::String)\n\nRead the file filename into the model model. If model is non-empty, this may throw an error.\n\nSupported file types depend on the model type.\n\nNote\n\nOnce the contents of the file are loaded into the model, users can query the variables via get(model, ListOfVariableIndices()). However, some filetypes, such as LP files, do not maintain an explicit ordering of the variables. Therefore, the returned list may be in an arbitrary order. To avoid depending on the order of the indices, users should look up each variable index by name: get(model, VariableIndex, \"name\").\n\n\n\n"
 },
 
 {
@@ -557,7 +557,7 @@ var documenterSearchIndex = {"docs": [
     "page": "Reference",
     "title": "Model Interface",
     "category": "section",
-    "text": "ModelLike\nisempty\nempty!\nwrite\nread!Copyingcopy!List of model attributesName\nObjectiveSense\nNumberOfVariables\nListOfVariableIndices\nListOfConstraints\nNumberOfConstraints\nListOfConstraintIndices\nListOfOptimizerAttributesSet\nListOfModelAttributesSet\nListOfVariableAttributesSet\nListOfConstraintAttributesSet"
+    "text": "ModelLike\nisempty\nempty!\nwrite_to_file\nread_from_fileCopyingcopy!List of model attributesName\nObjectiveSense\nNumberOfVariables\nListOfVariableIndices\nListOfConstraints\nNumberOfConstraints\nListOfConstraintIndices\nListOfOptimizerAttributesSet\nListOfModelAttributesSet\nListOfVariableAttributesSet\nListOfConstraintAttributesSet"
 },
 
 {
@@ -1433,11 +1433,11 @@ var documenterSearchIndex = {"docs": [
 },
 
 {
-    "location": "apireference.html#MathOptInterface.initialize!",
+    "location": "apireference.html#MathOptInterface.initialize",
     "page": "Reference",
-    "title": "MathOptInterface.initialize!",
+    "title": "MathOptInterface.initialize",
     "category": "function",
-    "text": "initialize!(d::AbstractNLPEvaluator, requested_features::Vector{Symbol})\n\nMust be called before any other methods. The vector requested_features lists features requested by the solver. These may include :Grad for gradients of f, :Jac for explicit Jacobians of g, :JacVec for Jacobian-vector products, :HessVec for Hessian-vector and Hessian-of-Lagrangian-vector products, :Hess for explicit Hessians and Hessian-of-Lagrangians, and :ExprGraph for expression graphs.\n\n\n\n"
+    "text": "initialize(d::AbstractNLPEvaluator, requested_features::Vector{Symbol})\n\nMust be called before any other methods. The vector requested_features lists features requested by the solver. These may include :Grad for gradients of f, :Jac for explicit Jacobians of g, :JacVec for Jacobian-vector products, :HessVec for Hessian-vector and Hessian-of-Lagrangian-vector products, :Hess for explicit Hessians and Hessian-of-Lagrangians, and :ExprGraph for expression graphs.\n\n\n\n"
 },
 
 {
@@ -1549,7 +1549,7 @@ var documenterSearchIndex = {"docs": [
     "page": "Reference",
     "title": "NLP evaluator methods",
     "category": "section",
-    "text": "AbstractNLPEvaluator\ninitialize!\nfeatures_available\neval_objective\neval_constraint\neval_objective_gradient\njacobian_structure\nhessian_lagrangian_structure\neval_constraint_jacobian\neval_constraint_jacobian_product\neval_constraint_jacobian_transpose_product\neval_hessian_lagrangian\neval_hessian_lagrangian_product\nobjective_expr\nconstraint_expr"
+    "text": "AbstractNLPEvaluator\ninitialize\nfeatures_available\neval_objective\neval_constraint\neval_objective_gradient\njacobian_structure\nhessian_lagrangian_structure\neval_constraint_jacobian\neval_constraint_jacobian_product\neval_constraint_jacobian_transpose_product\neval_hessian_lagrangian\neval_hessian_lagrangian_product\nobjective_expr\nconstraint_expr"
 },
 
 {
