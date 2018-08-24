@@ -889,11 +889,11 @@ var documenterSearchIndex = {"docs": [
 },
 
 {
-    "location": "apireference.html#MathOptInterface.supportsconstraint",
+    "location": "apireference.html#MathOptInterface.supports_constraint",
     "page": "Reference",
-    "title": "MathOptInterface.supportsconstraint",
+    "title": "MathOptInterface.supports_constraint",
     "category": "function",
-    "text": "MOI.supportsconstraint(BT::Type{<:AbstractBridge}, F::Type{<:MOI.AbstractFunction}, S::Type{<:MOI.AbstractSet})::Bool\n\nReturn a Bool indicating whether the bridges of type BT support bridging F-in-S constraints.\n\n\n\nsupportsconstraint(model::ModelLike, ::Type{F}, ::Type{S})::Bool where {F<:AbstractFunction,S<:AbstractSet}\n\nReturn a Bool indicating whether model supports F-in-S constraints, that is, copy!(model, src) does not return CopyUnsupportedConstraint when src contains F-in-S constraints. If F-in-S constraints are only not supported in specific circumstances, e.g. F-in-S constraints cannot be combined with another type of constraint, it should still return true.\n\n\n\n"
+    "text": "MOI.supports_constraint(BT::Type{<:AbstractBridge}, F::Type{<:MOI.AbstractFunction}, S::Type{<:MOI.AbstractSet})::Bool\n\nReturn a Bool indicating whether the bridges of type BT support bridging F-in-S constraints.\n\n\n\nsupports_constraint(model::ModelLike, ::Type{F}, ::Type{S})::Bool where {F<:AbstractFunction,S<:AbstractSet}\n\nReturn a Bool indicating whether model supports F-in-S constraints, that is, copy!(model, src) does not return CopyUnsupportedConstraint when src contains F-in-S constraints. If F-in-S constraints are only not supported in specific circumstances, e.g. F-in-S constraints cannot be combined with another type of constraint, it should still return true.\n\n\n\n"
 },
 
 {
@@ -965,7 +965,7 @@ var documenterSearchIndex = {"docs": [
     "page": "Reference",
     "title": "Constraints",
     "category": "section",
-    "text": "Functions for adding and modifying constraints.is_valid(::ModelLike,::ConstraintIndex)\nadd_constraint\nadd_constraints\ntransform!\nsupportsconstraintList of attributes associated with constraints. [category AbstractConstraintAttribute] Calls to get and set should include as an argument a single ConstraintIndex or a vector of ConstraintIndex{F,S} objects.ConstraintName\nConstraintPrimalStart\nConstraintDualStart\nConstraintPrimal\nConstraintDual\nConstraintBasisStatus\nConstraintFunction\nConstraintSet"
+    "text": "Functions for adding and modifying constraints.is_valid(::ModelLike,::ConstraintIndex)\nadd_constraint\nadd_constraints\ntransform!\nsupports_constraintList of attributes associated with constraints. [category AbstractConstraintAttribute] Calls to get and set should include as an argument a single ConstraintIndex or a vector of ConstraintIndex{F,S} objects.ConstraintName\nConstraintPrimalStart\nConstraintDualStart\nConstraintPrimal\nConstraintDual\nConstraintBasisStatus\nConstraintFunction\nConstraintSet"
 },
 
 {
@@ -1605,7 +1605,7 @@ var documenterSearchIndex = {"docs": [
     "page": "Reference",
     "title": "MathOptInterface.UnsupportedConstraint",
     "category": "type",
-    "text": "struct UnsupportedConstraint{F<:AbstractFunction, S<:AbstractSet} <: UnsupportedError\n    message::String # Human-friendly explanation why the attribute cannot be set\nend\n\nAn error indicating that constraints of type F-in-S are not supported by the model, i.e. that supportsconstraint returns false.\n\n\n\n"
+    "text": "struct UnsupportedConstraint{F<:AbstractFunction, S<:AbstractSet} <: UnsupportedError\n    message::String # Human-friendly explanation why the attribute cannot be set\nend\n\nAn error indicating that constraints of type F-in-S are not supported by the model, i.e. that supports_constraint returns false.\n\n\n\n"
 },
 
 {
@@ -1613,7 +1613,7 @@ var documenterSearchIndex = {"docs": [
     "page": "Reference",
     "title": "MathOptInterface.AddConstraintNotAllowed",
     "category": "type",
-    "text": "struct AddConstraintNotAllowed{F<:AbstractFunction, S<:AbstractSet} <: NotAllowedError\n    message::String # Human-friendly explanation why the attribute cannot be set\nend\n\nAn error indicating that constraints of type F-in-S are supported (see supportsconstraint) but cannot be added.\n\n\n\n"
+    "text": "struct AddConstraintNotAllowed{F<:AbstractFunction, S<:AbstractSet} <: NotAllowedError\n    message::String # Human-friendly explanation why the attribute cannot be set\nend\n\nAn error indicating that constraints of type F-in-S are supported (see supports_constraint) but cannot be added.\n\n\n\n"
 },
 
 {
