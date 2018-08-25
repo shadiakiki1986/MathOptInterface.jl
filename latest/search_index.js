@@ -189,7 +189,7 @@ var documenterSearchIndex = {"docs": [
     "page": "Manual",
     "title": "The set of a constraint",
     "category": "section",
-    "text": "Given a constraint of type F-in-S (see Constraints by function-set pairs  above for an explanation), we can modify parameters (but not the type) of the  set S by replacing it with a new instance of the same type. For example,  given the variable bound x le 1:c = add_constraint(m, SingleVariable(x), LessThan(1.0))we can modify the set so that the bound now x le 2 as follows:set(m, ConstraintSet(), c, LessThan(2.0))where m is our ModelLike model. However, the following will fail as the new set (GreaterThan) is of a different type to the original set (LessThan):set(m, ConstraintSet(), c, GreaterThan(2.0))  # errorsIf our constraint is an affine inequality, then this corresponds to modifying the right-hand side of a constraint in linear programming.In some special cases, solvers may support efficiently changing the set of a constraint (for example, from LessThan to GreaterThan). For these cases, MathOptInterface provides the transform! method. For example, instead of the error we observed above, the following will work:c2 = transform!(m, c, GreaterThan(1.0))The transform! function returns a new constraint index, and the old constraint index (i.e., c) is no longer valid:is_valid(m, c)   # false\nis_valid(m, c2)  # trueAlso note that transform! cannot be called with a set of the same type; set should be used instead."
+    "text": "Given a constraint of type F-in-S (see Constraints by function-set pairs  above for an explanation), we can modify parameters (but not the type) of the  set S by replacing it with a new instance of the same type. For example,  given the variable bound x le 1:c = add_constraint(m, SingleVariable(x), LessThan(1.0))we can modify the set so that the bound now x le 2 as follows:set(m, ConstraintSet(), c, LessThan(2.0))where m is our ModelLike model. However, the following will fail as the new set (GreaterThan) is of a different type to the original set (LessThan):set(m, ConstraintSet(), c, GreaterThan(2.0))  # errorsIf our constraint is an affine inequality, then this corresponds to modifying the right-hand side of a constraint in linear programming.In some special cases, solvers may support efficiently changing the set of a constraint (for example, from LessThan to GreaterThan). For these cases, MathOptInterface provides the transform method. For example, instead of the error we observed above, the following will work:c2 = transform(m, c, GreaterThan(1.0))The transform function returns a new constraint index, and the old constraint index (i.e., c) is no longer valid:is_valid(m, c)   # false\nis_valid(m, c2)  # trueAlso note that transform cannot be called with a set of the same type; set should be used instead."
 },
 
 {
@@ -881,11 +881,11 @@ var documenterSearchIndex = {"docs": [
 },
 
 {
-    "location": "apireference.html#MathOptInterface.transform!",
+    "location": "apireference.html#MathOptInterface.transform",
     "page": "Reference",
-    "title": "MathOptInterface.transform!",
+    "title": "MathOptInterface.transform",
     "category": "function",
-    "text": "Transform Constraint Set\n\ntransform!(model::ModelLike, c::ConstraintIndex{F,S1}, newset::S2)::ConstraintIndex{F,S2}\n\nReplace the set in constraint c with newset. The constraint index c will no longer be valid, and the function returns a new constraint index with the correct type.\n\nSolvers may only support a subset of constraint transforms that they perform efficiently (for example, changing from a LessThan to GreaterThan set). In addition, set modification (where S1 = S2) should be performed via the modify function.\n\nTypically, the user should delete the constraint and add a new one.\n\nExamples\n\nIf c is a ConstraintIndex{ScalarAffineFunction{Float64},LessThan{Float64}},\n\nc2 = transform!(model, c, GreaterThan(0.0))\ntransform!(model, c, LessThan(0.0)) # errors\n\n\n\n"
+    "text": "Transform Constraint Set\n\ntransform(model::ModelLike, c::ConstraintIndex{F,S1}, newset::S2)::ConstraintIndex{F,S2}\n\nReplace the set in constraint c with newset. The constraint index c will no longer be valid, and the function returns a new constraint index with the correct type.\n\nSolvers may only support a subset of constraint transforms that they perform efficiently (for example, changing from a LessThan to GreaterThan set). In addition, set modification (where S1 = S2) should be performed via the modify function.\n\nTypically, the user should delete the constraint and add a new one.\n\nExamples\n\nIf c is a ConstraintIndex{ScalarAffineFunction{Float64},LessThan{Float64}},\n\nc2 = transform(model, c, GreaterThan(0.0))\ntransform(model, c, LessThan(0.0)) # errors\n\n\n\n"
 },
 
 {
@@ -965,7 +965,7 @@ var documenterSearchIndex = {"docs": [
     "page": "Reference",
     "title": "Constraints",
     "category": "section",
-    "text": "Functions for adding and modifying constraints.is_valid(::ModelLike,::ConstraintIndex)\nadd_constraint\nadd_constraints\ntransform!\nsupports_constraintList of attributes associated with constraints. [category AbstractConstraintAttribute] Calls to get and set should include as an argument a single ConstraintIndex or a vector of ConstraintIndex{F,S} objects.ConstraintName\nConstraintPrimalStart\nConstraintDualStart\nConstraintPrimal\nConstraintDual\nConstraintBasisStatus\nConstraintFunction\nConstraintSet"
+    "text": "Functions for adding and modifying constraints.is_valid(::ModelLike,::ConstraintIndex)\nadd_constraint\nadd_constraints\ntransform\nsupports_constraintList of attributes associated with constraints. [category AbstractConstraintAttribute] Calls to get and set should include as an argument a single ConstraintIndex or a vector of ConstraintIndex{F,S} objects.ConstraintName\nConstraintPrimalStart\nConstraintDualStart\nConstraintPrimal\nConstraintDual\nConstraintBasisStatus\nConstraintFunction\nConstraintSet"
 },
 
 {
