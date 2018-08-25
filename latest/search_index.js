@@ -205,7 +205,7 @@ var documenterSearchIndex = {"docs": [
     "page": "Manual",
     "title": "In-place modification",
     "category": "section",
-    "text": "The second type of problem modifications allow the user to modify, in-place, the coefficients of a function. Currently, four modifications are supported by MathOptInterface. They are:change the constant term in a scalar function;\nchange the constant term in a vector function;\nchange the affine coefficients in a scalar function; and\nchange the affine coefficients in a vector function.To distinguish between the replacement of the function with a new instance (described above) and the modification of an existing function, the in-place modifications use the  modify! method:modify!(model, index, change::AbstractFunctionModification)modify! takes three arguments. The first is the ModelLike model model, the second is the constraint index, and the third is an instance of an AbstractFunctionModification.We now detail each of these four in-place modifications."
+    "text": "The second type of problem modifications allow the user to modify, in-place, the coefficients of a function. Currently, four modifications are supported by MathOptInterface. They are:change the constant term in a scalar function;\nchange the constant term in a vector function;\nchange the affine coefficients in a scalar function; and\nchange the affine coefficients in a vector function.To distinguish between the replacement of the function with a new instance (described above) and the modification of an existing function, the in-place modifications use the  modify method:modify(model, index, change::AbstractFunctionModification)modify takes three arguments. The first is the ModelLike model model, the second is the constraint index, and the third is an instance of an AbstractFunctionModification.We now detail each of these four in-place modifications."
 },
 
 {
@@ -213,7 +213,7 @@ var documenterSearchIndex = {"docs": [
     "page": "Manual",
     "title": "Constant term in a scalar function",
     "category": "section",
-    "text": "MathOptInterface supports is the ability to modify the constant term within a ScalarAffineFunction and a ScalarQuadraticFunction using the ScalarConstantChange subtype of AbstractFunctionModification. This includes the objective function, as well as the function in a function-pair constraint.For example, consider a problem m with the objective max 10x + 00:set(m,\n    ObjectiveFunction{ScalarAffineFunction{Float64}}(),\n    ScalarAffineFunction([ScalarAffineTerm(1.0, x)], 0.0)\n)We can modify the constant term in the objective function as follows:modify!(m,\n    ObjectiveFunction{ScalarAffineFunction{Float64}}(),\n    ScalarConstantChange(1.0)\n)The objective function will now be max 10x + 10."
+    "text": "MathOptInterface supports is the ability to modify the constant term within a ScalarAffineFunction and a ScalarQuadraticFunction using the ScalarConstantChange subtype of AbstractFunctionModification. This includes the objective function, as well as the function in a function-pair constraint.For example, consider a problem m with the objective max 10x + 00:set(m,\n    ObjectiveFunction{ScalarAffineFunction{Float64}}(),\n    ScalarAffineFunction([ScalarAffineTerm(1.0, x)], 0.0)\n)We can modify the constant term in the objective function as follows:modify(m,\n    ObjectiveFunction{ScalarAffineFunction{Float64}}(),\n    ScalarConstantChange(1.0)\n)The objective function will now be max 10x + 10."
 },
 
 {
@@ -221,7 +221,7 @@ var documenterSearchIndex = {"docs": [
     "page": "Manual",
     "title": "Constant terms in a vector function",
     "category": "section",
-    "text": "We can modify the constant terms in a VectorAffineFunction or a VectorQuadraticFunction using the VectorConstantChange subtype of AbstractFunctionModification.For example, consider a model with the following VectorAffineFunction-in-Nonpositives constraint:c = add_constraint(m,\n    VectorAffineFunction([\n            VectorAffineTerm(1, ScalarAffineTerm(1.0, x)),\n            VectorAffineTerm(1, ScalarAffineTerm(2.0, y))\n        ],\n        [0.0, 0.0]\n    ),\n    Nonpositives(2)\n)We can modify the constant vector in the VectorAffineFunction from [0.0, 0.0] to [1.0, 2.0] as follows:modify!(m, c, VectorConstantChange([1.0, 2.0])\n)The constraints are now 10x + 10 le 00 and 20y + 20 le 00."
+    "text": "We can modify the constant terms in a VectorAffineFunction or a VectorQuadraticFunction using the VectorConstantChange subtype of AbstractFunctionModification.For example, consider a model with the following VectorAffineFunction-in-Nonpositives constraint:c = add_constraint(m,\n    VectorAffineFunction([\n            VectorAffineTerm(1, ScalarAffineTerm(1.0, x)),\n            VectorAffineTerm(1, ScalarAffineTerm(2.0, y))\n        ],\n        [0.0, 0.0]\n    ),\n    Nonpositives(2)\n)We can modify the constant vector in the VectorAffineFunction from [0.0, 0.0] to [1.0, 2.0] as follows:modify(m, c, VectorConstantChange([1.0, 2.0])\n)The constraints are now 10x + 10 le 00 and 20y + 20 le 00."
 },
 
 {
@@ -229,7 +229,7 @@ var documenterSearchIndex = {"docs": [
     "page": "Manual",
     "title": "Affine coefficients in a scalar function",
     "category": "section",
-    "text": "In addition to modifying the constant terms in a function, we can also modify the affine variable coefficients in an ScalarAffineFunction or a ScalarQuadraticFunction using the ScalarCoefficientChange subtype of AbstractFunctionModification.For example, given the constraint 10x = 10:c = add_constraint(m,\n    ScalarAffineFunction([ScalarAffineTerm(1.0, x)], 0.0),\n    LessThan(1.0)\n)we can modify the coefficient of the x variable so that the constraint becomes 20x = 10 as follows:modify!(m, c, ScalarCoefficientChange(x, 2.0))ScalarCoefficientChange can also be used to modify the objective function by passing an instance of ObjectiveFunction instead of the constraint index c as we saw above."
+    "text": "In addition to modifying the constant terms in a function, we can also modify the affine variable coefficients in an ScalarAffineFunction or a ScalarQuadraticFunction using the ScalarCoefficientChange subtype of AbstractFunctionModification.For example, given the constraint 10x = 10:c = add_constraint(m,\n    ScalarAffineFunction([ScalarAffineTerm(1.0, x)], 0.0),\n    LessThan(1.0)\n)we can modify the coefficient of the x variable so that the constraint becomes 20x = 10 as follows:modify(m, c, ScalarCoefficientChange(x, 2.0))ScalarCoefficientChange can also be used to modify the objective function by passing an instance of ObjectiveFunction instead of the constraint index c as we saw above."
 },
 
 {
@@ -237,7 +237,7 @@ var documenterSearchIndex = {"docs": [
     "page": "Manual",
     "title": "Affine coefficients in a vector function",
     "category": "section",
-    "text": "Finally, the last modification supported by MathOptInterface is the ability to modify the affine coefficients of a single variable in a VectorAffineFunction or a VectorQuadraticFunction using the MultirowChange subtype of AbstractFunctionModification.For example, given the constraint Ax in mathbbR^2_+, where A = 10 20^top:c = add_constraint(m,\n    VectorAffineFunction([\n            VectorAffineTerm(1, ScalarAffineTerm(1.0, x)),\n            VectorAffineTerm(1, ScalarAffineTerm(2.0, x))\n        ],\n        [0.0, 0.0]\n    ),\n    Nonnegatives(2)\n)we can modify the coefficients of the x variable so that the A matrix becomes A = 30 40^top as follows:modify!(m, c, MultirowChange(x, [3.0, 4.0]))"
+    "text": "Finally, the last modification supported by MathOptInterface is the ability to modify the affine coefficients of a single variable in a VectorAffineFunction or a VectorQuadraticFunction using the MultirowChange subtype of AbstractFunctionModification.For example, given the constraint Ax in mathbbR^2_+, where A = 10 20^top:c = add_constraint(m,\n    VectorAffineFunction([\n            VectorAffineTerm(1, ScalarAffineTerm(1.0, x)),\n            VectorAffineTerm(1, ScalarAffineTerm(2.0, x))\n        ],\n        [0.0, 0.0]\n    ),\n    Nonnegatives(2)\n)we can modify the coefficients of the x variable so that the A matrix becomes A = 30 40^top as follows:modify(m, c, MultirowChange(x, [3.0, 4.0]))"
 },
 
 {
@@ -885,7 +885,7 @@ var documenterSearchIndex = {"docs": [
     "page": "Reference",
     "title": "MathOptInterface.transform!",
     "category": "function",
-    "text": "Transform Constraint Set\n\ntransform!(model::ModelLike, c::ConstraintIndex{F,S1}, newset::S2)::ConstraintIndex{F,S2}\n\nReplace the set in constraint c with newset. The constraint index c will no longer be valid, and the function returns a new constraint index with the correct type.\n\nSolvers may only support a subset of constraint transforms that they perform efficiently (for example, changing from a LessThan to GreaterThan set). In addition, set modification (where S1 = S2) should be performed via the modify! function.\n\nTypically, the user should delete the constraint and add a new one.\n\nExamples\n\nIf c is a ConstraintIndex{ScalarAffineFunction{Float64},LessThan{Float64}},\n\nc2 = transform!(model, c, GreaterThan(0.0))\ntransform!(model, c, LessThan(0.0)) # errors\n\n\n\n"
+    "text": "Transform Constraint Set\n\ntransform!(model::ModelLike, c::ConstraintIndex{F,S1}, newset::S2)::ConstraintIndex{F,S2}\n\nReplace the set in constraint c with newset. The constraint index c will no longer be valid, and the function returns a new constraint index with the correct type.\n\nSolvers may only support a subset of constraint transforms that they perform efficiently (for example, changing from a LessThan to GreaterThan set). In addition, set modification (where S1 = S2) should be performed via the modify function.\n\nTypically, the user should delete the constraint and add a new one.\n\nExamples\n\nIf c is a ConstraintIndex{ScalarAffineFunction{Float64},LessThan{Float64}},\n\nc2 = transform!(model, c, GreaterThan(0.0))\ntransform!(model, c, LessThan(0.0)) # errors\n\n\n\n"
 },
 
 {
@@ -1313,11 +1313,11 @@ var documenterSearchIndex = {"docs": [
 },
 
 {
-    "location": "apireference.html#MathOptInterface.modify!",
+    "location": "apireference.html#MathOptInterface.modify",
     "page": "Reference",
-    "title": "MathOptInterface.modify!",
+    "title": "MathOptInterface.modify",
     "category": "function",
-    "text": "Constraint Function\n\nmodify!(model::ModelLike, ci::ConstraintIndex, change::AbstractFunctionModification)\n\nApply the modification specified by change to the function of constraint ci.\n\nAn ModifyConstraintNotAllowed error is thrown if modifying constraints is not supported by the model model.\n\nExamples\n\nmodify!(model, ci, ScalarConstantChange(10.0))\n\nObjective Function\n\nmodify!(model::ModelLike, ::ObjectiveFunction, change::AbstractFunctionModification)\n\nApply the modification specified by change to the objective function of model. To change the function completely, call set instead.\n\nAn ModifyObjectiveNotAllowed error is thrown if modifying objectives is not supported by the model model.\n\nExamples\n\nmodify!(model, ObjectiveFunction{ScalarAffineFunction{Float64}}(), ScalarConstantChange(10.0))\n\n\n\n"
+    "text": "Constraint Function\n\nmodify(model::ModelLike, ci::ConstraintIndex, change::AbstractFunctionModification)\n\nApply the modification specified by change to the function of constraint ci.\n\nAn ModifyConstraintNotAllowed error is thrown if modifying constraints is not supported by the model model.\n\nExamples\n\nmodify(model, ci, ScalarConstantChange(10.0))\n\nObjective Function\n\nmodify(model::ModelLike, ::ObjectiveFunction, change::AbstractFunctionModification)\n\nApply the modification specified by change to the objective function of model. To change the function completely, call set instead.\n\nAn ModifyObjectiveNotAllowed error is thrown if modifying objectives is not supported by the model model.\n\nExamples\n\nmodify(model, ObjectiveFunction{ScalarAffineFunction{Float64}}(), ScalarConstantChange(10.0))\n\n\n\n"
 },
 
 {
@@ -1365,7 +1365,7 @@ var documenterSearchIndex = {"docs": [
     "page": "Reference",
     "title": "Modifications",
     "category": "section",
-    "text": "Functions for modifying objective and constraint functions.modify!\nAbstractFunctionModification\nScalarConstantChange\nVectorConstantChange\nScalarCoefficientChange\nMultirowChange"
+    "text": "Functions for modifying objective and constraint functions.modify\nAbstractFunctionModification\nScalarConstantChange\nVectorConstantChange\nScalarCoefficientChange\nMultirowChange"
 },
 
 {
