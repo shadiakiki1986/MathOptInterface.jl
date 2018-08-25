@@ -1713,6 +1713,14 @@ var documenterSearchIndex = {"docs": [
 },
 
 {
+    "location": "apireference.html#MathOptInterface.Bridges.SquarePSDBridge",
+    "page": "Reference",
+    "title": "MathOptInterface.Bridges.SquarePSDBridge",
+    "category": "type",
+    "text": "SquarePSDBridge{T}\n\nThe SquarePSDBridge reformulates the constraint of a square matrix to be PSD and symmetric, i.e. belongs to the MOI.PositiveSemidefiniteConeSquare, to a list of equality constraints for pair or off-diagonal entries with different expressions and a PSD constraint the upper triangular part of the matrix.\n\nFor instance, the constraint for the matrix\n\nbeginpmatrix\n  1       1 + x  2 - 3x\n  1 +  x  2 + x  3 -  x\n  2 - 3x  2 + x      2x\nendpmatrix\n\nto be PSD can be broken down to the constraint of the symmetric matrix\n\nbeginpmatrix\n  1       1 + x  2 - 3x\n  cdot  2 + x  3 -  x\n  cdot  cdot     2x\nendpmatrix\n\nand the equality constraint between the off-diagonal entries (2, 3) and (3, 2) 2x == 1. Note that now symmetrization constraint need to be added between the off-diagonal entries (1, 2) and (2, 1) or between (1, 3) and (3, 1) since the expressions are the same.\n\n\n\n"
+},
+
+{
     "location": "apireference.html#MathOptInterface.Bridges.RootDetBridge",
     "page": "Reference",
     "title": "MathOptInterface.Bridges.RootDetBridge",
@@ -1749,7 +1757,7 @@ var documenterSearchIndex = {"docs": [
     "page": "Reference",
     "title": "Bridges",
     "category": "section",
-    "text": "Bridges can be used for automatic reformulation of a certain constraint type into equivalent constraints.Bridges.AbstractBridge\nBridges.AbstractBridgeOptimizer\nBridges.SingleBridgeOptimizer\nBridges.LazyBridgeOptimizer\nBridges.addbridge!Below is the list of bridges implemented in this package.Bridges.SplitIntervalBridge\nBridges.RSOCBridge\nBridges.GeoMeanBridge\nBridges.RootDetBridge\nBridges.LogDetBridge\nBridges.SOCtoPSDCBridge\nBridges.RSOCtoPSDCBridgeFor each bridge defined in this package, a corresponding bridge optimizer is available with the same name without the \"Bridge\" suffix, e.g., SplitInterval is an SingleBridgeOptimizer for the SplitIntervalBridge."
+    "text": "Bridges can be used for automatic reformulation of a certain constraint type into equivalent constraints.Bridges.AbstractBridge\nBridges.AbstractBridgeOptimizer\nBridges.SingleBridgeOptimizer\nBridges.LazyBridgeOptimizer\nBridges.addbridge!Below is the list of bridges implemented in this package.Bridges.SplitIntervalBridge\nBridges.RSOCBridge\nBridges.GeoMeanBridge\nBridges.SquarePSDBridge\nBridges.RootDetBridge\nBridges.LogDetBridge\nBridges.SOCtoPSDCBridge\nBridges.RSOCtoPSDCBridgeFor each bridge defined in this package, a corresponding bridge optimizer is available with the same name without the \"Bridge\" suffix, e.g., SplitInterval is an SingleBridgeOptimizer for the SplitIntervalBridge."
 },
 
 ]}
