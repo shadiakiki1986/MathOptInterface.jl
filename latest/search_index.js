@@ -277,7 +277,7 @@ var documenterSearchIndex = {"docs": [
     "page": "Manual",
     "title": "Implementing a solver interface",
     "category": "section",
-    "text": "[The interface is designed for multiple dispatch, e.g., attributes, combinations of sets and functions.]Avoid storing extra copies of the problem when possible. This means that solver wrappers should not use CachingOptimizer as part of the wrapper. Instead, just implement copy! if the solver\'s API does not support an add_variable-like API. Let users or JuMP decide to use CachingOptimizer instead."
+    "text": "[The interface is designed for multiple dispatch, e.g., attributes, combinations of sets and functions.]Avoid storing extra copies of the problem when possible. This means that solver wrappers should not use CachingOptimizer as part of the wrapper. Instead, just implement copy_to if the solver\'s API does not support an add_variable-like API. Let users or JuMP decide to use CachingOptimizer instead."
 },
 
 {
@@ -349,7 +349,7 @@ var documenterSearchIndex = {"docs": [
     "page": "Reference",
     "title": "MathOptInterface.AbstractOptimizerAttribute",
     "category": "type",
-    "text": "AbstractOptimizerAttribute\n\nAbstract supertype for attribute objects that can be used to set or get attributes (properties) of the optimizer.\n\nNote\n\nThe difference between AbstractOptimizerAttribute and AbstractModelAttribute lies in the behavior of isempty, empty! and copy!. Typically optimizer attributes only affect how the model is solved.\n\n\n\n"
+    "text": "AbstractOptimizerAttribute\n\nAbstract supertype for attribute objects that can be used to set or get attributes (properties) of the optimizer.\n\nNote\n\nThe difference between AbstractOptimizerAttribute and AbstractModelAttribute lies in the behavior of isempty, empty! and copy_to. Typically optimizer attributes only affect how the model is solved.\n\n\n\n"
 },
 
 {
@@ -405,7 +405,7 @@ var documenterSearchIndex = {"docs": [
     "page": "Reference",
     "title": "MathOptInterface.supports",
     "category": "function",
-    "text": "supports(model::ModelLike, attr::AbstractOptimizerAttribute)::Bool\n\nReturn a Bool indicating whether model supports the optimizer attribute attr. That is, it returns false if copy!(model, src) shows a warning in case attr is in the ListOfOptimizerAttributesSet of src; see copy! for more details on how unsupported optimizer attributes are handled in copy.\n\nsupports(model::ModelLike, attr::AbstractModelAttribute)::Bool\n\nReturn a Bool indicating whether model supports the model attribute attr. That is, it returns false if copy!(model, src) cannot be performed in case attr is in the ListOfModelAttributesSet of src.\n\nsupports(model::ModelLike, attr::AbstractVariableAttribute, ::Type{VariableIndex})::Bool\n\nReturn a Bool indicating whether model supports the variable attribute attr. That is, it returns false if copy!(model, src) cannot be performed in case attr is in the ListOfVariableAttributesSet of src.\n\nsupports(model::ModelLike, attr::AbstractConstraintAttribute, ::Type{ConstraintIndex{F,S}})::Bool where {F,S}\n\nReturn a Bool indicating whether model supports the constraint attribute attr applied to an F-in-S constraint. That is, it returns false if copy!(model, src) cannot be performed in case attr is in the ListOfConstraintAttributesSet of src.\n\nFor all four methods, if the attribute is only not supported in specific circumstances, it should still return true.\n\n\n\n"
+    "text": "supports(model::ModelLike, attr::AbstractOptimizerAttribute)::Bool\n\nReturn a Bool indicating whether model supports the optimizer attribute attr. That is, it returns false if copy_to(model, src) shows a warning in case attr is in the ListOfOptimizerAttributesSet of src; see copy_to for more details on how unsupported optimizer attributes are handled in copy.\n\nsupports(model::ModelLike, attr::AbstractModelAttribute)::Bool\n\nReturn a Bool indicating whether model supports the model attribute attr. That is, it returns false if copy_to(model, src) cannot be performed in case attr is in the ListOfModelAttributesSet of src.\n\nsupports(model::ModelLike, attr::AbstractVariableAttribute, ::Type{VariableIndex})::Bool\n\nReturn a Bool indicating whether model supports the variable attribute attr. That is, it returns false if copy_to(model, src) cannot be performed in case attr is in the ListOfVariableAttributesSet of src.\n\nsupports(model::ModelLike, attr::AbstractConstraintAttribute, ::Type{ConstraintIndex{F,S}})::Bool where {F,S}\n\nReturn a Bool indicating whether model supports the constraint attribute attr applied to an F-in-S constraint. That is, it returns false if copy_to(model, src) cannot be performed in case attr is in the ListOfConstraintAttributesSet of src.\n\nFor all four methods, if the attribute is only not supported in specific circumstances, it should still return true.\n\n\n\n"
 },
 
 {
@@ -457,11 +457,11 @@ var documenterSearchIndex = {"docs": [
 },
 
 {
-    "location": "apireference.html#MathOptInterface.copy!",
+    "location": "apireference.html#MathOptInterface.copy_to",
     "page": "Reference",
-    "title": "MathOptInterface.copy!",
+    "title": "MathOptInterface.copy_to",
     "category": "function",
-    "text": "copy!(dest::ModelLike, src::ModelLike; copynames=true, warnattributes=true)\n\nCopy the model from src into dest. The target dest is emptied, and all previous indices to variables or constraints in dest are invalidated. Returns a dictionary-like object that translates variable and constraint indices from the src model to the corresponding indices in the dest model.\n\nIf copynames is false, the Name, VariableName and ConstraintName attributes are not copied even if they are set in src. If a constraint that is copied from src is not supported by dest then an UnsupportedConstraint error is thrown. Similarly, if a model, variable or constraint attribute that is copied from src is not supported by dest then an UnsupportedAttribute error is thrown. Unsupported optimizer attributes are treated differently:\n\nIf warnattributes is true, a warning is displayed, otherwise,\nthe attribute is silently ignored.\n\nExample\n\n# Given empty `ModelLike` objects `src` and `dest`.\n\nx = add_variable(src)\n\nis_valid(src, x)   # true\nis_valid(dest, x)  # false (`dest` has no variables)\n\nindex_map = copy!(dest, src)\nis_valid(dest, x) # false (unless index_map[x] == x)\nis_valid(dest, index_map[x]) # true\n\n\n\n"
+    "text": "copy_to(dest::ModelLike, src::ModelLike; copynames=true, warnattributes=true)\n\nCopy the model from src into dest. The target dest is emptied, and all previous indices to variables or constraints in dest are invalidated. Returns a dictionary-like object that translates variable and constraint indices from the src model to the corresponding indices in the dest model.\n\nIf copynames is false, the Name, VariableName and ConstraintName attributes are not copied even if they are set in src. If a constraint that is copied from src is not supported by dest then an UnsupportedConstraint error is thrown. Similarly, if a model, variable or constraint attribute that is copied from src is not supported by dest then an UnsupportedAttribute error is thrown. Unsupported optimizer attributes are treated differently:\n\nIf warnattributes is true, a warning is displayed, otherwise,\nthe attribute is silently ignored.\n\nExample\n\n# Given empty `ModelLike` objects `src` and `dest`.\n\nx = add_variable(src)\n\nis_valid(src, x)   # true\nis_valid(dest, x)  # false (`dest` has no variables)\n\nindex_map = copy_to(dest, src)\nis_valid(dest, x) # false (unless index_map[x] == x)\nis_valid(dest, index_map[x]) # true\n\n\n\n"
 },
 
 {
@@ -557,7 +557,7 @@ var documenterSearchIndex = {"docs": [
     "page": "Reference",
     "title": "Model Interface",
     "category": "section",
-    "text": "ModelLike\nisempty\nempty!\nwrite_to_file\nread_from_fileCopyingcopy!List of model attributesName\nObjectiveSense\nNumberOfVariables\nListOfVariableIndices\nListOfConstraints\nNumberOfConstraints\nListOfConstraintIndices\nListOfOptimizerAttributesSet\nListOfModelAttributesSet\nListOfVariableAttributesSet\nListOfConstraintAttributesSet"
+    "text": "ModelLike\nisempty\nempty!\nwrite_to_file\nread_from_fileCopyingcopy_toList of model attributesName\nObjectiveSense\nNumberOfVariables\nListOfVariableIndices\nListOfConstraints\nNumberOfConstraints\nListOfConstraintIndices\nListOfOptimizerAttributesSet\nListOfModelAttributesSet\nListOfVariableAttributesSet\nListOfConstraintAttributesSet"
 },
 
 {
@@ -893,7 +893,7 @@ var documenterSearchIndex = {"docs": [
     "page": "Reference",
     "title": "MathOptInterface.supports_constraint",
     "category": "function",
-    "text": "MOI.supports_constraint(BT::Type{<:AbstractBridge}, F::Type{<:MOI.AbstractFunction}, S::Type{<:MOI.AbstractSet})::Bool\n\nReturn a Bool indicating whether the bridges of type BT support bridging F-in-S constraints.\n\n\n\nsupports_constraint(model::ModelLike, ::Type{F}, ::Type{S})::Bool where {F<:AbstractFunction,S<:AbstractSet}\n\nReturn a Bool indicating whether model supports F-in-S constraints, that is, copy!(model, src) does not return CopyUnsupportedConstraint when src contains F-in-S constraints. If F-in-S constraints are only not supported in specific circumstances, e.g. F-in-S constraints cannot be combined with another type of constraint, it should still return true.\n\n\n\n"
+    "text": "MOI.supports_constraint(BT::Type{<:AbstractBridge}, F::Type{<:MOI.AbstractFunction}, S::Type{<:MOI.AbstractSet})::Bool\n\nReturn a Bool indicating whether the bridges of type BT support bridging F-in-S constraints.\n\n\n\nsupports_constraint(model::ModelLike, ::Type{F}, ::Type{S})::Bool where {F<:AbstractFunction,S<:AbstractSet}\n\nReturn a Bool indicating whether model supports F-in-S constraints, that is, copy_to(model, src) does not return CopyUnsupportedConstraint when src contains F-in-S constraints. If F-in-S constraints are only not supported in specific circumstances, e.g. F-in-S constraints cannot be combined with another type of constraint, it should still return true.\n\n\n\n"
 },
 
 {
