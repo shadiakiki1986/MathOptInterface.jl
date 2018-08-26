@@ -61,7 +61,7 @@ var documenterSearchIndex = {"docs": [
     "page": "Manual",
     "title": "Variables",
     "category": "section",
-    "text": "All variables in MOI are scalar variables. New scalar variables are created with add_variable or add_variables, which return a VariableIndex or Vector{VariableIndex} respectively. VariableIndex objects are type-safe wrappers around integers that refer to a variable in a particular model.One uses VariableIndex objects to set and get variable attributes. For example, the VariablePrimalStart attribute is used to provide an initial starting point for a variable or collection of variables:v = add_variable(model)\nset(model, VariablePrimalStart(), v, 10.5)\nv2 = add_variables(model, 3)\nset(model, VariablePrimalStart(), v2, [1.3,6.8,-4.6])A variable can be deleted from a model with delete!(::ModelLike, ::VariableIndex). Not all models support deleting variables; an DeleteNotAllowed error is thrown if this is not supported."
+    "text": "All variables in MOI are scalar variables. New scalar variables are created with add_variable or add_variables, which return a VariableIndex or Vector{VariableIndex} respectively. VariableIndex objects are type-safe wrappers around integers that refer to a variable in a particular model.One uses VariableIndex objects to set and get variable attributes. For example, the VariablePrimalStart attribute is used to provide an initial starting point for a variable or collection of variables:v = add_variable(model)\nset(model, VariablePrimalStart(), v, 10.5)\nv2 = add_variables(model, 3)\nset(model, VariablePrimalStart(), v2, [1.3,6.8,-4.6])A variable can be deleted from a model with delete(::ModelLike, ::VariableIndex). Not all models support deleting variables; an DeleteNotAllowed error is thrown if this is not supported."
 },
 
 {
@@ -785,11 +785,11 @@ var documenterSearchIndex = {"docs": [
 },
 
 {
-    "location": "apireference.html#Base.delete!-Tuple{MathOptInterface.ModelLike,Union{MathOptInterface.ConstraintIndex, MathOptInterface.VariableIndex}}",
+    "location": "apireference.html#MathOptInterface.delete-Tuple{MathOptInterface.ModelLike,Union{MathOptInterface.ConstraintIndex, MathOptInterface.VariableIndex}}",
     "page": "Reference",
-    "title": "Base.delete!",
+    "title": "MathOptInterface.delete",
     "category": "method",
-    "text": "delete!(model::ModelLike, index::Index)\n\nDelete the referenced object from the model.\n\n\n\n"
+    "text": "delete(model::ModelLike, index::Index)\n\nDelete the referenced object from the model.\n\n\n\n"
 },
 
 {
@@ -797,7 +797,7 @@ var documenterSearchIndex = {"docs": [
     "page": "Reference",
     "title": "Index types",
     "category": "section",
-    "text": "VariableIndex\nConstraintIndex\nis_valid\ndelete!(::ModelLike,::Index)"
+    "text": "VariableIndex\nConstraintIndex\nis_valid\ndelete(::ModelLike, ::Index)"
 },
 
 {
