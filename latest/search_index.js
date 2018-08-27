@@ -349,7 +349,7 @@ var documenterSearchIndex = {"docs": [
     "page": "Reference",
     "title": "MathOptInterface.AbstractOptimizerAttribute",
     "category": "type",
-    "text": "AbstractOptimizerAttribute\n\nAbstract supertype for attribute objects that can be used to set or get attributes (properties) of the optimizer.\n\nNote\n\nThe difference between AbstractOptimizerAttribute and AbstractModelAttribute lies in the behavior of isempty, empty! and copy_to. Typically optimizer attributes only affect how the model is solved.\n\n\n\n"
+    "text": "AbstractOptimizerAttribute\n\nAbstract supertype for attribute objects that can be used to set or get attributes (properties) of the optimizer.\n\nNote\n\nThe difference between AbstractOptimizerAttribute and AbstractModelAttribute lies in the behavior of is_empty, empty! and copy_to. Typically optimizer attributes only affect how the model is solved.\n\n\n\n"
 },
 
 {
@@ -425,11 +425,11 @@ var documenterSearchIndex = {"docs": [
 },
 
 {
-    "location": "apireference.html#MathOptInterface.isempty",
+    "location": "apireference.html#Base.isempty",
     "page": "Reference",
-    "title": "MathOptInterface.isempty",
+    "title": "Base.isempty",
     "category": "function",
-    "text": "isempty(model::ModelLike)\n\nReturns false if the model has any model attribute set or has any variables or constraints. Note that an empty model can have optimizer attributes set.\n\n\n\n"
+    "text": "isempty(collection) -> Bool\n\nDetermine whether a collection is empty (has no elements).\n\nExamples\n\njulia> isempty([])\ntrue\n\njulia> isempty([1 2 3])\nfalse\n\n\n\n"
 },
 
 {
