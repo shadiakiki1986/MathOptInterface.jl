@@ -1677,15 +1677,15 @@ var documenterSearchIndex = {"docs": [
     "page": "Reference",
     "title": "MathOptInterface.Bridges.LazyBridgeOptimizer",
     "category": "type",
-    "text": "LazyBridgeOptimizer{OT<:MOI.ModelLike, MT<:MOI.ModelLike} <: AbstractBridgeOptimizer\n\nThe LazyBridgeOptimizer combines several bridges, which are added using the addbridge! function. Whenever a constraint is added, it only attempts to bridge it if it is not supported by the internal model (hence its name Lazy). When bridging a constraint, it selects the minimal number of bridges needed. For instance, a constraint F-in-S can be bridged into a constraint F1-in-S1 (supported by the internal model) using bridge 1 or bridged into a constraint F2-in-S2 (unsupported by the internal model) using bridge 2 which can then be bridged into a constraint F3-in-S3 (supported by the internal model) using bridge 3, it will choose bridge 1 as it allows to bridge F-in-S using only one bridge instead of two if it uses bridge 2 and 3.\n\n\n\n"
+    "text": "LazyBridgeOptimizer{OT<:MOI.ModelLike, MT<:MOI.ModelLike} <: AbstractBridgeOptimizer\n\nThe LazyBridgeOptimizer combines several bridges, which are added using the add_bridge function. Whenever a constraint is added, it only attempts to bridge it if it is not supported by the internal model (hence its name Lazy). When bridging a constraint, it selects the minimal number of bridges needed. For instance, a constraint F-in-S can be bridged into a constraint F1-in-S1 (supported by the internal model) using bridge 1 or bridged into a constraint F2-in-S2 (unsupported by the internal model) using bridge 2 which can then be bridged into a constraint F3-in-S3 (supported by the internal model) using bridge 3, it will choose bridge 1 as it allows to bridge F-in-S using only one bridge instead of two if it uses bridge 2 and 3.\n\n\n\n"
 },
 
 {
-    "location": "apireference.html#MathOptInterface.Bridges.addbridge!",
+    "location": "apireference.html#MathOptInterface.Bridges.add_bridge",
     "page": "Reference",
-    "title": "MathOptInterface.Bridges.addbridge!",
+    "title": "MathOptInterface.Bridges.add_bridge",
     "category": "function",
-    "text": "addbridge!(b::LazyBridgeOptimizer, BT::Type{<:AbstractBridge})\n\nEnable the use of the bridges of type BT by b.\n\n\n\n"
+    "text": "add_bridge(b::LazyBridgeOptimizer, BT::Type{<:AbstractBridge})\n\nEnable the use of the bridges of type BT by b.\n\n\n\n"
 },
 
 {
@@ -1757,7 +1757,7 @@ var documenterSearchIndex = {"docs": [
     "page": "Reference",
     "title": "Bridges",
     "category": "section",
-    "text": "Bridges can be used for automatic reformulation of a certain constraint type into equivalent constraints.Bridges.AbstractBridge\nBridges.AbstractBridgeOptimizer\nBridges.SingleBridgeOptimizer\nBridges.LazyBridgeOptimizer\nBridges.addbridge!Below is the list of bridges implemented in this package.Bridges.SplitIntervalBridge\nBridges.RSOCBridge\nBridges.GeoMeanBridge\nBridges.SquarePSDBridge\nBridges.RootDetBridge\nBridges.LogDetBridge\nBridges.SOCtoPSDBridge\nBridges.RSOCtoPSDBridgeFor each bridge defined in this package, a corresponding bridge optimizer is available with the same name without the \"Bridge\" suffix, e.g., SplitInterval is an SingleBridgeOptimizer for the SplitIntervalBridge."
+    "text": "Bridges can be used for automatic reformulation of a certain constraint type into equivalent constraints.Bridges.AbstractBridge\nBridges.AbstractBridgeOptimizer\nBridges.SingleBridgeOptimizer\nBridges.LazyBridgeOptimizer\nBridges.add_bridgeBelow is the list of bridges implemented in this package.Bridges.SplitIntervalBridge\nBridges.RSOCBridge\nBridges.GeoMeanBridge\nBridges.SquarePSDBridge\nBridges.RootDetBridge\nBridges.LogDetBridge\nBridges.SOCtoPSDBridge\nBridges.RSOCtoPSDBridgeFor each bridge defined in this package, a corresponding bridge optimizer is available with the same name without the \"Bridge\" suffix, e.g., SplitInterval is an SingleBridgeOptimizer for the SplitIntervalBridge."
 },
 
 ]}
