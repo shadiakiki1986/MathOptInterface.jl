@@ -377,6 +377,22 @@ var documenterSearchIndex = {"docs": [
 },
 
 {
+    "location": "apireference.html#MathOptInterface.is_set_by_optimize",
+    "page": "Reference",
+    "title": "MathOptInterface.is_set_by_optimize",
+    "category": "function",
+    "text": "is_set_by_optimize(::AnyAttribute)\n\nReturn a Bool indicating whether the value of the attribute is modified during an optimize! call, that is, the attribute is used to query the result of the optimization.\n\nImportant note when defining new attributes\n\nThis function returns false by default so it should be implemented for attributes that are modified by optimize!.\n\n\n\n"
+},
+
+{
+    "location": "apireference.html#MathOptInterface.is_copyable",
+    "page": "Reference",
+    "title": "MathOptInterface.is_copyable",
+    "category": "function",
+    "text": "is_copyable(::AnyAttribute)\n\nReturn a Bool indicating whether the value of the attribute may be copied during copy_to using set.\n\nImportant note when defining new attributes\n\nBy default is_copyable(attr) returns !is_set_by_optimize(attr). A specific method should be defined for attibutes which are copied indirectly during copy_to. For instance, both is_copyable and is_set_by_optimize return false for the following attributes:\n\nListOfOptimizerAttributesSet, ListOfModelAttributesSet, ListOfConstraintAttributesSet and ListOfVariableAttributesSet.\nSolverName and RawSolver: these attributes cannot be set.\nNumberOfVariables and ListOfVariableIndices: these attributes are set indirectly by add_variable and add_variables.\nObjectiveFunctionType: this attribute is set indirectly when setting the ObjectiveFunction attribute.\nNumberOfConstraints, ListOfConstraintIndices, ListOfConstraints, ConstraintFunction and ConstraintSet: these attributes are set indirectly by add_constraint and add_constraints.\n\n\n\n"
+},
+
+{
     "location": "apireference.html#MathOptInterface.get",
     "page": "Reference",
     "title": "MathOptInterface.get",
@@ -405,7 +421,7 @@ var documenterSearchIndex = {"docs": [
     "page": "Reference",
     "title": "MathOptInterface.supports",
     "category": "function",
-    "text": "supports(model::ModelLike, attr::AbstractOptimizerAttribute)::Bool\n\nReturn a Bool indicating whether model supports the optimizer attribute attr. That is, it returns false if copy_to(model, src) shows a warning in case attr is in the ListOfOptimizerAttributesSet of src; see copy_to for more details on how unsupported optimizer attributes are handled in copy.\n\nsupports(model::ModelLike, attr::AbstractModelAttribute)::Bool\n\nReturn a Bool indicating whether model supports the model attribute attr. That is, it returns false if copy_to(model, src) cannot be performed in case attr is in the ListOfModelAttributesSet of src.\n\nsupports(model::ModelLike, attr::AbstractVariableAttribute, ::Type{VariableIndex})::Bool\n\nReturn a Bool indicating whether model supports the variable attribute attr. That is, it returns false if copy_to(model, src) cannot be performed in case attr is in the ListOfVariableAttributesSet of src.\n\nsupports(model::ModelLike, attr::AbstractConstraintAttribute, ::Type{ConstraintIndex{F,S}})::Bool where {F,S}\n\nReturn a Bool indicating whether model supports the constraint attribute attr applied to an F-in-S constraint. That is, it returns false if copy_to(model, src) cannot be performed in case attr is in the ListOfConstraintAttributesSet of src.\n\nFor all four methods, if the attribute is only not supported in specific circumstances, it should still return true.\n\n\n\n"
+    "text": "supports(model::ModelLike, attr::AbstractOptimizerAttribute)::Bool\n\nReturn a Bool indicating whether model supports the optimizer attribute attr. That is, it returns false if copy_to(model, src) shows a warning in case attr is in the ListOfOptimizerAttributesSet of src; see copy_to for more details on how unsupported optimizer attributes are handled in copy.\n\nsupports(model::ModelLike, attr::AbstractModelAttribute)::Bool\n\nReturn a Bool indicating whether model supports the model attribute attr. That is, it returns false if copy_to(model, src) cannot be performed in case attr is in the ListOfModelAttributesSet of src.\n\nsupports(model::ModelLike, attr::AbstractVariableAttribute, ::Type{VariableIndex})::Bool\n\nReturn a Bool indicating whether model supports the variable attribute attr. That is, it returns false if copy_to(model, src) cannot be performed in case attr is in the ListOfVariableAttributesSet of src.\n\nsupports(model::ModelLike, attr::AbstractConstraintAttribute, ::Type{ConstraintIndex{F,S}})::Bool where {F,S}\n\nReturn a Bool indicating whether model supports the constraint attribute attr applied to an F-in-S constraint. That is, it returns false if copy_to(model, src) cannot be performed in case attr is in the ListOfConstraintAttributesSet of src.\n\nFor all four methods, if the attribute is only not supported in specific circumstances, it should still return true.\n\nNote that supports is only defined for attributes for which is_copyable returns true as other attributes do not appear in the list of attributes set obtained by ListOf...AttributesSet.\n\n\n\n"
 },
 
 {
@@ -413,7 +429,7 @@ var documenterSearchIndex = {"docs": [
     "page": "Reference",
     "title": "Attributes",
     "category": "section",
-    "text": "List of attribute categories.AbstractOptimizerAttribute\nAbstractModelAttribute\nAbstractVariableAttribute\nAbstractConstraintAttributeFunctions for getting and setting attributes.get\nget!\nset\nsupports"
+    "text": "List of attribute categories.AbstractOptimizerAttribute\nAbstractModelAttribute\nAbstractVariableAttribute\nAbstractConstraintAttributeAttributes can be set in different ways:it is either set when the model is created like SolverName and RawSolver,\nor explicitly when the model is copied like ObjectiveSense,\nor implicitly, e.g., NumberOfVariables is implicitly set by add_variable and ConstraintFunction is implicitly set by add_constraint.\nor it is set to contain the result of the optimization during optimize! like VariablePrimal.The following functions allow to distinguish between some of these different categories:is_set_by_optimize\nis_copyableFunctions for getting and setting attributes.get\nget!\nset\nsupports"
 },
 
 {
@@ -533,7 +549,7 @@ var documenterSearchIndex = {"docs": [
     "page": "Reference",
     "title": "MathOptInterface.ListOfModelAttributesSet",
     "category": "type",
-    "text": "ListOfModelAttributesSet()\n\nA model attribute for the Vector{AbstractModelAttribute} of all model attributes that were set to the model.\n\n\n\n"
+    "text": "ListOfModelAttributesSet()\n\nA model attribute for the Vector{AbstractModelAttribute} of all model attributes attr such that 1) is_copyable(attr) returns true and 2) the attribute was set to the model.\n\n\n\n"
 },
 
 {
@@ -541,7 +557,7 @@ var documenterSearchIndex = {"docs": [
     "page": "Reference",
     "title": "MathOptInterface.ListOfVariableAttributesSet",
     "category": "type",
-    "text": "ListOfVariableAttributesSet()\n\nA model attribute for the Vector{AbstractVariableAttribute} of all variable attributes that were set to the model.\n\n\n\n"
+    "text": "ListOfVariableAttributesSet()\n\nA model attribute for the Vector{AbstractVariableAttribute} of all variable attributes attr such that 1) is_copyable(attr) returns true and 2) the attribute was set to variables.\n\n\n\n"
 },
 
 {
@@ -549,7 +565,7 @@ var documenterSearchIndex = {"docs": [
     "page": "Reference",
     "title": "MathOptInterface.ListOfConstraintAttributesSet",
     "category": "type",
-    "text": "ListOfConstraintAttributesSet{F, S}()\n\nA model attribute for the Vector{AbstractConstraintAttribute} of all constraint attributes that were set to F-in-S constraints.\n\nNote\n\nThe attributes ConstraintFunction and ConstraintSet should not be included in the list even if then have been set with set.\n\n\n\n"
+    "text": "ListOfConstraintAttributesSet{F, S}()\n\nA model attribute for the Vector{AbstractConstraintAttribute} of all constraint attributes attr such that 1) is_copyable(attr) returns true and\n\nthe attribute was set to F-in-S constraints.\n\nNote\n\nThe attributes ConstraintFunction and ConstraintSet should not be included in the list even if then have been set with set.\n\n\n\n"
 },
 
 {
