@@ -55,38 +55,40 @@ end</code></pre><p>The <code>Success</code> status code specifically implies tha
 const MOI = MathOptInterface
 using GLPK
 
-# Solve the binary-constrained knapsack problem: max c&#39;x: w&#39;x &lt;= C, x binary using GLPK.
+# Solves the binary-constrained knapsack problem:
+# max c&#39;x: w&#39;x &lt;= C, x binary using GLPK.
 
 c = [1.0, 2.0, 3.0]
 w = [0.3, 0.5, 1.0]
 C = 3.2
 
-numvariables = length(c)
+num_variables = length(c)
 
-optimizer = GLPK.GLPKOptimizerMIP()
+optimizer = GLPK.Optimizer()
 
-# create the variables in the problem
-x = MOI.add_variables(optimizer, numvariables)
+# Create the variables in the problem.
+x = MOI.add_variables(optimizer, num_variables)
 
-# set the objective function
+# Set the objective function.
 objective_function = MOI.ScalarAffineFunction(MOI.ScalarAffineTerm.(c, x), 0.0)
-MOI.set(optimizer, MOI.ObjectiveFunction{MOI.ScalarAffineFunction{Float64}}(), objective_function)
+MOI.set(optimizer, MOI.ObjectiveFunction{MOI.ScalarAffineFunction{Float64}}(),
+        objective_function)
 MOI.set(optimizer, MOI.ObjectiveSense(), MOI.MaxSense)
 
-# add the knapsack constraint
+# Add the knapsack constraint.
 knapsack_function = MOI.ScalarAffineFunction(MOI.ScalarAffineTerm.(w, x), 0.0)
 MOI.add_constraint(optimizer, knapsack_function, MOI.LessThan(C))
 
-# add integrality constraints
-for i in 1:numvariables
+# Add integrality constraints.
+for i in 1:num_variables
     MOI.add_constraint(optimizer, MOI.SingleVariable(x[i]), MOI.ZeroOne())
 end
 
-# all set
+# All set!
 MOI.optimize!(optimizer)
 
 termination_status = MOI.get(optimizer, MOI.TerminationStatus())
-objvalue = MOI.get(optimizer, MOI.ObjectiveValue())
+obj_value = MOI.get(optimizer, MOI.ObjectiveValue())
 if termination_status != MOI.Success
     error(&quot;Solver terminated with status $termination_status&quot;)
 end
@@ -95,11 +97,12 @@ end
 
 result_status = MOI.get(optimizer, MOI.PrimalStatus())
 if result_status != MOI.FeasiblePoint
-    error(&quot;Solver ran successfully did not return a feasible point. The problem may be infeasible.&quot;)
+    error(&quot;Solver ran successfully but did not return a feasible point. &quot; *
+          &quot;The problem may be infeasible.&quot;)
 end
 primal_variable_result = MOI.get(optimizer, MOI.VariablePrimal(), x)
 
-@show objvalue
+@show obj_value
 @show primal_variable_result</code></pre><h2><a class="nav-anchor" id="Problem-modification-1" href="#Problem-modification-1">Problem modification</a></h2><p>In addition to adding and deleting constraints and variables, MathOptInterface supports modifying, in-place, coefficients in the constraints and the objective function of a model. These modifications can be grouped into two categories: modifications which replace the set of function of a constraint with a new set or function; and modifications which change, in-place, a component of a function.</p><p>In the following, we detail the various ways this can be achieved. Readers should note that some solvers will not support problem modification.</p><h3><a class="nav-anchor" id="Replacements-1" href="#Replacements-1">Replacements</a></h3><p>First, we discuss how to replace the set or function of a constraint with a new instance of the same type.</p><h4><a class="nav-anchor" id="The-set-of-a-constraint-1" href="#The-set-of-a-constraint-1">The set of a constraint</a></h4><p>Given a constraint of type <code>F</code>-in-<code>S</code> (see <a href="apimanual.html#Constraints-by-function-set-pairs-1">Constraints by function-set pairs</a>  above for an explanation), we can modify parameters (but not the type) of the  set <code>S</code> by replacing it with a new instance of the same type. For example,  given the variable bound <span>$x \le 1$</span>:</p><pre><code class="language-julia">c = add_constraint(m, SingleVariable(x), LessThan(1.0))</code></pre><p>we can modify the set so that the bound now <span>$x \le 2$</span> as follows:</p><pre><code class="language-julia">set(m, ConstraintSet(), c, LessThan(2.0))</code></pre><p>where <code>m</code> is our <a href="apireference.html#MathOptInterface.ModelLike"><code>ModelLike</code></a> model. However, the following will fail as the new set (<code>GreaterThan</code>) is of a different type to the original set (<code>LessThan</code>):</p><pre><code class="language-julia">set(m, ConstraintSet(), c, GreaterThan(2.0))  # errors</code></pre><p>If our constraint is an affine inequality, then this corresponds to modifying the right-hand side of a constraint in linear programming.</p><p>In some special cases, solvers may support efficiently changing the set of a constraint (for example, from <a href="apireference.html#MathOptInterface.LessThan"><code>LessThan</code></a> to <a href="apireference.html#MathOptInterface.GreaterThan"><code>GreaterThan</code></a>). For these cases, MathOptInterface provides the <a href="apireference.html#MathOptInterface.transform"><code>transform</code></a> method. For example, instead of the error we observed above, the following will work:</p><pre><code class="language-julia">c2 = transform(m, c, GreaterThan(1.0))</code></pre><p>The <a href="apireference.html#MathOptInterface.transform"><code>transform</code></a> function returns a new constraint index, and the old constraint index (i.e., <code>c</code>) is no longer valid:</p><pre><code class="language-julia">is_valid(m, c)   # false
 is_valid(m, c2)  # true</code></pre><p>Also note that <a href="apireference.html#MathOptInterface.transform"><code>transform</code></a> cannot be called with a set of the same type; <a href="apireference.html#MathOptInterface.set"><code>set</code></a> should be used instead.</p><h4><a class="nav-anchor" id="The-function-of-a-constraint-1" href="#The-function-of-a-constraint-1">The function of a constraint</a></h4><p>Given a constraint of type <code>F</code>-in-<code>S</code> (see <a href="apimanual.html#Constraints-by-function-set-pairs-1">Constraints by function-set pairs</a> above for an explanation), it is also  possible to modify the function of type <code>F</code> by replacing it with a new instance of the same type. For example, given the variable bound <span>$x \le 1$</span>:</p><pre><code class="language-julia">c = add_constraint(m, SingleVariable(x), LessThan(1.0))</code></pre><p>we can modify the function so that the bound now <span>$y \le 1$</span> as follows:</p><pre><code class="language-julia">set(m, ConstraintFunction(), c, SingleVariable(y))</code></pre><p>where <code>m</code> is our <a href="apireference.html#MathOptInterface.ModelLike"><code>ModelLike</code></a> model. However, the following will fail as the new function is of a different type to the original function:</p><pre><code class="language-julia">set(m, ConstraintFunction(), c,
     ScalarAffineFunction([ScalarAffineTerm(1.0, x)], 0.0)
