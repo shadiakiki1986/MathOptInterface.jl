@@ -1,7 +1,7 @@
 var documenterSearchIndex = {"docs": [
 
 {
-    "location": "index.html#",
+    "location": "#",
     "page": "Introduction",
     "title": "Introduction",
     "category": "page",
@@ -9,7 +9,7 @@ var documenterSearchIndex = {"docs": [
 },
 
 {
-    "location": "index.html#MathOptInterface-1",
+    "location": "#MathOptInterface-1",
     "page": "Introduction",
     "title": "MathOptInterface",
     "category": "section",
@@ -17,7 +17,7 @@ var documenterSearchIndex = {"docs": [
 },
 
 {
-    "location": "apimanual.html#",
+    "location": "apimanual/#",
     "page": "Manual",
     "title": "Manual",
     "category": "page",
@@ -25,7 +25,7 @@ var documenterSearchIndex = {"docs": [
 },
 
 {
-    "location": "apimanual.html#Manual-1",
+    "location": "apimanual/#Manual-1",
     "page": "Manual",
     "title": "Manual",
     "category": "section",
@@ -33,7 +33,7 @@ var documenterSearchIndex = {"docs": [
 },
 
 {
-    "location": "apimanual.html#Purpose-1",
+    "location": "apimanual/#Purpose-1",
     "page": "Manual",
     "title": "Purpose",
     "category": "section",
@@ -41,7 +41,7 @@ var documenterSearchIndex = {"docs": [
 },
 
 {
-    "location": "apimanual.html#Standard-form-problem-1",
+    "location": "apimanual/#Standard-form-problem-1",
     "page": "Manual",
     "title": "Standard form problem",
     "category": "section",
@@ -49,7 +49,7 @@ var documenterSearchIndex = {"docs": [
 },
 
 {
-    "location": "apimanual.html#The-ModelLike-and-AbstractOptimizer-APIs-1",
+    "location": "apimanual/#The-ModelLike-and-AbstractOptimizer-APIs-1",
     "page": "Manual",
     "title": "The ModelLike and AbstractOptimizer APIs",
     "category": "section",
@@ -57,7 +57,7 @@ var documenterSearchIndex = {"docs": [
 },
 
 {
-    "location": "apimanual.html#Variables-1",
+    "location": "apimanual/#Variables-1",
     "page": "Manual",
     "title": "Variables",
     "category": "section",
@@ -65,7 +65,7 @@ var documenterSearchIndex = {"docs": [
 },
 
 {
-    "location": "apimanual.html#Functions-1",
+    "location": "apimanual/#Functions-1",
     "page": "Manual",
     "title": "Functions",
     "category": "section",
@@ -73,7 +73,7 @@ var documenterSearchIndex = {"docs": [
 },
 
 {
-    "location": "apimanual.html#Sets-and-Constraints-1",
+    "location": "apimanual/#Sets-and-Constraints-1",
     "page": "Manual",
     "title": "Sets and Constraints",
     "category": "section",
@@ -81,7 +81,7 @@ var documenterSearchIndex = {"docs": [
 },
 
 {
-    "location": "apimanual.html#Constraints-by-function-set-pairs-1",
+    "location": "apimanual/#Constraints-by-function-set-pairs-1",
     "page": "Manual",
     "title": "Constraints by function-set pairs",
     "category": "section",
@@ -89,7 +89,7 @@ var documenterSearchIndex = {"docs": [
 },
 
 {
-    "location": "apimanual.html#Linear-constraints-1",
+    "location": "apimanual/#Linear-constraints-1",
     "page": "Manual",
     "title": "Linear constraints",
     "category": "section",
@@ -97,7 +97,7 @@ var documenterSearchIndex = {"docs": [
 },
 
 {
-    "location": "apimanual.html#Conic-constraints-1",
+    "location": "apimanual/#Conic-constraints-1",
     "page": "Manual",
     "title": "Conic constraints",
     "category": "section",
@@ -105,7 +105,7 @@ var documenterSearchIndex = {"docs": [
 },
 
 {
-    "location": "apimanual.html#Quadratic-constraints-1",
+    "location": "apimanual/#Quadratic-constraints-1",
     "page": "Manual",
     "title": "Quadratic constraints",
     "category": "section",
@@ -113,7 +113,7 @@ var documenterSearchIndex = {"docs": [
 },
 
 {
-    "location": "apimanual.html#Discrete-and-logical-constraints-1",
+    "location": "apimanual/#Discrete-and-logical-constraints-1",
     "page": "Manual",
     "title": "Discrete and logical constraints",
     "category": "section",
@@ -121,7 +121,7 @@ var documenterSearchIndex = {"docs": [
 },
 
 {
-    "location": "apimanual.html#Solving-and-retrieving-the-results-1",
+    "location": "apimanual/#Solving-and-retrieving-the-results-1",
     "page": "Manual",
     "title": "Solving and retrieving the results",
     "category": "section",
@@ -129,7 +129,7 @@ var documenterSearchIndex = {"docs": [
 },
 
 {
-    "location": "apimanual.html#Common-status-situations-1",
+    "location": "apimanual/#Common-status-situations-1",
     "page": "Manual",
     "title": "Common status situations",
     "category": "section",
@@ -137,7 +137,7 @@ var documenterSearchIndex = {"docs": [
 },
 
 {
-    "location": "apimanual.html#Primal-dual-convex-solver-1",
+    "location": "apimanual/#Primal-dual-convex-solver-1",
     "page": "Manual",
     "title": "Primal-dual convex solver",
     "category": "section",
@@ -145,7 +145,7 @@ var documenterSearchIndex = {"docs": [
 },
 
 {
-    "location": "apimanual.html#Global-mixed-integer-or-nonconvex-solver-1",
+    "location": "apimanual/#Global-mixed-integer-or-nonconvex-solver-1",
     "page": "Manual",
     "title": "Global mixed-integer or nonconvex solver",
     "category": "section",
@@ -153,7 +153,7 @@ var documenterSearchIndex = {"docs": [
 },
 
 {
-    "location": "apimanual.html#Local-solver-1",
+    "location": "apimanual/#Local-solver-1",
     "page": "Manual",
     "title": "Local solver",
     "category": "section",
@@ -161,7 +161,7 @@ var documenterSearchIndex = {"docs": [
 },
 
 {
-    "location": "apimanual.html#A-complete-example:-solving-a-knapsack-problem-1",
+    "location": "apimanual/#A-complete-example:-solving-a-knapsack-problem-1",
     "page": "Manual",
     "title": "A complete example: solving a knapsack problem",
     "category": "section",
@@ -169,7 +169,7 @@ var documenterSearchIndex = {"docs": [
 },
 
 {
-    "location": "apimanual.html#Problem-modification-1",
+    "location": "apimanual/#Problem-modification-1",
     "page": "Manual",
     "title": "Problem modification",
     "category": "section",
@@ -177,7 +177,7 @@ var documenterSearchIndex = {"docs": [
 },
 
 {
-    "location": "apimanual.html#Replacements-1",
+    "location": "apimanual/#Replacements-1",
     "page": "Manual",
     "title": "Replacements",
     "category": "section",
@@ -185,7 +185,7 @@ var documenterSearchIndex = {"docs": [
 },
 
 {
-    "location": "apimanual.html#The-set-of-a-constraint-1",
+    "location": "apimanual/#The-set-of-a-constraint-1",
     "page": "Manual",
     "title": "The set of a constraint",
     "category": "section",
@@ -193,7 +193,7 @@ var documenterSearchIndex = {"docs": [
 },
 
 {
-    "location": "apimanual.html#The-function-of-a-constraint-1",
+    "location": "apimanual/#The-function-of-a-constraint-1",
     "page": "Manual",
     "title": "The function of a constraint",
     "category": "section",
@@ -201,7 +201,7 @@ var documenterSearchIndex = {"docs": [
 },
 
 {
-    "location": "apimanual.html#In-place-modification-1",
+    "location": "apimanual/#In-place-modification-1",
     "page": "Manual",
     "title": "In-place modification",
     "category": "section",
@@ -209,7 +209,7 @@ var documenterSearchIndex = {"docs": [
 },
 
 {
-    "location": "apimanual.html#Constant-term-in-a-scalar-function-1",
+    "location": "apimanual/#Constant-term-in-a-scalar-function-1",
     "page": "Manual",
     "title": "Constant term in a scalar function",
     "category": "section",
@@ -217,7 +217,7 @@ var documenterSearchIndex = {"docs": [
 },
 
 {
-    "location": "apimanual.html#Constant-terms-in-a-vector-function-1",
+    "location": "apimanual/#Constant-terms-in-a-vector-function-1",
     "page": "Manual",
     "title": "Constant terms in a vector function",
     "category": "section",
@@ -225,7 +225,7 @@ var documenterSearchIndex = {"docs": [
 },
 
 {
-    "location": "apimanual.html#Affine-coefficients-in-a-scalar-function-1",
+    "location": "apimanual/#Affine-coefficients-in-a-scalar-function-1",
     "page": "Manual",
     "title": "Affine coefficients in a scalar function",
     "category": "section",
@@ -233,7 +233,7 @@ var documenterSearchIndex = {"docs": [
 },
 
 {
-    "location": "apimanual.html#Affine-coefficients-in-a-vector-function-1",
+    "location": "apimanual/#Affine-coefficients-in-a-vector-function-1",
     "page": "Manual",
     "title": "Affine coefficients in a vector function",
     "category": "section",
@@ -241,7 +241,7 @@ var documenterSearchIndex = {"docs": [
 },
 
 {
-    "location": "apimanual.html#Advanced-1",
+    "location": "apimanual/#Advanced-1",
     "page": "Manual",
     "title": "Advanced",
     "category": "section",
@@ -249,7 +249,7 @@ var documenterSearchIndex = {"docs": [
 },
 
 {
-    "location": "apimanual.html#Duals-1",
+    "location": "apimanual/#Duals-1",
     "page": "Manual",
     "title": "Duals",
     "category": "section",
@@ -257,7 +257,7 @@ var documenterSearchIndex = {"docs": [
 },
 
 {
-    "location": "apimanual.html#Duality-and-scalar-product-1",
+    "location": "apimanual/#Duality-and-scalar-product-1",
     "page": "Manual",
     "title": "Duality and scalar product",
     "category": "section",
@@ -265,7 +265,7 @@ var documenterSearchIndex = {"docs": [
 },
 
 {
-    "location": "apimanual.html#Constraint-bridges-1",
+    "location": "apimanual/#Constraint-bridges-1",
     "page": "Manual",
     "title": "Constraint bridges",
     "category": "section",
@@ -273,7 +273,7 @@ var documenterSearchIndex = {"docs": [
 },
 
 {
-    "location": "apimanual.html#Implementing-a-solver-interface-1",
+    "location": "apimanual/#Implementing-a-solver-interface-1",
     "page": "Manual",
     "title": "Implementing a solver interface",
     "category": "section",
@@ -281,7 +281,7 @@ var documenterSearchIndex = {"docs": [
 },
 
 {
-    "location": "apimanual.html#JuMP-mapping-1",
+    "location": "apimanual/#JuMP-mapping-1",
     "page": "Manual",
     "title": "JuMP mapping",
     "category": "section",
@@ -289,7 +289,7 @@ var documenterSearchIndex = {"docs": [
 },
 
 {
-    "location": "apimanual.html#Column-Generation-1",
+    "location": "apimanual/#Column-Generation-1",
     "page": "Manual",
     "title": "Column Generation",
     "category": "section",
@@ -297,7 +297,7 @@ var documenterSearchIndex = {"docs": [
 },
 
 {
-    "location": "apimanual.html#Problem-data-1",
+    "location": "apimanual/#Problem-data-1",
     "page": "Manual",
     "title": "Problem data",
     "category": "section",
@@ -305,7 +305,7 @@ var documenterSearchIndex = {"docs": [
 },
 
 {
-    "location": "apimanual.html#Statuses-1",
+    "location": "apimanual/#Statuses-1",
     "page": "Manual",
     "title": "Statuses",
     "category": "section",
@@ -313,7 +313,7 @@ var documenterSearchIndex = {"docs": [
 },
 
 {
-    "location": "apimanual.html#Package-Naming-1",
+    "location": "apimanual/#Package-Naming-1",
     "page": "Manual",
     "title": "Package Naming",
     "category": "section",
@@ -321,7 +321,7 @@ var documenterSearchIndex = {"docs": [
 },
 
 {
-    "location": "apimanual.html#Testing-guideline-1",
+    "location": "apimanual/#Testing-guideline-1",
     "page": "Manual",
     "title": "Testing guideline",
     "category": "section",
@@ -329,7 +329,7 @@ var documenterSearchIndex = {"docs": [
 },
 
 {
-    "location": "apireference.html#",
+    "location": "apireference/#",
     "page": "Reference",
     "title": "Reference",
     "category": "page",
@@ -337,7 +337,7 @@ var documenterSearchIndex = {"docs": [
 },
 
 {
-    "location": "apireference.html#API-Reference-1",
+    "location": "apireference/#API-Reference-1",
     "page": "Reference",
     "title": "API Reference",
     "category": "section",
@@ -345,7 +345,7 @@ var documenterSearchIndex = {"docs": [
 },
 
 {
-    "location": "apireference.html#MathOptInterface.AbstractOptimizerAttribute",
+    "location": "apireference/#MathOptInterface.AbstractOptimizerAttribute",
     "page": "Reference",
     "title": "MathOptInterface.AbstractOptimizerAttribute",
     "category": "type",
@@ -353,7 +353,7 @@ var documenterSearchIndex = {"docs": [
 },
 
 {
-    "location": "apireference.html#MathOptInterface.AbstractModelAttribute",
+    "location": "apireference/#MathOptInterface.AbstractModelAttribute",
     "page": "Reference",
     "title": "MathOptInterface.AbstractModelAttribute",
     "category": "type",
@@ -361,7 +361,7 @@ var documenterSearchIndex = {"docs": [
 },
 
 {
-    "location": "apireference.html#MathOptInterface.AbstractVariableAttribute",
+    "location": "apireference/#MathOptInterface.AbstractVariableAttribute",
     "page": "Reference",
     "title": "MathOptInterface.AbstractVariableAttribute",
     "category": "type",
@@ -369,7 +369,7 @@ var documenterSearchIndex = {"docs": [
 },
 
 {
-    "location": "apireference.html#MathOptInterface.AbstractConstraintAttribute",
+    "location": "apireference/#MathOptInterface.AbstractConstraintAttribute",
     "page": "Reference",
     "title": "MathOptInterface.AbstractConstraintAttribute",
     "category": "type",
@@ -377,7 +377,7 @@ var documenterSearchIndex = {"docs": [
 },
 
 {
-    "location": "apireference.html#MathOptInterface.is_set_by_optimize",
+    "location": "apireference/#MathOptInterface.is_set_by_optimize",
     "page": "Reference",
     "title": "MathOptInterface.is_set_by_optimize",
     "category": "function",
@@ -385,7 +385,7 @@ var documenterSearchIndex = {"docs": [
 },
 
 {
-    "location": "apireference.html#MathOptInterface.is_copyable",
+    "location": "apireference/#MathOptInterface.is_copyable",
     "page": "Reference",
     "title": "MathOptInterface.is_copyable",
     "category": "function",
@@ -393,15 +393,15 @@ var documenterSearchIndex = {"docs": [
 },
 
 {
-    "location": "apireference.html#MathOptInterface.get",
+    "location": "apireference/#MathOptInterface.get",
     "page": "Reference",
     "title": "MathOptInterface.get",
     "category": "function",
-    "text": "get(optimizer::AbstractOptimizer, attr::AbstractOptimizerAttribute)\n\nReturn an attribute attr of the optimizer optimizer.\n\nget(model::ModelLike, attr::AbstractModelAttribute)\n\nReturn an attribute attr of the model model.\n\nget(model::ModelLike, attr::AbstractVariableAttribute, v::VariableIndex)\n\nReturn an attribute attr of the variable v in model model.\n\nget(model::ModelLike, attr::AbstractVariableAttribute, v::Vector{VariableIndex})\n\nReturn a vector of attributes corresponding to each variable in the collection v in the model model.\n\nget(model::ModelLike, attr::AbstractConstraintAttribute, c::ConstraintIndex)\n\nReturn an attribute attr of the constraint c in model model.\n\nget(model::ModelLike, attr::AbstractConstraintAttribute, c::Vector{ConstraintIndex{F,S}})\n\nReturn a vector of attributes corresponding to each constraint in the collection c in the model model.\n\nget(model::ModelLike, ::Type{VariableIndex}, name::String)\n\nIf a variable with name name exists in the model model, return the corresponding index, otherwise return nothing. Errors if two variables have the same name and the model implementation does not check for duplicates when the names are set.\n\nget(model::ModelLike, ::Type{ConstraintIndex{F,S}}, name::String) where {F<:AbstractFunction,S<:AbstractSet}\n\nIf an F-in-S constraint with name name exists in the model model, return the corresponding index, otherwise return nothing. Errors if two constraints have the same name and the model implementation does not check for duplicates when the names are set.\n\nget(model::ModelLike, ::Type{ConstraintIndex}, name::String)\n\nIf any constraint with name name exists in the model model, return the corresponding index, otherwise return nothing. This version is available for convenience but may incur a performance penalty because it is not type stable. Errors if two constraints have the same name and the model implementation does not check for duplicates when the names are set.\n\nExamples\n\nget(model, ObjectiveValue())\nget(model, VariablePrimal(), ref)\nget(model, VariablePrimal(5), [ref1, ref2])\nget(model, OtherAttribute(\"something specific to cplex\"))\nget(model, VariableIndex, \"var1\")\nget(model, ConstraintIndex{ScalarAffineFunction{Float64},LessThan{Float64}}, \"con1\")\nget(model, ConstraintIndex, \"con1\")\n\n\n\n\n\n"
+    "text": "get(optimizer::AbstractOptimizer, attr::AbstractOptimizerAttribute)\n\nReturn an attribute attr of the optimizer optimizer.\n\nget(model::ModelLike, attr::AbstractModelAttribute)\n\nReturn an attribute attr of the model model.\n\nget(model::ModelLike, attr::AbstractVariableAttribute, v::VariableIndex)\n\nReturn an attribute attr of the variable v in model model.\n\nget(model::ModelLike, attr::AbstractVariableAttribute, v::Vector{VariableIndex})\n\nReturn a vector of attributes corresponding to each variable in the collection v in the model model.\n\nget(model::ModelLike, attr::AbstractConstraintAttribute, c::ConstraintIndex)\n\nReturn an attribute attr of the constraint c in model model.\n\nget(model::ModelLike, attr::AbstractConstraintAttribute, c::Vector{ConstraintIndex{F,S}})\n\nReturn a vector of attributes corresponding to each constraint in the collection c in the model model.\n\nget(model::ModelLike, ::Type{VariableIndex}, name::String)\n\nIf a variable with name name exists in the model model, return the corresponding index, otherwise return nothing. Errors if two variables have the same name.\n\nget(model::ModelLike, ::Type{ConstraintIndex{F,S}}, name::String) where {F<:AbstractFunction,S<:AbstractSet}\n\nIf an F-in-S constraint with name name exists in the model model, return the corresponding index, otherwise return nothing. Errors if two constraints have the same name.\n\nget(model::ModelLike, ::Type{ConstraintIndex}, name::String)\n\nIf any constraint with name name exists in the model model, return the corresponding index, otherwise return nothing. This version is available for convenience but may incur a performance penalty because it is not type stable. Errors if two constraints have the same name.\n\nExamples\n\nget(model, ObjectiveValue())\nget(model, VariablePrimal(), ref)\nget(model, VariablePrimal(5), [ref1, ref2])\nget(model, OtherAttribute(\"something specific to cplex\"))\nget(model, VariableIndex, \"var1\")\nget(model, ConstraintIndex{ScalarAffineFunction{Float64},LessThan{Float64}}, \"con1\")\nget(model, ConstraintIndex, \"con1\")\n\n\n\n\n\n"
 },
 
 {
-    "location": "apireference.html#MathOptInterface.get!",
+    "location": "apireference/#MathOptInterface.get!",
     "page": "Reference",
     "title": "MathOptInterface.get!",
     "category": "function",
@@ -409,7 +409,7 @@ var documenterSearchIndex = {"docs": [
 },
 
 {
-    "location": "apireference.html#MathOptInterface.set",
+    "location": "apireference/#MathOptInterface.set",
     "page": "Reference",
     "title": "MathOptInterface.set",
     "category": "function",
@@ -417,7 +417,7 @@ var documenterSearchIndex = {"docs": [
 },
 
 {
-    "location": "apireference.html#MathOptInterface.supports",
+    "location": "apireference/#MathOptInterface.supports",
     "page": "Reference",
     "title": "MathOptInterface.supports",
     "category": "function",
@@ -425,7 +425,7 @@ var documenterSearchIndex = {"docs": [
 },
 
 {
-    "location": "apireference.html#Attributes-1",
+    "location": "apireference/#Attributes-1",
     "page": "Reference",
     "title": "Attributes",
     "category": "section",
@@ -433,7 +433,7 @@ var documenterSearchIndex = {"docs": [
 },
 
 {
-    "location": "apireference.html#MathOptInterface.ModelLike",
+    "location": "apireference/#MathOptInterface.ModelLike",
     "page": "Reference",
     "title": "MathOptInterface.ModelLike",
     "category": "type",
@@ -441,7 +441,7 @@ var documenterSearchIndex = {"docs": [
 },
 
 {
-    "location": "apireference.html#Base.isempty",
+    "location": "apireference/#Base.isempty",
     "page": "Reference",
     "title": "Base.isempty",
     "category": "function",
@@ -449,7 +449,7 @@ var documenterSearchIndex = {"docs": [
 },
 
 {
-    "location": "apireference.html#MathOptInterface.empty!",
+    "location": "apireference/#MathOptInterface.empty!",
     "page": "Reference",
     "title": "MathOptInterface.empty!",
     "category": "function",
@@ -457,7 +457,7 @@ var documenterSearchIndex = {"docs": [
 },
 
 {
-    "location": "apireference.html#MathOptInterface.write_to_file",
+    "location": "apireference/#MathOptInterface.write_to_file",
     "page": "Reference",
     "title": "MathOptInterface.write_to_file",
     "category": "function",
@@ -465,7 +465,7 @@ var documenterSearchIndex = {"docs": [
 },
 
 {
-    "location": "apireference.html#MathOptInterface.read_from_file",
+    "location": "apireference/#MathOptInterface.read_from_file",
     "page": "Reference",
     "title": "MathOptInterface.read_from_file",
     "category": "function",
@@ -473,7 +473,7 @@ var documenterSearchIndex = {"docs": [
 },
 
 {
-    "location": "apireference.html#MathOptInterface.copy_to",
+    "location": "apireference/#MathOptInterface.copy_to",
     "page": "Reference",
     "title": "MathOptInterface.copy_to",
     "category": "function",
@@ -481,7 +481,7 @@ var documenterSearchIndex = {"docs": [
 },
 
 {
-    "location": "apireference.html#MathOptInterface.Name",
+    "location": "apireference/#MathOptInterface.Name",
     "page": "Reference",
     "title": "MathOptInterface.Name",
     "category": "type",
@@ -489,7 +489,7 @@ var documenterSearchIndex = {"docs": [
 },
 
 {
-    "location": "apireference.html#MathOptInterface.ObjectiveSense",
+    "location": "apireference/#MathOptInterface.ObjectiveSense",
     "page": "Reference",
     "title": "MathOptInterface.ObjectiveSense",
     "category": "type",
@@ -497,7 +497,7 @@ var documenterSearchIndex = {"docs": [
 },
 
 {
-    "location": "apireference.html#MathOptInterface.NumberOfVariables",
+    "location": "apireference/#MathOptInterface.NumberOfVariables",
     "page": "Reference",
     "title": "MathOptInterface.NumberOfVariables",
     "category": "type",
@@ -505,7 +505,7 @@ var documenterSearchIndex = {"docs": [
 },
 
 {
-    "location": "apireference.html#MathOptInterface.ListOfVariableIndices",
+    "location": "apireference/#MathOptInterface.ListOfVariableIndices",
     "page": "Reference",
     "title": "MathOptInterface.ListOfVariableIndices",
     "category": "type",
@@ -513,7 +513,7 @@ var documenterSearchIndex = {"docs": [
 },
 
 {
-    "location": "apireference.html#MathOptInterface.ListOfConstraints",
+    "location": "apireference/#MathOptInterface.ListOfConstraints",
     "page": "Reference",
     "title": "MathOptInterface.ListOfConstraints",
     "category": "type",
@@ -521,7 +521,7 @@ var documenterSearchIndex = {"docs": [
 },
 
 {
-    "location": "apireference.html#MathOptInterface.NumberOfConstraints",
+    "location": "apireference/#MathOptInterface.NumberOfConstraints",
     "page": "Reference",
     "title": "MathOptInterface.NumberOfConstraints",
     "category": "type",
@@ -529,7 +529,7 @@ var documenterSearchIndex = {"docs": [
 },
 
 {
-    "location": "apireference.html#MathOptInterface.ListOfConstraintIndices",
+    "location": "apireference/#MathOptInterface.ListOfConstraintIndices",
     "page": "Reference",
     "title": "MathOptInterface.ListOfConstraintIndices",
     "category": "type",
@@ -537,7 +537,7 @@ var documenterSearchIndex = {"docs": [
 },
 
 {
-    "location": "apireference.html#MathOptInterface.ListOfOptimizerAttributesSet",
+    "location": "apireference/#MathOptInterface.ListOfOptimizerAttributesSet",
     "page": "Reference",
     "title": "MathOptInterface.ListOfOptimizerAttributesSet",
     "category": "type",
@@ -545,7 +545,7 @@ var documenterSearchIndex = {"docs": [
 },
 
 {
-    "location": "apireference.html#MathOptInterface.ListOfModelAttributesSet",
+    "location": "apireference/#MathOptInterface.ListOfModelAttributesSet",
     "page": "Reference",
     "title": "MathOptInterface.ListOfModelAttributesSet",
     "category": "type",
@@ -553,7 +553,7 @@ var documenterSearchIndex = {"docs": [
 },
 
 {
-    "location": "apireference.html#MathOptInterface.ListOfVariableAttributesSet",
+    "location": "apireference/#MathOptInterface.ListOfVariableAttributesSet",
     "page": "Reference",
     "title": "MathOptInterface.ListOfVariableAttributesSet",
     "category": "type",
@@ -561,7 +561,7 @@ var documenterSearchIndex = {"docs": [
 },
 
 {
-    "location": "apireference.html#MathOptInterface.ListOfConstraintAttributesSet",
+    "location": "apireference/#MathOptInterface.ListOfConstraintAttributesSet",
     "page": "Reference",
     "title": "MathOptInterface.ListOfConstraintAttributesSet",
     "category": "type",
@@ -569,7 +569,7 @@ var documenterSearchIndex = {"docs": [
 },
 
 {
-    "location": "apireference.html#Model-Interface-1",
+    "location": "apireference/#Model-Interface-1",
     "page": "Reference",
     "title": "Model Interface",
     "category": "section",
@@ -577,7 +577,7 @@ var documenterSearchIndex = {"docs": [
 },
 
 {
-    "location": "apireference.html#MathOptInterface.AbstractOptimizer",
+    "location": "apireference/#MathOptInterface.AbstractOptimizer",
     "page": "Reference",
     "title": "MathOptInterface.AbstractOptimizer",
     "category": "type",
@@ -585,7 +585,7 @@ var documenterSearchIndex = {"docs": [
 },
 
 {
-    "location": "apireference.html#MathOptInterface.optimize!",
+    "location": "apireference/#MathOptInterface.optimize!",
     "page": "Reference",
     "title": "MathOptInterface.optimize!",
     "category": "function",
@@ -593,7 +593,7 @@ var documenterSearchIndex = {"docs": [
 },
 
 {
-    "location": "apireference.html#MathOptInterface.SolverName",
+    "location": "apireference/#MathOptInterface.SolverName",
     "page": "Reference",
     "title": "MathOptInterface.SolverName",
     "category": "type",
@@ -601,7 +601,7 @@ var documenterSearchIndex = {"docs": [
 },
 
 {
-    "location": "apireference.html#MathOptInterface.RawSolver",
+    "location": "apireference/#MathOptInterface.RawSolver",
     "page": "Reference",
     "title": "MathOptInterface.RawSolver",
     "category": "type",
@@ -609,7 +609,7 @@ var documenterSearchIndex = {"docs": [
 },
 
 {
-    "location": "apireference.html#MathOptInterface.ResultCount",
+    "location": "apireference/#MathOptInterface.ResultCount",
     "page": "Reference",
     "title": "MathOptInterface.ResultCount",
     "category": "type",
@@ -617,7 +617,7 @@ var documenterSearchIndex = {"docs": [
 },
 
 {
-    "location": "apireference.html#MathOptInterface.ObjectiveFunction",
+    "location": "apireference/#MathOptInterface.ObjectiveFunction",
     "page": "Reference",
     "title": "MathOptInterface.ObjectiveFunction",
     "category": "type",
@@ -625,7 +625,7 @@ var documenterSearchIndex = {"docs": [
 },
 
 {
-    "location": "apireference.html#MathOptInterface.ObjectiveFunctionType",
+    "location": "apireference/#MathOptInterface.ObjectiveFunctionType",
     "page": "Reference",
     "title": "MathOptInterface.ObjectiveFunctionType",
     "category": "type",
@@ -633,7 +633,7 @@ var documenterSearchIndex = {"docs": [
 },
 
 {
-    "location": "apireference.html#MathOptInterface.ObjectiveValue",
+    "location": "apireference/#MathOptInterface.ObjectiveValue",
     "page": "Reference",
     "title": "MathOptInterface.ObjectiveValue",
     "category": "type",
@@ -641,7 +641,7 @@ var documenterSearchIndex = {"docs": [
 },
 
 {
-    "location": "apireference.html#MathOptInterface.ObjectiveBound",
+    "location": "apireference/#MathOptInterface.ObjectiveBound",
     "page": "Reference",
     "title": "MathOptInterface.ObjectiveBound",
     "category": "type",
@@ -649,7 +649,7 @@ var documenterSearchIndex = {"docs": [
 },
 
 {
-    "location": "apireference.html#MathOptInterface.RelativeGap",
+    "location": "apireference/#MathOptInterface.RelativeGap",
     "page": "Reference",
     "title": "MathOptInterface.RelativeGap",
     "category": "type",
@@ -657,7 +657,7 @@ var documenterSearchIndex = {"docs": [
 },
 
 {
-    "location": "apireference.html#MathOptInterface.SolveTime",
+    "location": "apireference/#MathOptInterface.SolveTime",
     "page": "Reference",
     "title": "MathOptInterface.SolveTime",
     "category": "type",
@@ -665,7 +665,7 @@ var documenterSearchIndex = {"docs": [
 },
 
 {
-    "location": "apireference.html#MathOptInterface.SimplexIterations",
+    "location": "apireference/#MathOptInterface.SimplexIterations",
     "page": "Reference",
     "title": "MathOptInterface.SimplexIterations",
     "category": "type",
@@ -673,7 +673,7 @@ var documenterSearchIndex = {"docs": [
 },
 
 {
-    "location": "apireference.html#MathOptInterface.BarrierIterations",
+    "location": "apireference/#MathOptInterface.BarrierIterations",
     "page": "Reference",
     "title": "MathOptInterface.BarrierIterations",
     "category": "type",
@@ -681,7 +681,7 @@ var documenterSearchIndex = {"docs": [
 },
 
 {
-    "location": "apireference.html#MathOptInterface.NodeCount",
+    "location": "apireference/#MathOptInterface.NodeCount",
     "page": "Reference",
     "title": "MathOptInterface.NodeCount",
     "category": "type",
@@ -689,7 +689,7 @@ var documenterSearchIndex = {"docs": [
 },
 
 {
-    "location": "apireference.html#MathOptInterface.TerminationStatus",
+    "location": "apireference/#MathOptInterface.TerminationStatus",
     "page": "Reference",
     "title": "MathOptInterface.TerminationStatus",
     "category": "type",
@@ -697,7 +697,7 @@ var documenterSearchIndex = {"docs": [
 },
 
 {
-    "location": "apireference.html#MathOptInterface.PrimalStatus",
+    "location": "apireference/#MathOptInterface.PrimalStatus",
     "page": "Reference",
     "title": "MathOptInterface.PrimalStatus",
     "category": "type",
@@ -705,7 +705,7 @@ var documenterSearchIndex = {"docs": [
 },
 
 {
-    "location": "apireference.html#MathOptInterface.DualStatus",
+    "location": "apireference/#MathOptInterface.DualStatus",
     "page": "Reference",
     "title": "MathOptInterface.DualStatus",
     "category": "type",
@@ -713,7 +713,7 @@ var documenterSearchIndex = {"docs": [
 },
 
 {
-    "location": "apireference.html#Optimizers-1",
+    "location": "apireference/#Optimizers-1",
     "page": "Reference",
     "title": "Optimizers",
     "category": "section",
@@ -721,7 +721,7 @@ var documenterSearchIndex = {"docs": [
 },
 
 {
-    "location": "apireference.html#MathOptInterface.TerminationStatusCode",
+    "location": "apireference/#MathOptInterface.TerminationStatusCode",
     "page": "Reference",
     "title": "MathOptInterface.TerminationStatusCode",
     "category": "type",
@@ -729,7 +729,7 @@ var documenterSearchIndex = {"docs": [
 },
 
 {
-    "location": "apireference.html#Termination-Status-1",
+    "location": "apireference/#Termination-Status-1",
     "page": "Reference",
     "title": "Termination Status",
     "category": "section",
@@ -737,7 +737,7 @@ var documenterSearchIndex = {"docs": [
 },
 
 {
-    "location": "apireference.html#MathOptInterface.ResultStatusCode",
+    "location": "apireference/#MathOptInterface.ResultStatusCode",
     "page": "Reference",
     "title": "MathOptInterface.ResultStatusCode",
     "category": "type",
@@ -745,7 +745,7 @@ var documenterSearchIndex = {"docs": [
 },
 
 {
-    "location": "apireference.html#Result-Status-1",
+    "location": "apireference/#Result-Status-1",
     "page": "Reference",
     "title": "Result Status",
     "category": "section",
@@ -753,7 +753,7 @@ var documenterSearchIndex = {"docs": [
 },
 
 {
-    "location": "apireference.html#Variables-and-Constraints-1",
+    "location": "apireference/#Variables-and-Constraints-1",
     "page": "Reference",
     "title": "Variables and Constraints",
     "category": "section",
@@ -761,7 +761,7 @@ var documenterSearchIndex = {"docs": [
 },
 
 {
-    "location": "apireference.html#MathOptInterface.BasisStatusCode",
+    "location": "apireference/#MathOptInterface.BasisStatusCode",
     "page": "Reference",
     "title": "MathOptInterface.BasisStatusCode",
     "category": "type",
@@ -769,7 +769,7 @@ var documenterSearchIndex = {"docs": [
 },
 
 {
-    "location": "apireference.html#Basis-Status-1",
+    "location": "apireference/#Basis-Status-1",
     "page": "Reference",
     "title": "Basis Status",
     "category": "section",
@@ -777,7 +777,7 @@ var documenterSearchIndex = {"docs": [
 },
 
 {
-    "location": "apireference.html#MathOptInterface.VariableIndex",
+    "location": "apireference/#MathOptInterface.VariableIndex",
     "page": "Reference",
     "title": "MathOptInterface.VariableIndex",
     "category": "type",
@@ -785,7 +785,7 @@ var documenterSearchIndex = {"docs": [
 },
 
 {
-    "location": "apireference.html#MathOptInterface.ConstraintIndex",
+    "location": "apireference/#MathOptInterface.ConstraintIndex",
     "page": "Reference",
     "title": "MathOptInterface.ConstraintIndex",
     "category": "type",
@@ -793,7 +793,7 @@ var documenterSearchIndex = {"docs": [
 },
 
 {
-    "location": "apireference.html#MathOptInterface.is_valid",
+    "location": "apireference/#MathOptInterface.is_valid",
     "page": "Reference",
     "title": "MathOptInterface.is_valid",
     "category": "function",
@@ -801,7 +801,7 @@ var documenterSearchIndex = {"docs": [
 },
 
 {
-    "location": "apireference.html#MathOptInterface.delete-Tuple{MathOptInterface.ModelLike,Union{VariableIndex, ConstraintIndex}}",
+    "location": "apireference/#MathOptInterface.delete-Tuple{MathOptInterface.ModelLike,Union{VariableIndex, ConstraintIndex}}",
     "page": "Reference",
     "title": "MathOptInterface.delete",
     "category": "method",
@@ -809,7 +809,7 @@ var documenterSearchIndex = {"docs": [
 },
 
 {
-    "location": "apireference.html#Index-types-1",
+    "location": "apireference/#Index-types-1",
     "page": "Reference",
     "title": "Index types",
     "category": "section",
@@ -817,7 +817,7 @@ var documenterSearchIndex = {"docs": [
 },
 
 {
-    "location": "apireference.html#MathOptInterface.add_variables",
+    "location": "apireference/#MathOptInterface.add_variables",
     "page": "Reference",
     "title": "MathOptInterface.add_variables",
     "category": "function",
@@ -825,7 +825,7 @@ var documenterSearchIndex = {"docs": [
 },
 
 {
-    "location": "apireference.html#MathOptInterface.add_variable",
+    "location": "apireference/#MathOptInterface.add_variable",
     "page": "Reference",
     "title": "MathOptInterface.add_variable",
     "category": "function",
@@ -833,15 +833,15 @@ var documenterSearchIndex = {"docs": [
 },
 
 {
-    "location": "apireference.html#MathOptInterface.VariableName",
+    "location": "apireference/#MathOptInterface.VariableName",
     "page": "Reference",
     "title": "MathOptInterface.VariableName",
     "category": "type",
-    "text": "VariableName()\n\nA variable attribute for the string identifying the variable. It is invalid for two variables to have the same name.\n\nNote\n\nAn implementation may but is not required to check for duplicate names when the VariableName attribute is set. If this check is not performed when the name is set, then looking up a variable by name must throw an error when more than one variable has the same name.\n\n\n\n\n\n"
+    "text": "VariableName()\n\nA variable attribute for a string identifying the variable. It is valid for two variables to have the same name; however, variables with duplicate names cannot be looked up using MOI.get.\n\n\n\n\n\n"
 },
 
 {
-    "location": "apireference.html#MathOptInterface.VariablePrimalStart",
+    "location": "apireference/#MathOptInterface.VariablePrimalStart",
     "page": "Reference",
     "title": "MathOptInterface.VariablePrimalStart",
     "category": "type",
@@ -849,7 +849,7 @@ var documenterSearchIndex = {"docs": [
 },
 
 {
-    "location": "apireference.html#MathOptInterface.VariablePrimal",
+    "location": "apireference/#MathOptInterface.VariablePrimal",
     "page": "Reference",
     "title": "MathOptInterface.VariablePrimal",
     "category": "type",
@@ -857,7 +857,7 @@ var documenterSearchIndex = {"docs": [
 },
 
 {
-    "location": "apireference.html#MathOptInterface.VariableBasisStatus",
+    "location": "apireference/#MathOptInterface.VariableBasisStatus",
     "page": "Reference",
     "title": "MathOptInterface.VariableBasisStatus",
     "category": "type",
@@ -865,7 +865,7 @@ var documenterSearchIndex = {"docs": [
 },
 
 {
-    "location": "apireference.html#Variables-1",
+    "location": "apireference/#Variables-1",
     "page": "Reference",
     "title": "Variables",
     "category": "section",
@@ -873,7 +873,7 @@ var documenterSearchIndex = {"docs": [
 },
 
 {
-    "location": "apireference.html#MathOptInterface.is_valid-Tuple{MathOptInterface.ModelLike,MathOptInterface.ConstraintIndex}",
+    "location": "apireference/#MathOptInterface.is_valid-Tuple{MathOptInterface.ModelLike,MathOptInterface.ConstraintIndex}",
     "page": "Reference",
     "title": "MathOptInterface.is_valid",
     "category": "method",
@@ -881,7 +881,7 @@ var documenterSearchIndex = {"docs": [
 },
 
 {
-    "location": "apireference.html#MathOptInterface.add_constraint",
+    "location": "apireference/#MathOptInterface.add_constraint",
     "page": "Reference",
     "title": "MathOptInterface.add_constraint",
     "category": "function",
@@ -889,7 +889,7 @@ var documenterSearchIndex = {"docs": [
 },
 
 {
-    "location": "apireference.html#MathOptInterface.add_constraints",
+    "location": "apireference/#MathOptInterface.add_constraints",
     "page": "Reference",
     "title": "MathOptInterface.add_constraints",
     "category": "function",
@@ -897,7 +897,7 @@ var documenterSearchIndex = {"docs": [
 },
 
 {
-    "location": "apireference.html#MathOptInterface.transform",
+    "location": "apireference/#MathOptInterface.transform",
     "page": "Reference",
     "title": "MathOptInterface.transform",
     "category": "function",
@@ -905,7 +905,7 @@ var documenterSearchIndex = {"docs": [
 },
 
 {
-    "location": "apireference.html#MathOptInterface.supports_constraint",
+    "location": "apireference/#MathOptInterface.supports_constraint",
     "page": "Reference",
     "title": "MathOptInterface.supports_constraint",
     "category": "function",
@@ -913,15 +913,15 @@ var documenterSearchIndex = {"docs": [
 },
 
 {
-    "location": "apireference.html#MathOptInterface.ConstraintName",
+    "location": "apireference/#MathOptInterface.ConstraintName",
     "page": "Reference",
     "title": "MathOptInterface.ConstraintName",
     "category": "type",
-    "text": "ConstraintName()\n\nA constraint attribute for the string identifying the constraint. It is invalid for two constraints of any kind to have the same name.\n\nNote\n\nAn implementation may but is not required to check for duplicate names when the ConstraintName attribute is set. If this check is not performed when the name is set, then looking up a constraint by name must throw an error when more than one constraint (of any type) has the same name.\n\n\n\n\n\n"
+    "text": "ConstraintName()\n\nA constraint attribute for a string identifying the constraint. It is valid for constraints variables to have the same name; however, constraints with duplicate names cannot be looked up using MOI.get regardless of if they have the same F-inS type.\n\n\n\n\n\n"
 },
 
 {
-    "location": "apireference.html#MathOptInterface.ConstraintPrimalStart",
+    "location": "apireference/#MathOptInterface.ConstraintPrimalStart",
     "page": "Reference",
     "title": "MathOptInterface.ConstraintPrimalStart",
     "category": "type",
@@ -929,7 +929,7 @@ var documenterSearchIndex = {"docs": [
 },
 
 {
-    "location": "apireference.html#MathOptInterface.ConstraintDualStart",
+    "location": "apireference/#MathOptInterface.ConstraintDualStart",
     "page": "Reference",
     "title": "MathOptInterface.ConstraintDualStart",
     "category": "type",
@@ -937,7 +937,7 @@ var documenterSearchIndex = {"docs": [
 },
 
 {
-    "location": "apireference.html#MathOptInterface.ConstraintPrimal",
+    "location": "apireference/#MathOptInterface.ConstraintPrimal",
     "page": "Reference",
     "title": "MathOptInterface.ConstraintPrimal",
     "category": "type",
@@ -945,7 +945,7 @@ var documenterSearchIndex = {"docs": [
 },
 
 {
-    "location": "apireference.html#MathOptInterface.ConstraintDual",
+    "location": "apireference/#MathOptInterface.ConstraintDual",
     "page": "Reference",
     "title": "MathOptInterface.ConstraintDual",
     "category": "type",
@@ -953,7 +953,7 @@ var documenterSearchIndex = {"docs": [
 },
 
 {
-    "location": "apireference.html#MathOptInterface.ConstraintBasisStatus",
+    "location": "apireference/#MathOptInterface.ConstraintBasisStatus",
     "page": "Reference",
     "title": "MathOptInterface.ConstraintBasisStatus",
     "category": "type",
@@ -961,7 +961,7 @@ var documenterSearchIndex = {"docs": [
 },
 
 {
-    "location": "apireference.html#MathOptInterface.ConstraintFunction",
+    "location": "apireference/#MathOptInterface.ConstraintFunction",
     "page": "Reference",
     "title": "MathOptInterface.ConstraintFunction",
     "category": "type",
@@ -969,7 +969,7 @@ var documenterSearchIndex = {"docs": [
 },
 
 {
-    "location": "apireference.html#MathOptInterface.ConstraintSet",
+    "location": "apireference/#MathOptInterface.ConstraintSet",
     "page": "Reference",
     "title": "MathOptInterface.ConstraintSet",
     "category": "type",
@@ -977,7 +977,7 @@ var documenterSearchIndex = {"docs": [
 },
 
 {
-    "location": "apireference.html#Constraints-1",
+    "location": "apireference/#Constraints-1",
     "page": "Reference",
     "title": "Constraints",
     "category": "section",
@@ -985,7 +985,7 @@ var documenterSearchIndex = {"docs": [
 },
 
 {
-    "location": "apireference.html#MathOptInterface.AbstractFunction",
+    "location": "apireference/#MathOptInterface.AbstractFunction",
     "page": "Reference",
     "title": "MathOptInterface.AbstractFunction",
     "category": "type",
@@ -993,7 +993,7 @@ var documenterSearchIndex = {"docs": [
 },
 
 {
-    "location": "apireference.html#MathOptInterface.SingleVariable",
+    "location": "apireference/#MathOptInterface.SingleVariable",
     "page": "Reference",
     "title": "MathOptInterface.SingleVariable",
     "category": "type",
@@ -1001,7 +1001,7 @@ var documenterSearchIndex = {"docs": [
 },
 
 {
-    "location": "apireference.html#MathOptInterface.VectorOfVariables",
+    "location": "apireference/#MathOptInterface.VectorOfVariables",
     "page": "Reference",
     "title": "MathOptInterface.VectorOfVariables",
     "category": "type",
@@ -1009,7 +1009,7 @@ var documenterSearchIndex = {"docs": [
 },
 
 {
-    "location": "apireference.html#MathOptInterface.ScalarAffineTerm",
+    "location": "apireference/#MathOptInterface.ScalarAffineTerm",
     "page": "Reference",
     "title": "MathOptInterface.ScalarAffineTerm",
     "category": "type",
@@ -1017,7 +1017,7 @@ var documenterSearchIndex = {"docs": [
 },
 
 {
-    "location": "apireference.html#MathOptInterface.ScalarAffineFunction",
+    "location": "apireference/#MathOptInterface.ScalarAffineFunction",
     "page": "Reference",
     "title": "MathOptInterface.ScalarAffineFunction",
     "category": "type",
@@ -1025,7 +1025,7 @@ var documenterSearchIndex = {"docs": [
 },
 
 {
-    "location": "apireference.html#MathOptInterface.VectorAffineTerm",
+    "location": "apireference/#MathOptInterface.VectorAffineTerm",
     "page": "Reference",
     "title": "MathOptInterface.VectorAffineTerm",
     "category": "type",
@@ -1033,7 +1033,7 @@ var documenterSearchIndex = {"docs": [
 },
 
 {
-    "location": "apireference.html#MathOptInterface.VectorAffineFunction",
+    "location": "apireference/#MathOptInterface.VectorAffineFunction",
     "page": "Reference",
     "title": "MathOptInterface.VectorAffineFunction",
     "category": "type",
@@ -1041,7 +1041,7 @@ var documenterSearchIndex = {"docs": [
 },
 
 {
-    "location": "apireference.html#MathOptInterface.ScalarQuadraticTerm",
+    "location": "apireference/#MathOptInterface.ScalarQuadraticTerm",
     "page": "Reference",
     "title": "MathOptInterface.ScalarQuadraticTerm",
     "category": "type",
@@ -1049,7 +1049,7 @@ var documenterSearchIndex = {"docs": [
 },
 
 {
-    "location": "apireference.html#MathOptInterface.ScalarQuadraticFunction",
+    "location": "apireference/#MathOptInterface.ScalarQuadraticFunction",
     "page": "Reference",
     "title": "MathOptInterface.ScalarQuadraticFunction",
     "category": "type",
@@ -1057,7 +1057,7 @@ var documenterSearchIndex = {"docs": [
 },
 
 {
-    "location": "apireference.html#MathOptInterface.VectorQuadraticTerm",
+    "location": "apireference/#MathOptInterface.VectorQuadraticTerm",
     "page": "Reference",
     "title": "MathOptInterface.VectorQuadraticTerm",
     "category": "type",
@@ -1065,7 +1065,7 @@ var documenterSearchIndex = {"docs": [
 },
 
 {
-    "location": "apireference.html#MathOptInterface.VectorQuadraticFunction",
+    "location": "apireference/#MathOptInterface.VectorQuadraticFunction",
     "page": "Reference",
     "title": "MathOptInterface.VectorQuadraticFunction",
     "category": "type",
@@ -1073,7 +1073,7 @@ var documenterSearchIndex = {"docs": [
 },
 
 {
-    "location": "apireference.html#MathOptInterface.output_dimension",
+    "location": "apireference/#MathOptInterface.output_dimension",
     "page": "Reference",
     "title": "MathOptInterface.output_dimension",
     "category": "function",
@@ -1081,7 +1081,7 @@ var documenterSearchIndex = {"docs": [
 },
 
 {
-    "location": "apireference.html#Functions-and-function-modifications-1",
+    "location": "apireference/#Functions-and-function-modifications-1",
     "page": "Reference",
     "title": "Functions and function modifications",
     "category": "section",
@@ -1089,7 +1089,7 @@ var documenterSearchIndex = {"docs": [
 },
 
 {
-    "location": "apireference.html#MathOptInterface.AbstractSet",
+    "location": "apireference/#MathOptInterface.AbstractSet",
     "page": "Reference",
     "title": "MathOptInterface.AbstractSet",
     "category": "type",
@@ -1097,7 +1097,7 @@ var documenterSearchIndex = {"docs": [
 },
 
 {
-    "location": "apireference.html#MathOptInterface.Reals",
+    "location": "apireference/#MathOptInterface.Reals",
     "page": "Reference",
     "title": "MathOptInterface.Reals",
     "category": "type",
@@ -1105,7 +1105,7 @@ var documenterSearchIndex = {"docs": [
 },
 
 {
-    "location": "apireference.html#MathOptInterface.Zeros",
+    "location": "apireference/#MathOptInterface.Zeros",
     "page": "Reference",
     "title": "MathOptInterface.Zeros",
     "category": "type",
@@ -1113,7 +1113,7 @@ var documenterSearchIndex = {"docs": [
 },
 
 {
-    "location": "apireference.html#MathOptInterface.Nonnegatives",
+    "location": "apireference/#MathOptInterface.Nonnegatives",
     "page": "Reference",
     "title": "MathOptInterface.Nonnegatives",
     "category": "type",
@@ -1121,7 +1121,7 @@ var documenterSearchIndex = {"docs": [
 },
 
 {
-    "location": "apireference.html#MathOptInterface.Nonpositives",
+    "location": "apireference/#MathOptInterface.Nonpositives",
     "page": "Reference",
     "title": "MathOptInterface.Nonpositives",
     "category": "type",
@@ -1129,7 +1129,7 @@ var documenterSearchIndex = {"docs": [
 },
 
 {
-    "location": "apireference.html#MathOptInterface.GreaterThan",
+    "location": "apireference/#MathOptInterface.GreaterThan",
     "page": "Reference",
     "title": "MathOptInterface.GreaterThan",
     "category": "type",
@@ -1137,7 +1137,7 @@ var documenterSearchIndex = {"docs": [
 },
 
 {
-    "location": "apireference.html#MathOptInterface.LessThan",
+    "location": "apireference/#MathOptInterface.LessThan",
     "page": "Reference",
     "title": "MathOptInterface.LessThan",
     "category": "type",
@@ -1145,7 +1145,7 @@ var documenterSearchIndex = {"docs": [
 },
 
 {
-    "location": "apireference.html#MathOptInterface.EqualTo",
+    "location": "apireference/#MathOptInterface.EqualTo",
     "page": "Reference",
     "title": "MathOptInterface.EqualTo",
     "category": "type",
@@ -1153,7 +1153,7 @@ var documenterSearchIndex = {"docs": [
 },
 
 {
-    "location": "apireference.html#MathOptInterface.Interval",
+    "location": "apireference/#MathOptInterface.Interval",
     "page": "Reference",
     "title": "MathOptInterface.Interval",
     "category": "type",
@@ -1161,7 +1161,7 @@ var documenterSearchIndex = {"docs": [
 },
 
 {
-    "location": "apireference.html#MathOptInterface.SecondOrderCone",
+    "location": "apireference/#MathOptInterface.SecondOrderCone",
     "page": "Reference",
     "title": "MathOptInterface.SecondOrderCone",
     "category": "type",
@@ -1169,7 +1169,7 @@ var documenterSearchIndex = {"docs": [
 },
 
 {
-    "location": "apireference.html#MathOptInterface.RotatedSecondOrderCone",
+    "location": "apireference/#MathOptInterface.RotatedSecondOrderCone",
     "page": "Reference",
     "title": "MathOptInterface.RotatedSecondOrderCone",
     "category": "type",
@@ -1177,7 +1177,7 @@ var documenterSearchIndex = {"docs": [
 },
 
 {
-    "location": "apireference.html#MathOptInterface.GeometricMeanCone",
+    "location": "apireference/#MathOptInterface.GeometricMeanCone",
     "page": "Reference",
     "title": "MathOptInterface.GeometricMeanCone",
     "category": "type",
@@ -1185,7 +1185,7 @@ var documenterSearchIndex = {"docs": [
 },
 
 {
-    "location": "apireference.html#MathOptInterface.ExponentialCone",
+    "location": "apireference/#MathOptInterface.ExponentialCone",
     "page": "Reference",
     "title": "MathOptInterface.ExponentialCone",
     "category": "type",
@@ -1193,7 +1193,7 @@ var documenterSearchIndex = {"docs": [
 },
 
 {
-    "location": "apireference.html#MathOptInterface.DualExponentialCone",
+    "location": "apireference/#MathOptInterface.DualExponentialCone",
     "page": "Reference",
     "title": "MathOptInterface.DualExponentialCone",
     "category": "type",
@@ -1201,7 +1201,7 @@ var documenterSearchIndex = {"docs": [
 },
 
 {
-    "location": "apireference.html#MathOptInterface.PowerCone",
+    "location": "apireference/#MathOptInterface.PowerCone",
     "page": "Reference",
     "title": "MathOptInterface.PowerCone",
     "category": "type",
@@ -1209,7 +1209,7 @@ var documenterSearchIndex = {"docs": [
 },
 
 {
-    "location": "apireference.html#MathOptInterface.DualPowerCone",
+    "location": "apireference/#MathOptInterface.DualPowerCone",
     "page": "Reference",
     "title": "MathOptInterface.DualPowerCone",
     "category": "type",
@@ -1217,7 +1217,7 @@ var documenterSearchIndex = {"docs": [
 },
 
 {
-    "location": "apireference.html#MathOptInterface.PositiveSemidefiniteConeTriangle",
+    "location": "apireference/#MathOptInterface.PositiveSemidefiniteConeTriangle",
     "page": "Reference",
     "title": "MathOptInterface.PositiveSemidefiniteConeTriangle",
     "category": "type",
@@ -1225,7 +1225,7 @@ var documenterSearchIndex = {"docs": [
 },
 
 {
-    "location": "apireference.html#MathOptInterface.PositiveSemidefiniteConeSquare",
+    "location": "apireference/#MathOptInterface.PositiveSemidefiniteConeSquare",
     "page": "Reference",
     "title": "MathOptInterface.PositiveSemidefiniteConeSquare",
     "category": "type",
@@ -1233,7 +1233,7 @@ var documenterSearchIndex = {"docs": [
 },
 
 {
-    "location": "apireference.html#MathOptInterface.LogDetConeTriangle",
+    "location": "apireference/#MathOptInterface.LogDetConeTriangle",
     "page": "Reference",
     "title": "MathOptInterface.LogDetConeTriangle",
     "category": "type",
@@ -1241,7 +1241,7 @@ var documenterSearchIndex = {"docs": [
 },
 
 {
-    "location": "apireference.html#MathOptInterface.LogDetConeSquare",
+    "location": "apireference/#MathOptInterface.LogDetConeSquare",
     "page": "Reference",
     "title": "MathOptInterface.LogDetConeSquare",
     "category": "type",
@@ -1249,7 +1249,7 @@ var documenterSearchIndex = {"docs": [
 },
 
 {
-    "location": "apireference.html#MathOptInterface.RootDetConeTriangle",
+    "location": "apireference/#MathOptInterface.RootDetConeTriangle",
     "page": "Reference",
     "title": "MathOptInterface.RootDetConeTriangle",
     "category": "type",
@@ -1257,7 +1257,7 @@ var documenterSearchIndex = {"docs": [
 },
 
 {
-    "location": "apireference.html#MathOptInterface.RootDetConeSquare",
+    "location": "apireference/#MathOptInterface.RootDetConeSquare",
     "page": "Reference",
     "title": "MathOptInterface.RootDetConeSquare",
     "category": "type",
@@ -1265,7 +1265,7 @@ var documenterSearchIndex = {"docs": [
 },
 
 {
-    "location": "apireference.html#MathOptInterface.Integer",
+    "location": "apireference/#MathOptInterface.Integer",
     "page": "Reference",
     "title": "MathOptInterface.Integer",
     "category": "type",
@@ -1273,7 +1273,7 @@ var documenterSearchIndex = {"docs": [
 },
 
 {
-    "location": "apireference.html#MathOptInterface.ZeroOne",
+    "location": "apireference/#MathOptInterface.ZeroOne",
     "page": "Reference",
     "title": "MathOptInterface.ZeroOne",
     "category": "type",
@@ -1281,7 +1281,7 @@ var documenterSearchIndex = {"docs": [
 },
 
 {
-    "location": "apireference.html#MathOptInterface.Semicontinuous",
+    "location": "apireference/#MathOptInterface.Semicontinuous",
     "page": "Reference",
     "title": "MathOptInterface.Semicontinuous",
     "category": "type",
@@ -1289,7 +1289,7 @@ var documenterSearchIndex = {"docs": [
 },
 
 {
-    "location": "apireference.html#MathOptInterface.Semiinteger",
+    "location": "apireference/#MathOptInterface.Semiinteger",
     "page": "Reference",
     "title": "MathOptInterface.Semiinteger",
     "category": "type",
@@ -1297,7 +1297,7 @@ var documenterSearchIndex = {"docs": [
 },
 
 {
-    "location": "apireference.html#MathOptInterface.SOS1",
+    "location": "apireference/#MathOptInterface.SOS1",
     "page": "Reference",
     "title": "MathOptInterface.SOS1",
     "category": "type",
@@ -1305,7 +1305,7 @@ var documenterSearchIndex = {"docs": [
 },
 
 {
-    "location": "apireference.html#MathOptInterface.SOS2",
+    "location": "apireference/#MathOptInterface.SOS2",
     "page": "Reference",
     "title": "MathOptInterface.SOS2",
     "category": "type",
@@ -1313,7 +1313,7 @@ var documenterSearchIndex = {"docs": [
 },
 
 {
-    "location": "apireference.html#MathOptInterface.dimension",
+    "location": "apireference/#MathOptInterface.dimension",
     "page": "Reference",
     "title": "MathOptInterface.dimension",
     "category": "function",
@@ -1321,7 +1321,7 @@ var documenterSearchIndex = {"docs": [
 },
 
 {
-    "location": "apireference.html#Sets-1",
+    "location": "apireference/#Sets-1",
     "page": "Reference",
     "title": "Sets",
     "category": "section",
@@ -1329,7 +1329,7 @@ var documenterSearchIndex = {"docs": [
 },
 
 {
-    "location": "apireference.html#MathOptInterface.modify",
+    "location": "apireference/#MathOptInterface.modify",
     "page": "Reference",
     "title": "MathOptInterface.modify",
     "category": "function",
@@ -1337,7 +1337,7 @@ var documenterSearchIndex = {"docs": [
 },
 
 {
-    "location": "apireference.html#MathOptInterface.AbstractFunctionModification",
+    "location": "apireference/#MathOptInterface.AbstractFunctionModification",
     "page": "Reference",
     "title": "MathOptInterface.AbstractFunctionModification",
     "category": "type",
@@ -1345,7 +1345,7 @@ var documenterSearchIndex = {"docs": [
 },
 
 {
-    "location": "apireference.html#MathOptInterface.ScalarConstantChange",
+    "location": "apireference/#MathOptInterface.ScalarConstantChange",
     "page": "Reference",
     "title": "MathOptInterface.ScalarConstantChange",
     "category": "type",
@@ -1353,7 +1353,7 @@ var documenterSearchIndex = {"docs": [
 },
 
 {
-    "location": "apireference.html#MathOptInterface.VectorConstantChange",
+    "location": "apireference/#MathOptInterface.VectorConstantChange",
     "page": "Reference",
     "title": "MathOptInterface.VectorConstantChange",
     "category": "type",
@@ -1361,7 +1361,7 @@ var documenterSearchIndex = {"docs": [
 },
 
 {
-    "location": "apireference.html#MathOptInterface.ScalarCoefficientChange",
+    "location": "apireference/#MathOptInterface.ScalarCoefficientChange",
     "page": "Reference",
     "title": "MathOptInterface.ScalarCoefficientChange",
     "category": "type",
@@ -1369,7 +1369,7 @@ var documenterSearchIndex = {"docs": [
 },
 
 {
-    "location": "apireference.html#MathOptInterface.MultirowChange",
+    "location": "apireference/#MathOptInterface.MultirowChange",
     "page": "Reference",
     "title": "MathOptInterface.MultirowChange",
     "category": "type",
@@ -1377,7 +1377,7 @@ var documenterSearchIndex = {"docs": [
 },
 
 {
-    "location": "apireference.html#Modifications-1",
+    "location": "apireference/#Modifications-1",
     "page": "Reference",
     "title": "Modifications",
     "category": "section",
@@ -1385,7 +1385,7 @@ var documenterSearchIndex = {"docs": [
 },
 
 {
-    "location": "apireference.html#Nonlinear-programming-(NLP)-1",
+    "location": "apireference/#Nonlinear-programming-(NLP)-1",
     "page": "Reference",
     "title": "Nonlinear programming (NLP)",
     "category": "section",
@@ -1393,7 +1393,7 @@ var documenterSearchIndex = {"docs": [
 },
 
 {
-    "location": "apireference.html#MathOptInterface.NLPBlock",
+    "location": "apireference/#MathOptInterface.NLPBlock",
     "page": "Reference",
     "title": "MathOptInterface.NLPBlock",
     "category": "type",
@@ -1401,7 +1401,7 @@ var documenterSearchIndex = {"docs": [
 },
 
 {
-    "location": "apireference.html#MathOptInterface.NLPBoundsPair",
+    "location": "apireference/#MathOptInterface.NLPBoundsPair",
     "page": "Reference",
     "title": "MathOptInterface.NLPBoundsPair",
     "category": "type",
@@ -1409,7 +1409,7 @@ var documenterSearchIndex = {"docs": [
 },
 
 {
-    "location": "apireference.html#MathOptInterface.NLPBlockData",
+    "location": "apireference/#MathOptInterface.NLPBlockData",
     "page": "Reference",
     "title": "MathOptInterface.NLPBlockData",
     "category": "type",
@@ -1417,7 +1417,7 @@ var documenterSearchIndex = {"docs": [
 },
 
 {
-    "location": "apireference.html#MathOptInterface.NLPBlockDual",
+    "location": "apireference/#MathOptInterface.NLPBlockDual",
     "page": "Reference",
     "title": "MathOptInterface.NLPBlockDual",
     "category": "type",
@@ -1425,7 +1425,7 @@ var documenterSearchIndex = {"docs": [
 },
 
 {
-    "location": "apireference.html#MathOptInterface.NLPBlockDualStart",
+    "location": "apireference/#MathOptInterface.NLPBlockDualStart",
     "page": "Reference",
     "title": "MathOptInterface.NLPBlockDualStart",
     "category": "type",
@@ -1433,7 +1433,7 @@ var documenterSearchIndex = {"docs": [
 },
 
 {
-    "location": "apireference.html#Attributes-2",
+    "location": "apireference/#Attributes-2",
     "page": "Reference",
     "title": "Attributes",
     "category": "section",
@@ -1441,7 +1441,7 @@ var documenterSearchIndex = {"docs": [
 },
 
 {
-    "location": "apireference.html#MathOptInterface.AbstractNLPEvaluator",
+    "location": "apireference/#MathOptInterface.AbstractNLPEvaluator",
     "page": "Reference",
     "title": "MathOptInterface.AbstractNLPEvaluator",
     "category": "type",
@@ -1449,7 +1449,7 @@ var documenterSearchIndex = {"docs": [
 },
 
 {
-    "location": "apireference.html#MathOptInterface.initialize",
+    "location": "apireference/#MathOptInterface.initialize",
     "page": "Reference",
     "title": "MathOptInterface.initialize",
     "category": "function",
@@ -1457,7 +1457,7 @@ var documenterSearchIndex = {"docs": [
 },
 
 {
-    "location": "apireference.html#MathOptInterface.features_available",
+    "location": "apireference/#MathOptInterface.features_available",
     "page": "Reference",
     "title": "MathOptInterface.features_available",
     "category": "function",
@@ -1465,7 +1465,7 @@ var documenterSearchIndex = {"docs": [
 },
 
 {
-    "location": "apireference.html#MathOptInterface.eval_objective",
+    "location": "apireference/#MathOptInterface.eval_objective",
     "page": "Reference",
     "title": "MathOptInterface.eval_objective",
     "category": "function",
@@ -1473,7 +1473,7 @@ var documenterSearchIndex = {"docs": [
 },
 
 {
-    "location": "apireference.html#MathOptInterface.eval_constraint",
+    "location": "apireference/#MathOptInterface.eval_constraint",
     "page": "Reference",
     "title": "MathOptInterface.eval_constraint",
     "category": "function",
@@ -1481,7 +1481,7 @@ var documenterSearchIndex = {"docs": [
 },
 
 {
-    "location": "apireference.html#MathOptInterface.eval_objective_gradient",
+    "location": "apireference/#MathOptInterface.eval_objective_gradient",
     "page": "Reference",
     "title": "MathOptInterface.eval_objective_gradient",
     "category": "function",
@@ -1489,7 +1489,7 @@ var documenterSearchIndex = {"docs": [
 },
 
 {
-    "location": "apireference.html#MathOptInterface.jacobian_structure",
+    "location": "apireference/#MathOptInterface.jacobian_structure",
     "page": "Reference",
     "title": "MathOptInterface.jacobian_structure",
     "category": "function",
@@ -1497,7 +1497,7 @@ var documenterSearchIndex = {"docs": [
 },
 
 {
-    "location": "apireference.html#MathOptInterface.hessian_lagrangian_structure",
+    "location": "apireference/#MathOptInterface.hessian_lagrangian_structure",
     "page": "Reference",
     "title": "MathOptInterface.hessian_lagrangian_structure",
     "category": "function",
@@ -1505,7 +1505,7 @@ var documenterSearchIndex = {"docs": [
 },
 
 {
-    "location": "apireference.html#MathOptInterface.eval_constraint_jacobian",
+    "location": "apireference/#MathOptInterface.eval_constraint_jacobian",
     "page": "Reference",
     "title": "MathOptInterface.eval_constraint_jacobian",
     "category": "function",
@@ -1513,7 +1513,7 @@ var documenterSearchIndex = {"docs": [
 },
 
 {
-    "location": "apireference.html#MathOptInterface.eval_constraint_jacobian_product",
+    "location": "apireference/#MathOptInterface.eval_constraint_jacobian_product",
     "page": "Reference",
     "title": "MathOptInterface.eval_constraint_jacobian_product",
     "category": "function",
@@ -1521,7 +1521,7 @@ var documenterSearchIndex = {"docs": [
 },
 
 {
-    "location": "apireference.html#MathOptInterface.eval_constraint_jacobian_transpose_product",
+    "location": "apireference/#MathOptInterface.eval_constraint_jacobian_transpose_product",
     "page": "Reference",
     "title": "MathOptInterface.eval_constraint_jacobian_transpose_product",
     "category": "function",
@@ -1529,7 +1529,7 @@ var documenterSearchIndex = {"docs": [
 },
 
 {
-    "location": "apireference.html#MathOptInterface.eval_hessian_lagrangian",
+    "location": "apireference/#MathOptInterface.eval_hessian_lagrangian",
     "page": "Reference",
     "title": "MathOptInterface.eval_hessian_lagrangian",
     "category": "function",
@@ -1537,7 +1537,7 @@ var documenterSearchIndex = {"docs": [
 },
 
 {
-    "location": "apireference.html#MathOptInterface.eval_hessian_lagrangian_product",
+    "location": "apireference/#MathOptInterface.eval_hessian_lagrangian_product",
     "page": "Reference",
     "title": "MathOptInterface.eval_hessian_lagrangian_product",
     "category": "function",
@@ -1545,7 +1545,7 @@ var documenterSearchIndex = {"docs": [
 },
 
 {
-    "location": "apireference.html#MathOptInterface.objective_expr",
+    "location": "apireference/#MathOptInterface.objective_expr",
     "page": "Reference",
     "title": "MathOptInterface.objective_expr",
     "category": "function",
@@ -1553,7 +1553,7 @@ var documenterSearchIndex = {"docs": [
 },
 
 {
-    "location": "apireference.html#MathOptInterface.constraint_expr",
+    "location": "apireference/#MathOptInterface.constraint_expr",
     "page": "Reference",
     "title": "MathOptInterface.constraint_expr",
     "category": "function",
@@ -1561,7 +1561,7 @@ var documenterSearchIndex = {"docs": [
 },
 
 {
-    "location": "apireference.html#NLP-evaluator-methods-1",
+    "location": "apireference/#NLP-evaluator-methods-1",
     "page": "Reference",
     "title": "NLP evaluator methods",
     "category": "section",
@@ -1569,7 +1569,7 @@ var documenterSearchIndex = {"docs": [
 },
 
 {
-    "location": "apireference.html#MathOptInterface.InvalidIndex",
+    "location": "apireference/#MathOptInterface.InvalidIndex",
     "page": "Reference",
     "title": "MathOptInterface.InvalidIndex",
     "category": "type",
@@ -1577,7 +1577,7 @@ var documenterSearchIndex = {"docs": [
 },
 
 {
-    "location": "apireference.html#MathOptInterface.UnsupportedError",
+    "location": "apireference/#MathOptInterface.UnsupportedError",
     "page": "Reference",
     "title": "MathOptInterface.UnsupportedError",
     "category": "type",
@@ -1585,7 +1585,7 @@ var documenterSearchIndex = {"docs": [
 },
 
 {
-    "location": "apireference.html#MathOptInterface.NotAllowedError",
+    "location": "apireference/#MathOptInterface.NotAllowedError",
     "page": "Reference",
     "title": "MathOptInterface.NotAllowedError",
     "category": "type",
@@ -1593,7 +1593,7 @@ var documenterSearchIndex = {"docs": [
 },
 
 {
-    "location": "apireference.html#MathOptInterface.UnsupportedAttribute",
+    "location": "apireference/#MathOptInterface.UnsupportedAttribute",
     "page": "Reference",
     "title": "MathOptInterface.UnsupportedAttribute",
     "category": "type",
@@ -1601,7 +1601,7 @@ var documenterSearchIndex = {"docs": [
 },
 
 {
-    "location": "apireference.html#MathOptInterface.SetAttributeNotAllowed",
+    "location": "apireference/#MathOptInterface.SetAttributeNotAllowed",
     "page": "Reference",
     "title": "MathOptInterface.SetAttributeNotAllowed",
     "category": "type",
@@ -1609,7 +1609,7 @@ var documenterSearchIndex = {"docs": [
 },
 
 {
-    "location": "apireference.html#MathOptInterface.AddVariableNotAllowed",
+    "location": "apireference/#MathOptInterface.AddVariableNotAllowed",
     "page": "Reference",
     "title": "MathOptInterface.AddVariableNotAllowed",
     "category": "type",
@@ -1617,7 +1617,7 @@ var documenterSearchIndex = {"docs": [
 },
 
 {
-    "location": "apireference.html#MathOptInterface.UnsupportedConstraint",
+    "location": "apireference/#MathOptInterface.UnsupportedConstraint",
     "page": "Reference",
     "title": "MathOptInterface.UnsupportedConstraint",
     "category": "type",
@@ -1625,7 +1625,7 @@ var documenterSearchIndex = {"docs": [
 },
 
 {
-    "location": "apireference.html#MathOptInterface.AddConstraintNotAllowed",
+    "location": "apireference/#MathOptInterface.AddConstraintNotAllowed",
     "page": "Reference",
     "title": "MathOptInterface.AddConstraintNotAllowed",
     "category": "type",
@@ -1633,7 +1633,7 @@ var documenterSearchIndex = {"docs": [
 },
 
 {
-    "location": "apireference.html#MathOptInterface.ModifyConstraintNotAllowed",
+    "location": "apireference/#MathOptInterface.ModifyConstraintNotAllowed",
     "page": "Reference",
     "title": "MathOptInterface.ModifyConstraintNotAllowed",
     "category": "type",
@@ -1641,7 +1641,7 @@ var documenterSearchIndex = {"docs": [
 },
 
 {
-    "location": "apireference.html#MathOptInterface.ModifyObjectiveNotAllowed",
+    "location": "apireference/#MathOptInterface.ModifyObjectiveNotAllowed",
     "page": "Reference",
     "title": "MathOptInterface.ModifyObjectiveNotAllowed",
     "category": "type",
@@ -1649,7 +1649,7 @@ var documenterSearchIndex = {"docs": [
 },
 
 {
-    "location": "apireference.html#MathOptInterface.DeleteNotAllowed",
+    "location": "apireference/#MathOptInterface.DeleteNotAllowed",
     "page": "Reference",
     "title": "MathOptInterface.DeleteNotAllowed",
     "category": "type",
@@ -1657,7 +1657,7 @@ var documenterSearchIndex = {"docs": [
 },
 
 {
-    "location": "apireference.html#Errors-1",
+    "location": "apireference/#Errors-1",
     "page": "Reference",
     "title": "Errors",
     "category": "section",
@@ -1665,7 +1665,7 @@ var documenterSearchIndex = {"docs": [
 },
 
 {
-    "location": "apireference.html#MathOptInterface.Bridges.AbstractBridge",
+    "location": "apireference/#MathOptInterface.Bridges.AbstractBridge",
     "page": "Reference",
     "title": "MathOptInterface.Bridges.AbstractBridge",
     "category": "type",
@@ -1673,7 +1673,7 @@ var documenterSearchIndex = {"docs": [
 },
 
 {
-    "location": "apireference.html#MathOptInterface.Bridges.AbstractBridgeOptimizer",
+    "location": "apireference/#MathOptInterface.Bridges.AbstractBridgeOptimizer",
     "page": "Reference",
     "title": "MathOptInterface.Bridges.AbstractBridgeOptimizer",
     "category": "type",
@@ -1681,7 +1681,7 @@ var documenterSearchIndex = {"docs": [
 },
 
 {
-    "location": "apireference.html#MathOptInterface.Bridges.SingleBridgeOptimizer",
+    "location": "apireference/#MathOptInterface.Bridges.SingleBridgeOptimizer",
     "page": "Reference",
     "title": "MathOptInterface.Bridges.SingleBridgeOptimizer",
     "category": "type",
@@ -1689,7 +1689,7 @@ var documenterSearchIndex = {"docs": [
 },
 
 {
-    "location": "apireference.html#MathOptInterface.Bridges.LazyBridgeOptimizer",
+    "location": "apireference/#MathOptInterface.Bridges.LazyBridgeOptimizer",
     "page": "Reference",
     "title": "MathOptInterface.Bridges.LazyBridgeOptimizer",
     "category": "type",
@@ -1697,7 +1697,7 @@ var documenterSearchIndex = {"docs": [
 },
 
 {
-    "location": "apireference.html#MathOptInterface.Bridges.add_bridge",
+    "location": "apireference/#MathOptInterface.Bridges.add_bridge",
     "page": "Reference",
     "title": "MathOptInterface.Bridges.add_bridge",
     "category": "function",
@@ -1705,7 +1705,7 @@ var documenterSearchIndex = {"docs": [
 },
 
 {
-    "location": "apireference.html#MathOptInterface.Bridges.SplitIntervalBridge",
+    "location": "apireference/#MathOptInterface.Bridges.SplitIntervalBridge",
     "page": "Reference",
     "title": "MathOptInterface.Bridges.SplitIntervalBridge",
     "category": "type",
@@ -1713,7 +1713,7 @@ var documenterSearchIndex = {"docs": [
 },
 
 {
-    "location": "apireference.html#MathOptInterface.Bridges.RSOCBridge",
+    "location": "apireference/#MathOptInterface.Bridges.RSOCBridge",
     "page": "Reference",
     "title": "MathOptInterface.Bridges.RSOCBridge",
     "category": "type",
@@ -1721,7 +1721,7 @@ var documenterSearchIndex = {"docs": [
 },
 
 {
-    "location": "apireference.html#MathOptInterface.Bridges.GeoMeanBridge",
+    "location": "apireference/#MathOptInterface.Bridges.GeoMeanBridge",
     "page": "Reference",
     "title": "MathOptInterface.Bridges.GeoMeanBridge",
     "category": "type",
@@ -1729,7 +1729,7 @@ var documenterSearchIndex = {"docs": [
 },
 
 {
-    "location": "apireference.html#MathOptInterface.Bridges.SquarePSDBridge",
+    "location": "apireference/#MathOptInterface.Bridges.SquarePSDBridge",
     "page": "Reference",
     "title": "MathOptInterface.Bridges.SquarePSDBridge",
     "category": "type",
@@ -1737,7 +1737,7 @@ var documenterSearchIndex = {"docs": [
 },
 
 {
-    "location": "apireference.html#MathOptInterface.Bridges.RootDetBridge",
+    "location": "apireference/#MathOptInterface.Bridges.RootDetBridge",
     "page": "Reference",
     "title": "MathOptInterface.Bridges.RootDetBridge",
     "category": "type",
@@ -1745,7 +1745,7 @@ var documenterSearchIndex = {"docs": [
 },
 
 {
-    "location": "apireference.html#MathOptInterface.Bridges.LogDetBridge",
+    "location": "apireference/#MathOptInterface.Bridges.LogDetBridge",
     "page": "Reference",
     "title": "MathOptInterface.Bridges.LogDetBridge",
     "category": "type",
@@ -1753,7 +1753,7 @@ var documenterSearchIndex = {"docs": [
 },
 
 {
-    "location": "apireference.html#MathOptInterface.Bridges.SOCtoPSDBridge",
+    "location": "apireference/#MathOptInterface.Bridges.SOCtoPSDBridge",
     "page": "Reference",
     "title": "MathOptInterface.Bridges.SOCtoPSDBridge",
     "category": "type",
@@ -1761,7 +1761,7 @@ var documenterSearchIndex = {"docs": [
 },
 
 {
-    "location": "apireference.html#MathOptInterface.Bridges.RSOCtoPSDBridge",
+    "location": "apireference/#MathOptInterface.Bridges.RSOCtoPSDBridge",
     "page": "Reference",
     "title": "MathOptInterface.Bridges.RSOCtoPSDBridge",
     "category": "type",
@@ -1769,7 +1769,7 @@ var documenterSearchIndex = {"docs": [
 },
 
 {
-    "location": "apireference.html#Bridges-1",
+    "location": "apireference/#Bridges-1",
     "page": "Reference",
     "title": "Bridges",
     "category": "section",
