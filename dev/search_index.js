@@ -21,7 +21,7 @@ var documenterSearchIndex = {"docs": [
     "page": "Manual",
     "title": "Manual",
     "category": "page",
-    "text": ""
+    "text": "CurrentModule = MathOptInterface"
 },
 
 {
