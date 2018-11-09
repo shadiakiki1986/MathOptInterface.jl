@@ -837,7 +837,7 @@ var documenterSearchIndex = {"docs": [
     "page": "Reference",
     "title": "MathOptInterface.VariableName",
     "category": "type",
-    "text": "VariableName()\n\nA variable attribute for a string identifying the variable. It is valid for two variables to have the same name; however, variables with duplicate names cannot be looked up using MOI.get.\n\n\n\n\n\n"
+    "text": "VariableName()\n\nA variable attribute for a string identifying the variable. It is valid for two variables to have the same name; however, variables with duplicate names cannot be looked up using get.\n\n\n\n\n\n"
 },
 
 {
@@ -917,7 +917,7 @@ var documenterSearchIndex = {"docs": [
     "page": "Reference",
     "title": "MathOptInterface.ConstraintName",
     "category": "type",
-    "text": "ConstraintName()\n\nA constraint attribute for a string identifying the constraint. It is valid for constraints variables to have the same name; however, constraints with duplicate names cannot be looked up using MOI.get regardless of if they have the same F-inS type.\n\n\n\n\n\n"
+    "text": "ConstraintName()\n\nA constraint attribute for a string identifying the constraint. It is valid for constraints variables to have the same name; however, constraints with duplicate names cannot be looked up using get regardless of if they have the same F-inS type.\n\n\n\n\n\n"
 },
 
 {
