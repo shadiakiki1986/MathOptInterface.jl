@@ -277,7 +277,15 @@ var documenterSearchIndex = {"docs": [
     "page": "Manual",
     "title": "Implementing a solver interface",
     "category": "section",
-    "text": "[The interface is designed for multiple dispatch, e.g., attributes, combinations of sets and functions.]Avoid storing extra copies of the problem when possible. This means that solver wrappers should not use CachingOptimizer as part of the wrapper. Instead, just implement copy_to if the solver\'s API does not support an add_variable-like API. Let users or JuMP decide to use CachingOptimizer instead."
+    "text": "[The interface is designed for multiple dispatch, e.g., attributes, combinations of sets and functions.]"
+},
+
+{
+    "location": "apimanual/#Implementing-copy-1",
+    "page": "Manual",
+    "title": "Implementing copy",
+    "category": "section",
+    "text": "Avoid storing extra copies of the problem when possible. This means that solver wrappers should not use CachingOptimizer as part of the wrapper. Instead, do one of the following to load the problem:If the solver supports loading the problem incrementally, implement add_variable, add_constraint for supported constraints and set for supported attributes and add:\nfunction MOI.copy_to(dest::AbstractModel, src::MOI.ModelLike; kws...)\n    return MOI.Utilities.automatic_copy_to(dest, src, kws...)\nend\nwith\nMOI.Utilities.supports_default_copy_to(model::AbstractModel, copy_names::Bool) = true\nor\nMOI.Utilities.supports_default_copy_to(model::AbstractModel, copy_names::Bool) = !copy_names\ndepending on whether the solver support names; see Utilities.supports_default_copy_to for more details.\nIf the solver does not support loading the problem incrementally, do not implement add_variable and add_constraint as implementing them would require caching the problem. Let users or JuMP decide whether to use a CachingOptimizer instead. Write either a custom implementation of copy_to or implement the Allocate-Load API. If you choose to implement the Allocate-Load API, do\nfunction MOI.copy_to(dest::AbstractModel, src::MOI.ModelLike; kws...)\n    return MOI.Utilities.automatic_copy_to(dest, src, kws...)\nend\nwith\nMOI.Utilities.supports_allocate_load(model::AbstractModel, copy_names::Bool) = true\nor\nMOI.Utilities.supports_allocate_load(model::AbstractModel, copy_names::Bool) = !copy_names\ndepending on whether the solver support names; see Utilities.supports_allocate_load for more details.\nNote that even if both writing a custom implementation of copy_to and implementing the Allocate-Load API requires the user to copy the model from a cache, the Allocate-Load API allows MOI layers to be added between the cache and the solver which allows transformations to be applied without the need for additional caching. For instance, with the proposed Light bridges, no cache will be needed to store the bridged model when bridges are used by JuMP so implementing the Allocate-Load API will allow JuMP to use only one cache instead of two."
 },
 
 {
@@ -1774,6 +1782,110 @@ var documenterSearchIndex = {"docs": [
     "title": "Bridges",
     "category": "section",
     "text": "Bridges can be used for automatic reformulation of a certain constraint type into equivalent constraints.Bridges.AbstractBridge\nBridges.AbstractBridgeOptimizer\nBridges.SingleBridgeOptimizer\nBridges.LazyBridgeOptimizer\nBridges.add_bridgeBelow is the list of bridges implemented in this package.Bridges.SplitIntervalBridge\nBridges.RSOCBridge\nBridges.GeoMeanBridge\nBridges.SquarePSDBridge\nBridges.RootDetBridge\nBridges.LogDetBridge\nBridges.SOCtoPSDBridge\nBridges.RSOCtoPSDBridgeFor each bridge defined in this package, a corresponding bridge optimizer is available with the same name without the \"Bridge\" suffix, e.g., SplitInterval is an SingleBridgeOptimizer for the SplitIntervalBridge."
+},
+
+{
+    "location": "apireference/#MathOptInterface.Utilities.automatic_copy_to",
+    "page": "Reference",
+    "title": "MathOptInterface.Utilities.automatic_copy_to",
+    "category": "function",
+    "text": "automatic_copy_to(dest::MOI.ModelLike, src::MOI.ModelLike;\n                  copy_names::Bool=true)\n\nUse Utilities.supports_default_copy_to and Utilities.supports_allocate_load to automatically choose between Utilities.default_copy_to or Utilities.allocate_load to apply the copy operation.\n\n\n\n\n\n"
+},
+
+{
+    "location": "apireference/#MathOptInterface.Utilities.default_copy_to",
+    "page": "Reference",
+    "title": "MathOptInterface.Utilities.default_copy_to",
+    "category": "function",
+    "text": "default_copy_to(dest::MOI.ModelLike, src::MOI.ModelLike, copy_names::Bool)\n\nImplements MOI.copy_to(dest, src) by adding the variables and then the constraints and attributes incrementally. The function supports_default_copy_to can be used to check whether dest supports the copying a model incrementally.\n\n\n\n\n\n"
+},
+
+{
+    "location": "apireference/#MathOptInterface.Utilities.supports_default_copy_to",
+    "page": "Reference",
+    "title": "MathOptInterface.Utilities.supports_default_copy_to",
+    "category": "function",
+    "text": "supports_default_copy_to(model::ModelLike, copy_names::Bool)\n\nReturn a Bool indicating whether the model model supports default_copy_to(model, src, copy_names=copy_names) if all the attributes set to src and constraints added to src are supported by model.\n\nThis function can be used to determine whether a model can be loaded into model incrementally or whether it should be cached and copied at once instead. This is used by JuMP to determine whether to add a cache or not in two situations:\n\nA first cache can be used to store the model as entered by the user as well as the names of variables and constraints. This cache is created if this function returns false when copy_names is true.\nIf bridges are used, then a second cache can be used to store the bridged model with unnamed variables and constraints. This cache is created if this function returns false when copy_names is false.\n\nExamples\n\nIf MathOptInterface.set, MathOptInterface.add_variable and MathOptInterface.add_constraint are implemented for a model of type MyModel and names are supported, then MathOptInterface.copy_to can be implemented as\n\nMOI.Utilities.supports_default_copy_to(model::MyModel, copy_names::Bool) = true\nfunction MOI.copy_to(dest::MyModel, src::MOI.ModelLike; kws...)\n    return MOI.Utilities.automatic_copy_to(dest, src, kws...)\nend\n\nThe Utilities.automatic_copy_to function automatically redirects to Utilities.default_copy_to.\n\nIf names are not supported, simply change the first line by\n\nMOI.supports_default_copy_to(model::MyModel, copy_names::Bool) = !copy_names\n\nThe Utilities.default_copy_to function automatically throws an helpful error in case copy_to is called with copy_names equal to true.\n\n\n\n\n\n"
+},
+
+{
+    "location": "apireference/#Copy-utilities-1",
+    "page": "Reference",
+    "title": "Copy utilities",
+    "category": "section",
+    "text": "The following utilities can be used to implement copy_to. See Implementing copy for more details.Utilities.automatic_copy_to\nUtilities.default_copy_to\nUtilities.supports_default_copy_to"
+},
+
+{
+    "location": "apireference/#MathOptInterface.Utilities.allocate_load",
+    "page": "Reference",
+    "title": "MathOptInterface.Utilities.allocate_load",
+    "category": "function",
+    "text": "allocate_load(dest::MOI.ModelLike, src::MOI.ModelLike)\n\nImplements MOI.copy_to(dest, src) using the Allocate-Load API. The function supports_allocate_load can be used to check whether dest supports the Allocate-Load API.\n\n\n\n\n\n"
+},
+
+{
+    "location": "apireference/#MathOptInterface.Utilities.supports_allocate_load",
+    "page": "Reference",
+    "title": "MathOptInterface.Utilities.supports_allocate_load",
+    "category": "function",
+    "text": "supports_allocate_load(model::MOI.ModelLike, copy_names::Bool)::Bool\n\nReturn a Bool indicating whether model supports allocate_load(model, src, copy_names=copy_names) if all the attributes set to src and constraints added to src are supported by model.\n\n\n\n\n\n"
+},
+
+{
+    "location": "apireference/#MathOptInterface.Utilities.allocate_variables",
+    "page": "Reference",
+    "title": "MathOptInterface.Utilities.allocate_variables",
+    "category": "function",
+    "text": "allocate_variables(model::MOI.ModelLike, nvars::Integer)\n\nCreates nvars variables and returns a vector of nvars variable indices.\n\n\n\n\n\n"
+},
+
+{
+    "location": "apireference/#MathOptInterface.Utilities.allocate",
+    "page": "Reference",
+    "title": "MathOptInterface.Utilities.allocate",
+    "category": "function",
+    "text": "allocate(model::ModelLike, attr::ModelLikeAttribute, value)\nallocate(model::ModelLike, attr::AbstractVariableAttribute, v::VariableIndex, value)\nallocate(model::ModelLike, attr::AbstractConstraintAttribute, c::ConstraintIndex, value)\n\nInforms model that load will be called with the same arguments after load_variables is called.\n\n\n\n\n\n"
+},
+
+{
+    "location": "apireference/#MathOptInterface.Utilities.allocate_constraint",
+    "page": "Reference",
+    "title": "MathOptInterface.Utilities.allocate_constraint",
+    "category": "function",
+    "text": "allocate_constraint(model::MOI.ModelLike, f::MOI.AbstractFunction, s::MOI.AbstractSet)\n\nReturns the index for the constraint to be used in load_constraint that will be called after load_variables is called.\n\n\n\n\n\n"
+},
+
+{
+    "location": "apireference/#MathOptInterface.Utilities.load_variables",
+    "page": "Reference",
+    "title": "MathOptInterface.Utilities.load_variables",
+    "category": "function",
+    "text": "load_variables(model::MOI.ModelLike, nvars::Integer)\n\nPrepares the model for loadobjective! and load_constraint.\n\n\n\n\n\n"
+},
+
+{
+    "location": "apireference/#MathOptInterface.Utilities.load",
+    "page": "Reference",
+    "title": "MathOptInterface.Utilities.load",
+    "category": "function",
+    "text": "load(model::ModelLike, attr::ModelLikeAttribute, value)\nload(model::ModelLike, attr::AbstractVariableAttribute, v::VariableIndex, value)\nload(model::ModelLike, attr::AbstractConstraintAttribute, c::ConstraintIndex, value)\n\nThis has the same effect that set with the same arguments except that allocate should be called first before load_variables.\n\n\n\n\n\n"
+},
+
+{
+    "location": "apireference/#MathOptInterface.Utilities.load_constraint",
+    "page": "Reference",
+    "title": "MathOptInterface.Utilities.load_constraint",
+    "category": "function",
+    "text": "load_constraint(model::MOI.ModelLike, ci::MOI.ConstraintIndex, f::MOI.AbstractFunction, s::MOI.AbstractSet)\n\nSets the constraint function and set for the constraint of index ci.\n\n\n\n\n\n"
+},
+
+{
+    "location": "apireference/#Allocate-Load-API-1",
+    "page": "Reference",
+    "title": "Allocate-Load API",
+    "category": "section",
+    "text": "The Allocate-Load API allows solvers that do not support loading the problem incrementally to implement copy_to in a way that still allows transformations to be applied in the copy between the cache and the model if the transformations are implemented as MOI layers implementing the Allocate-Load API, see Implementing copy for more details.Loading a model using the Allocate-Load interface consists of two passes through the model data:the allocate pass where the model typically records the necessary information about the constraints and attributes such as their number and size. This information may be used by the solver to allocate datastructures of appropriate size.\nthe load pass where the model typically loads the constraint and attribute data to the model.The description above only gives a suggestion of what to achieve in each pass. In fact the exact same constraint and attribute data is provided to each pass, so an implementation of the Allocate-Load API is free to do whatever is more convenient in each pass.The main difference between each pass, apart from the fact that one is executed before the other during a copy, is that the allocate pass needs to create and return new variable and constraint indices, while during the load pass the appropriate constraint indices are provided.The Allocate-Load API is not meant to be used outside a copy operation, that is, the interface is not meant to be used to create new constraints with Utilities.allocate_constraint followed by Utilities.load_constraint after a solve. This means that the order in which the different functions of the API are called is fixed by Utilities.allocate_load and models implementing the API can rely on the fact that functions will be called in this order. That is, it can be assumed that the different functions will the called in the following order:Utilities.allocate_variables\nUtilities.allocate and Utilities.allocate_constraint\nUtilities.load_variables\nUtilities.load and Utilities.load_constraintUtilities.allocate_load\nUtilities.supports_allocate_load\nUtilities.allocate_variables\nUtilities.allocate\nUtilities.allocate_constraint\nUtilities.load_variables\nUtilities.load\nUtilities.load_constraint"
 },
 
 ]}
