@@ -405,7 +405,7 @@ var documenterSearchIndex = {"docs": [
     "page": "Reference",
     "title": "MathOptInterface.get",
     "category": "function",
-    "text": "get(optimizer::AbstractOptimizer, attr::AbstractOptimizerAttribute)\n\nReturn an attribute attr of the optimizer optimizer.\n\nget(model::ModelLike, attr::AbstractModelAttribute)\n\nReturn an attribute attr of the model model.\n\nget(model::ModelLike, attr::AbstractVariableAttribute, v::VariableIndex)\n\nReturn an attribute attr of the variable v in model model.\n\nget(model::ModelLike, attr::AbstractVariableAttribute, v::Vector{VariableIndex})\n\nReturn a vector of attributes corresponding to each variable in the collection v in the model model.\n\nget(model::ModelLike, attr::AbstractConstraintAttribute, c::ConstraintIndex)\n\nReturn an attribute attr of the constraint c in model model.\n\nget(model::ModelLike, attr::AbstractConstraintAttribute, c::Vector{ConstraintIndex{F,S}})\n\nReturn a vector of attributes corresponding to each constraint in the collection c in the model model.\n\nget(model::ModelLike, ::Type{VariableIndex}, name::String)\n\nIf a variable with name name exists in the model model, return the corresponding index, otherwise return nothing. Errors if two variables have the same name.\n\nget(model::ModelLike, ::Type{ConstraintIndex{F,S}}, name::String) where {F<:AbstractFunction,S<:AbstractSet}\n\nIf an F-in-S constraint with name name exists in the model model, return the corresponding index, otherwise return nothing. Errors if two constraints have the same name.\n\nget(model::ModelLike, ::Type{ConstraintIndex}, name::String)\n\nIf any constraint with name name exists in the model model, return the corresponding index, otherwise return nothing. This version is available for convenience but may incur a performance penalty because it is not type stable. Errors if two constraints have the same name.\n\nExamples\n\nget(model, ObjectiveValue())\nget(model, VariablePrimal(), ref)\nget(model, VariablePrimal(5), [ref1, ref2])\nget(model, OtherAttribute(\"something specific to cplex\"))\nget(model, VariableIndex, \"var1\")\nget(model, ConstraintIndex{ScalarAffineFunction{Float64},LessThan{Float64}}, \"con1\")\nget(model, ConstraintIndex, \"con1\")\n\n\n\n\n\n"
+    "text": "get(optimizer::AbstractOptimizer, attr::AbstractOptimizerAttribute)\n\nReturn an attribute attr of the optimizer optimizer.\n\nget(model::ModelLike, attr::AbstractModelAttribute)\n\nReturn an attribute attr of the model model.\n\nget(model::ModelLike, attr::AbstractVariableAttribute, v::VariableIndex)\n\nIf the attribute attr is set for the variable v in the model model, return its value, return nothing otherwise. If the attribute attr is not supported by model then an error should be thrown instead of returning nothing.\n\nget(model::ModelLike, attr::AbstractVariableAttribute, v::Vector{VariableIndex})\n\nReturn a vector of attributes corresponding to each variable in the collection v in the model model.\n\nget(model::ModelLike, attr::AbstractConstraintAttribute, c::ConstraintIndex)\n\nIf the attribute attr is set for the constraint c in the model model, return its value, return nothing otherwise. If the attribute attr is not supported by model then an error should be thrown instead of returning nothing.\n\nget(model::ModelLike, attr::AbstractConstraintAttribute, c::Vector{ConstraintIndex{F,S}})\n\nReturn a vector of attributes corresponding to each constraint in the collection c in the model model.\n\nget(model::ModelLike, ::Type{VariableIndex}, name::String)\n\nIf a variable with name name exists in the model model, return the corresponding index, otherwise return nothing. Errors if two variables have the same name.\n\nget(model::ModelLike, ::Type{ConstraintIndex{F,S}}, name::String) where {F<:AbstractFunction,S<:AbstractSet}\n\nIf an F-in-S constraint with name name exists in the model model, return the corresponding index, otherwise return nothing. Errors if two constraints have the same name.\n\nget(model::ModelLike, ::Type{ConstraintIndex}, name::String)\n\nIf any constraint with name name exists in the model model, return the corresponding index, otherwise return nothing. This version is available for convenience but may incur a performance penalty because it is not type stable. Errors if two constraints have the same name.\n\nExamples\n\nget(model, ObjectiveValue())\nget(model, VariablePrimal(), ref)\nget(model, VariablePrimal(5), [ref1, ref2])\nget(model, OtherAttribute(\"something specific to cplex\"))\nget(model, VariableIndex, \"var1\")\nget(model, ConstraintIndex{ScalarAffineFunction{Float64},LessThan{Float64}}, \"con1\")\nget(model, ConstraintIndex, \"con1\")\n\n\n\n\n\n"
 },
 
 {
@@ -493,7 +493,7 @@ var documenterSearchIndex = {"docs": [
     "page": "Reference",
     "title": "MathOptInterface.Name",
     "category": "type",
-    "text": "Name()\n\nA model attribute for the string identifying the model.\n\n\n\n\n\n"
+    "text": "Name()\n\nA model attribute for the string identifying the model. It has a default value of \"\" if not set`.\n\n\n\n\n\n"
 },
 
 {
@@ -845,7 +845,7 @@ var documenterSearchIndex = {"docs": [
     "page": "Reference",
     "title": "MathOptInterface.VariableName",
     "category": "type",
-    "text": "VariableName()\n\nA variable attribute for a string identifying the variable. It is valid for two variables to have the same name; however, variables with duplicate names cannot be looked up using get.\n\n\n\n\n\n"
+    "text": "VariableName()\n\nA variable attribute for a string identifying the variable. It is valid for two variables to have the same name; however, variables with duplicate names cannot be looked up using get. It has a default value of \"\" if not set`.\n\n\n\n\n\n"
 },
 
 {
@@ -925,7 +925,7 @@ var documenterSearchIndex = {"docs": [
     "page": "Reference",
     "title": "MathOptInterface.ConstraintName",
     "category": "type",
-    "text": "ConstraintName()\n\nA constraint attribute for a string identifying the constraint. It is valid for constraints variables to have the same name; however, constraints with duplicate names cannot be looked up using get regardless of if they have the same F-inS type.\n\n\n\n\n\n"
+    "text": "ConstraintName()\n\nA constraint attribute for a string identifying the constraint. It is valid for constraints variables to have the same name; however, constraints with duplicate names cannot be looked up using get regardless of if they have the same F-inS type. It has a default value of \"\" if not set`.\n\n\n\n\n\n"
 },
 
 {
