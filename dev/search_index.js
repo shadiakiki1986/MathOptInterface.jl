@@ -501,7 +501,7 @@ var documenterSearchIndex = {"docs": [
     "page": "Reference",
     "title": "MathOptInterface.ObjectiveSense",
     "category": "type",
-    "text": "ObjectiveSense()\n\nA model attribute for the OptimizationSense of the objective function, which can be MinSense, MaxSense, or FeasiblitySense.\n\n\n\n\n\n"
+    "text": "ObjectiveSense()\n\nA model attribute for the OptimizationSense of the objective function, which can be MinSense, MaxSense, or FeasiblitySense. The default is FeasibilitySense.\n\n\n\n\n\n"
 },
 
 {
