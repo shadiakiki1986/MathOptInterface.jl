@@ -321,11 +321,11 @@ var documenterSearchIndex = {"docs": [
 },
 
 {
-    "location": "apimanual/#Package-Naming-1",
+    "location": "apimanual/#Naming-1",
     "page": "Manual",
-    "title": "Package Naming",
+    "title": "Naming",
     "category": "section",
-    "text": "MOI solver interfaces may be in the same package as the solver itself (either the C wrapper if the solver is accessible through C, or the Julia code if the solver is written in Julia, for example). The guideline for naming the file containing the MOI wrapper is src/MOIWrapper.jl and test/MOIWrapper.jl for the tests. If the MOI wrapper implementation is spread in several files, they should be stored in a src/MOIWrapper folder and included by a src/MOIWrapper/MOIWrapper.jl file. In some cases it may be more appropriate to host the MOI wrapper in its own package; in this case it is recommended that the MOI wrapper package be named MathOptInterfaceXXX where XXX is the solver name."
+    "text": "MOI solver interfaces may be in the same package as the solver itself (either the C wrapper if the solver is accessible through C, or the Julia code if the solver is written in Julia, for example). The guideline for naming the file containing the MOI wrapper is src/MOI_wrapper.jl and test/MOI_wrapper.jl for the tests. If the MOI wrapper implementation is spread in several files, they should be stored in a src/MOI_wrapper folder and included by a src/MOI_wrapper/MOI_wrapper.jl file. In some cases it may be more appropriate to host the MOI wrapper in its own package; in this case it is recommended that the MOI wrapper package be named MathOptInterfaceXXX where XXX is the solver name.By convention, optimizers should not be exported and should be named PackageName.Optimizer. For example, CPLEX.Optimizer, Gurobi.Optimizer, and Xpress.Optimizer."
 },
 
 {
