@@ -281,6 +281,14 @@ var documenterSearchIndex = {"docs": [
 },
 
 {
+    "location": "apimanual/#Solver-specific-attributes-1",
+    "page": "Manual",
+    "title": "Solver-specific attributes",
+    "category": "section",
+    "text": "Solver-specific attributes should either be passed to the optimizer on creation, e.g., MyPackage.Optimizer(PrintLevel = 0), or through a sub-type of AbstractOptimizerAttribute. For example, inside MyPackage, we could add the following:struct PrintLevel <: MOI.AbstractOptimizerAttribute end\nfunction MOI.set(model::Optimizer, ::PrintLevel, level::Int)\n    # ... set the print level ...\nendThen, the user can write:model = MyPackage.Optimizer()\nMOI.set(model, MyPackage.PrintLevel(), 0)"
+},
+
+{
     "location": "apimanual/#Implementing-copy-1",
     "page": "Manual",
     "title": "Implementing copy",
