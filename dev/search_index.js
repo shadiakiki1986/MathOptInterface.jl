@@ -301,7 +301,7 @@ var documenterSearchIndex = {"docs": [
     "page": "Manual",
     "title": "JuMP mapping",
     "category": "section",
-    "text": "MOI defines a very general interface, with multiple possible ways to describe the same constraint. This is considered a feature, not a bug. MOI is designed to make it possible to experiment with alternative representations of an optimization problem at both the solving and modeling level. When implementing an interface, it is important to keep in mind that the constraints which a solver supports via MOI will have a near 1-to-1 correspondence with how users can express problems in JuMP, because JuMP does not perform automatic transformations. (Alternative systems like Convex.jl do.) The following bullet points show examples of how JuMP constraints are translated into MOI function-set pairs:@constraint(m, 2x + y <= 10) becomes ScalarAffineFunction-in-LessThan;\n@constraint(m, 2x + y >= 10) becomes ScalarAffineFunction-in-GreaterThan;\n@constraint(m, 2x + y == 10) becomes ScalarAffineFunction-in-EqualTo;\n@constraint(m, 0 <= 2x + y <= 10) becomes ScalarAffineFunction-in-Interval;\n@constraint(m, 2x + y in ArbitrarySet()) becomes ScalarAffineFunction-in-ArbitrarySet.Variable bounds are handled in a similar fashion:@variable(m, x <= 1) becomes SingleVariable-in-LessThan;\n@variable(m, x >= 1) becomes SingleVariable-in-GreaterThan.One notable difference is that a variable with an upper and lower bound is translated into two constraints, rather than an interval. i.e.:@variable(m, 0 <= x <= 1) becomes SingleVariable-in-LessThan and SingleVariable-in-GreaterThan.Therefore, if a solver wrapper does not support ScalarAffineFunction-in-LessThan constraints, users will not be able to write: @constraint(m, 2x + y <= 10) in JuMP. With this in mind, developers should support all the constraint types that they want to be usable from JuMP. That said, from the perspective of JuMP, solvers can safely choose to not support the following constraints:ScalarAffineFunction in GreaterThan, LessThan, or EqualTo with a nonzero constant in the function. Constants in the affine function should instead be moved into the parameters of the corresponding sets.\nScalarAffineFunction in Nonnegative, Nonpositive or Zeros. Alternative constraints are available by using a VectorAffineFunction with one output row or ScalarAffineFunction with GreaterThan, LessThan, or EqualTo.\nTwo SingleVariable-in-LessThan constraints applied to the same variable (similarly with GreaterThan). These should be interpreted as variable bounds, and each variable naturally has at most one upper or lower bound."
+    "text": "MOI defines a very general interface, with multiple possible ways to describe the same constraint. This is considered a feature, not a bug. MOI is designed to make it possible to experiment with alternative representations of an optimization problem at both the solving and modeling level. When implementing an interface, it is important to keep in mind that the constraints which a solver supports via MOI will have a near 1-to-1 correspondence with how users can express problems in JuMP, because JuMP does not perform automatic transformations. (Alternative systems like Convex.jl do.) The following bullet points show examples of how JuMP constraints are translated into MOI function-set pairs:@constraint(m, 2x + y <= 10) becomes ScalarAffineFunction-in-LessThan;\n@constraint(m, 2x + y >= 10) becomes ScalarAffineFunction-in-GreaterThan;\n@constraint(m, 2x + y == 10) becomes ScalarAffineFunction-in-EqualTo;\n@constraint(m, 0 <= 2x + y <= 10) becomes ScalarAffineFunction-in-Interval;\n@constraint(m, 2x + y in ArbitrarySet()) becomes ScalarAffineFunction-in-ArbitrarySet.Variable bounds are handled in a similar fashion:@variable(m, x <= 1) becomes SingleVariable-in-LessThan;\n@variable(m, x >= 1) becomes SingleVariable-in-GreaterThan.One notable difference is that a variable with an upper and lower bound is translated into two constraints, rather than an interval. i.e.:@variable(m, 0 <= x <= 1) becomes SingleVariable-in-LessThan and SingleVariable-in-GreaterThan.Therefore, if a solver wrapper does not support ScalarAffineFunction-in-LessThan constraints, users will not be able to write: @constraint(m, 2x + y <= 10) in JuMP. With this in mind, developers should support all the constraint types that they want to be usable from JuMP. That said, from the perspective of JuMP, solvers can safely choose to not support the following constraints:AbstractScalarFunction in GreaterThan, LessThan, EqualTo, or Interval with a nonzero constant in the function. Constants in the affine function should instead be moved into the parameters of the corresponding sets. The ScalarFunctionConstantNotZero exception may be thrown in this case.\nScalarAffineFunction in Nonnegative, Nonpositive or Zeros. Alternative constraints are available by using a VectorAffineFunction with one output row or ScalarAffineFunction with GreaterThan, LessThan, or EqualTo.\nTwo SingleVariable-in-LessThan constraints applied to the same variable (similarly with GreaterThan). These should be interpreted as variable bounds, and each variable naturally has at most one upper or lower bound."
 },
 
 {
@@ -901,7 +901,7 @@ var documenterSearchIndex = {"docs": [
     "page": "Reference",
     "title": "MathOptInterface.add_constraint",
     "category": "function",
-    "text": "add_constraint(model::ModelLike, func::F, set::S)::ConstraintIndex{F,S} where {F,S}\n\nAdd the constraint f(x) in mathcalS where f is defined by func, and mathcalS is defined by set.\n\nadd_constraint(model::ModelLike, v::VariableIndex, set::S)::ConstraintIndex{SingleVariable,S} where {S}\nadd_constraint(model::ModelLike, vec::Vector{VariableIndex}, set::S)::ConstraintIndex{VectorOfVariables,S} where {S}\n\nAdd the constraint v in mathcalS where v is the variable (or vector of variables) referenced by v and mathcalS is defined by set.\n\nAn UnsupportedConstraint error is thrown if model does not support F-in-S constraints and a AddConstraintNotAllowed error is thrown if it supports F-in-S constraints but it cannot add the constraint(s) in its current state.\n\n\n\n\n\n"
+    "text": "add_constraint(model::ModelLike, func::F, set::S)::ConstraintIndex{F,S} where {F,S}\n\nAdd the constraint f(x) in mathcalS where f is defined by func, and mathcalS is defined by set.\n\nadd_constraint(model::ModelLike, v::VariableIndex, set::S)::ConstraintIndex{SingleVariable,S} where {S}\nadd_constraint(model::ModelLike, vec::Vector{VariableIndex}, set::S)::ConstraintIndex{VectorOfVariables,S} where {S}\n\nAdd the constraint v in mathcalS where v is the variable (or vector of variables) referenced by v and mathcalS is defined by set.\n\nAn UnsupportedConstraint error is thrown if model does not support F-in-S constraints,\na AddConstraintNotAllowed error is thrown if it supports F-in-S constraints but it cannot add the constraint(s) in its current state and\na ScalarFunctionConstantNotZero error may be thrown if func is an AbstractScalarFunction with nonzero constant and set is EqualTo, GreaterThan, LessThan or Interval.\n\n\n\n\n\n"
 },
 
 {
@@ -1593,6 +1593,14 @@ var documenterSearchIndex = {"docs": [
 },
 
 {
+    "location": "apireference/#MathOptInterface.ScalarFunctionConstantNotZero",
+    "page": "Reference",
+    "title": "MathOptInterface.ScalarFunctionConstantNotZero",
+    "category": "type",
+    "text": "struct ScalarFunctionConstantNotZero{T, F, S} <: Exception\n    constant::T\nend\n\nAn error indicating that the constant part of the function in the constraint F-in-S is nonzero.\n\n\n\n\n\n"
+},
+
+{
     "location": "apireference/#MathOptInterface.UnsupportedError",
     "page": "Reference",
     "title": "MathOptInterface.UnsupportedError",
@@ -1677,7 +1685,7 @@ var documenterSearchIndex = {"docs": [
     "page": "Reference",
     "title": "Errors",
     "category": "section",
-    "text": "When an MOI call fails on a model, precise errors should be thrown when possible instead of simply calling error with a message. The docstrings for the respective methods describe the errors that the implementation should thrown in certain situations. This error-reporting system allows code to distinguish between internal errors (that should be shown to the user) and unsupported operations which may have automatic workarounds.When an invalid index is used in an MOI call, an InvalidIndex should be thrown:InvalidIndexThe rest of the errors defined in MOI fall in two categories represented by the following two abstract types:UnsupportedError\nNotAllowedErrorThe different UnsupportedError and NotAllowedError are the following errors:UnsupportedAttribute\nSetAttributeNotAllowed\nAddVariableNotAllowed\nUnsupportedConstraint\nAddConstraintNotAllowed\nModifyConstraintNotAllowed\nModifyObjectiveNotAllowed\nDeleteNotAllowed"
+    "text": "When an MOI call fails on a model, precise errors should be thrown when possible instead of simply calling error with a message. The docstrings for the respective methods describe the errors that the implementation should thrown in certain situations. This error-reporting system allows code to distinguish between internal errors (that should be shown to the user) and unsupported operations which may have automatic workarounds.When an invalid index is used in an MOI call, an InvalidIndex should be thrown:InvalidIndexAs discussed in JuMP mapping, for scalar constraint with a nonzero function constant, a ScalarFunctionConstantNotZero exception may be thrown:ScalarFunctionConstantNotZeroThe rest of the errors defined in MOI fall in two categories represented by the following two abstract types:UnsupportedError\nNotAllowedErrorThe different UnsupportedError and NotAllowedError are the following errors:UnsupportedAttribute\nSetAttributeNotAllowed\nAddVariableNotAllowed\nUnsupportedConstraint\nAddConstraintNotAllowed\nModifyConstraintNotAllowed\nModifyObjectiveNotAllowed\nDeleteNotAllowed"
 },
 
 {
@@ -1718,6 +1726,14 @@ var documenterSearchIndex = {"docs": [
     "title": "MathOptInterface.Bridges.add_bridge",
     "category": "function",
     "text": "add_bridge(b::LazyBridgeOptimizer, BT::Type{<:AbstractBridge})\n\nEnable the use of the bridges of type BT by b.\n\n\n\n\n\n"
+},
+
+{
+    "location": "apireference/#MathOptInterface.Bridges.VectorizeBridge",
+    "page": "Reference",
+    "title": "MathOptInterface.Bridges.VectorizeBridge",
+    "category": "type",
+    "text": "VectorizeBridge{T}\n\nTransforms a constraint AbstractScalarFunction-in-S where S <: LPCone to AbstactVectorFunction-in-vector_set_type(S).\n\n\n\n\n\n"
 },
 
 {
@@ -1789,7 +1805,7 @@ var documenterSearchIndex = {"docs": [
     "page": "Reference",
     "title": "Bridges",
     "category": "section",
-    "text": "Bridges can be used for automatic reformulation of a certain constraint type into equivalent constraints.Bridges.AbstractBridge\nBridges.AbstractBridgeOptimizer\nBridges.SingleBridgeOptimizer\nBridges.LazyBridgeOptimizer\nBridges.add_bridgeBelow is the list of bridges implemented in this package.Bridges.SplitIntervalBridge\nBridges.RSOCBridge\nBridges.GeoMeanBridge\nBridges.SquarePSDBridge\nBridges.RootDetBridge\nBridges.LogDetBridge\nBridges.SOCtoPSDBridge\nBridges.RSOCtoPSDBridgeFor each bridge defined in this package, a corresponding bridge optimizer is available with the same name without the \"Bridge\" suffix, e.g., SplitInterval is an SingleBridgeOptimizer for the SplitIntervalBridge."
+    "text": "Bridges can be used for automatic reformulation of a certain constraint type into equivalent constraints.Bridges.AbstractBridge\nBridges.AbstractBridgeOptimizer\nBridges.SingleBridgeOptimizer\nBridges.LazyBridgeOptimizer\nBridges.add_bridgeBelow is the list of bridges implemented in this package.Bridges.VectorizeBridge\nBridges.SplitIntervalBridge\nBridges.RSOCBridge\nBridges.GeoMeanBridge\nBridges.SquarePSDBridge\nBridges.RootDetBridge\nBridges.LogDetBridge\nBridges.SOCtoPSDBridge\nBridges.RSOCtoPSDBridgeFor each bridge defined in this package, a corresponding bridge optimizer is available with the same name without the \"Bridge\" suffix, e.g., SplitInterval is an SingleBridgeOptimizer for the SplitIntervalBridge."
 },
 
 {
