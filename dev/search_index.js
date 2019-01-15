@@ -713,6 +713,14 @@ var documenterSearchIndex = {"docs": [
 },
 
 {
+    "location": "apireference/#MathOptInterface.RawStatusString",
+    "page": "Reference",
+    "title": "MathOptInterface.RawStatusString",
+    "category": "type",
+    "text": "RawStatusString()\n\nA model attribute for a solver specific string explaning why the optimizer stopped.\n\n\n\n\n\n"
+},
+
+{
     "location": "apireference/#MathOptInterface.PrimalStatus",
     "page": "Reference",
     "title": "MathOptInterface.PrimalStatus",
@@ -733,7 +741,7 @@ var documenterSearchIndex = {"docs": [
     "page": "Reference",
     "title": "Optimizers",
     "category": "section",
-    "text": "AbstractOptimizer\noptimize!List of attributes optimizers attributesSolverNameList of attributes useful for optimizersRawSolver\nResultCount\nObjectiveFunction\nObjectiveFunctionType\nObjectiveValue\nObjectiveBound\nRelativeGap\nSolveTime\nSimplexIterations\nBarrierIterations\nNodeCount\nTerminationStatus\nPrimalStatus\nDualStatus"
+    "text": "AbstractOptimizer\noptimize!List of attributes optimizers attributesSolverNameList of attributes useful for optimizersRawSolver\nResultCount\nObjectiveFunction\nObjectiveFunctionType\nObjectiveValue\nObjectiveBound\nRelativeGap\nSolveTime\nSimplexIterations\nBarrierIterations\nNodeCount\nTerminationStatus\nRawStatusString\nPrimalStatus\nDualStatus"
 },
 
 {
