@@ -332,6 +332,18 @@ An optimizer attribute for the string identifying the solver/optimizer.
 """
 struct SolverName <: AbstractOptimizerAttribute end
 
+"""
+    RequiredBridges()
+
+A list of bridges that are required when using the optimizer. For instance, if
+an optimizer uses a different representation of a set, it can defined a custom
+set with a bridge that transforms the MOI set into the custom set and return
+this bridge as value of this attribute.
+"""
+struct RequiredBridges <: AbstractOptimizerAttribute end
+
+get(model::ModelLike, ::RequiredBridges) = []
+
 ## Model attributes
 
 """
@@ -900,7 +912,8 @@ method should be defined for attibutes which are copied indirectly during
 * [`ListOfOptimizerAttributesSet`](@ref), [`ListOfModelAttributesSet`](@ref),
   [`ListOfConstraintAttributesSet`](@ref) and
   [`ListOfVariableAttributesSet`](@ref).
-* [`SolverName`](@ref) and [`RawSolver`](@ref): these attributes cannot be set.
+* [`SolverName`](@ref), [`RequiredBridges`](@ref) and [`RawSolver`](@ref): these
+  attributes cannot be set.
 * [`NumberOfVariables`](@ref) and [`ListOfVariableIndices`](@ref): these
   attributes are set indirectly by [`add_variable`](@ref) and
   [`add_variables`](@ref).
@@ -919,6 +932,7 @@ function is_copyable(::Union{ListOfOptimizerAttributesSet,
                              ListOfConstraintAttributesSet,
                              ListOfVariableAttributesSet,
                              SolverName,
+                             RequiredBridges,
                              RawSolver,
                              NumberOfVariables,
                              ListOfVariableIndices,
