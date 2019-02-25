@@ -789,7 +789,7 @@ var documenterSearchIndex = {"docs": [
     "page": "Reference",
     "title": "MathOptInterface.BasisStatusCode",
     "category": "type",
-    "text": "BasisStatusCode\n\nAn Enum of possible values for the VariableBasisStatus and ConstraintBasisStatus attributes. This explains the status of a given element with respect to an optimal solution basis. Possible values are:\n\nBASIC: element is in the basis\nNONBASIC: element is not in the basis\nNONBASIC_AT_LOWER: element is not in the basis and is at its lower bound\nNONBASIC_AT_UPPER: element is not in the basis and is at its upper bound\nSUPER_BASIC: element is not in the basis but is also not at one of its bounds\n\n\n\n\n\n"
+    "text": "BasisStatusCode\n\nAn Enum of possible values for the ConstraintBasisStatus attribute. This explains the status of a given element with respect to an optimal solution basis. Possible values are:\n\nBASIC: element is in the basis\nNONBASIC: element is not in the basis\nNONBASIC_AT_LOWER: element is not in the basis and is at its lower bound\nNONBASIC_AT_UPPER: element is not in the basis and is at its upper bound\nSUPER_BASIC: element is not in the basis but is also not at one of its bounds\n\nNote: NONBASIC_AT_LOWER and NONBASIC_AT_UPPER should be used only for constraints with the Interval. In this case cases they are necessary to distinguish which side of the constraint. One-sided constraints (e.g., LessThan and GreaterThan) should use NONBASIC instead of the NONBASIC_AT_* values.\n\n\n\n\n\n"
 },
 
 {
@@ -797,7 +797,7 @@ var documenterSearchIndex = {"docs": [
     "page": "Reference",
     "title": "Basis Status",
     "category": "section",
-    "text": "The BasisStatus attribute of a variable or constraint describes its status with respect to a basis, if one is known. The value of the attribute is of type BasisStatusCode.BasisStatusCode"
+    "text": "The BasisStatus attribute of a constraint describes its status with respect to a basis, if one is known. The value of the attribute is of type BasisStatusCode.BasisStatusCode"
 },
 
 {
@@ -881,19 +881,11 @@ var documenterSearchIndex = {"docs": [
 },
 
 {
-    "location": "apireference/#MathOptInterface.VariableBasisStatus",
-    "page": "Reference",
-    "title": "MathOptInterface.VariableBasisStatus",
-    "category": "type",
-    "text": "VariableBasisStatus()\n\nA variable attribute for the BasisStatusCode of some variable, with respect to an available optimal solution basis.\n\n\n\n\n\n"
-},
-
-{
     "location": "apireference/#Variables-1",
     "page": "Reference",
     "title": "Variables",
     "category": "section",
-    "text": "Functions for adding variables. For deleting, see index types section.add_variables\nadd_variableList of attributes associated with variables. [category AbstractVariableAttribute] Calls to get and set should include as an argument a single VariableIndex or a vector of VariableIndex objects.VariableName\nVariablePrimalStart\nVariablePrimal\nVariableBasisStatus"
+    "text": "Functions for adding variables. For deleting, see index types section.add_variables\nadd_variableList of attributes associated with variables. [category AbstractVariableAttribute] Calls to get and set should include as an argument a single VariableIndex or a vector of VariableIndex objects.VariableName\nVariablePrimalStart\nVariablePrimal"
 },
 
 {
@@ -981,7 +973,7 @@ var documenterSearchIndex = {"docs": [
     "page": "Reference",
     "title": "MathOptInterface.ConstraintBasisStatus",
     "category": "type",
-    "text": "ConstraintBasisStatus()\n\nA constraint attribute for the BasisStatusCode of some constraint, with respect to an available optimal solution basis.\n\n\n\n\n\n"
+    "text": "ConstraintBasisStatus()\n\nA constraint attribute for the BasisStatusCode of some constraint, with respect to an available optimal solution basis.\n\nFor the basis status of a variable, query the corresponding SingleVariable constraint that enforces the variable\'s bounds.\n\n\n\n\n\n"
 },
 
 {
