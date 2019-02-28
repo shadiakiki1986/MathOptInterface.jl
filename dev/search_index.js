@@ -1753,6 +1753,14 @@ var documenterSearchIndex = {"docs": [
 },
 
 {
+    "location": "apireference/#MathOptInterface.Bridges.QuadtoSOCBridge",
+    "page": "Reference",
+    "title": "MathOptInterface.Bridges.QuadtoSOCBridge",
+    "category": "type",
+    "text": "QuadtoSOCBridge{T}\n\nThe set of points x satisfying the constraint\n\nfrac12x^T Q x + a^T x + b le 0\n\nis a convex set if Q is positive semidefinite and is the union of two convex cones if a and b are zero (i.e. homogeneous case) and Q has only one negative eigenvalue. Currently, only the non-homogeneous transformation is implemented, see the Note section below for more details.\n\nNon-homogeneous case\n\nIf Q is positive semidefinite, there exists U such that Q = U^T U, the inequality can then be rewritten as\n\nU x_2 le 2 (a^T x + b)\n\nwhich is equivalent to the membership of (1, a^T x + b, Ux) to the rotated second-order cone.\n\nHomogeneous case\n\nIf Q has only one negative eigenvalue, the set of x such that x^T Q x le 0 is the union of a convex cone and its opposite. We can choose which one to model by checking the existence of bounds on variables as shown below.\n\nSecond-order cone\n\nIf Q is diagonal and has eigenvalues (1, 1, -1), the inequality x^2 + x^2 le z^2 combined with z ge 0 defines the Lorenz cone (i.e. the second-order cone) but when combined with z le 0, it gives the opposite of the second order cone. Therefore, we need to check if the variable z has a lower bound 0 or an upper bound 0 in order to determine which cone is\n\nRotated second-order cone\n\nThe matrix Q corresponding to the inequality x^2 le 2yz has one eigenvalue 1 with eigenvectors (1, 0, 0) and (0, 1, -1) and one eigenvalue -1 corresponding to the eigenvector (0, 1, 1). Hence if we intersect this union of two convex cone with the halfspace x + y ge 0, we get the rotated second-order cone and if we intersect it with the halfspace x + y le 0 we get the opposite of the rotated second-order cone. Note that y and z have the same sign since yz is nonnegative hence x + y ge 0 is equivalent to x ge 0 and y ge 0.\n\nNote\n\nThe check for existence of bound can be implemented (but inefficiently) with the current interface but if bound is removed or transformed (e.g. ≤ 0 transformed into ≥ 0) then the bridge is no longer valid. For this reason the homogeneous version of the bridge is not implemented yet.\n\n\n\n\n\n"
+},
+
+{
     "location": "apireference/#MathOptInterface.Bridges.GeoMeanBridge",
     "page": "Reference",
     "title": "MathOptInterface.Bridges.GeoMeanBridge",
@@ -1805,7 +1813,7 @@ var documenterSearchIndex = {"docs": [
     "page": "Reference",
     "title": "Bridges",
     "category": "section",
-    "text": "Bridges can be used for automatic reformulation of a certain constraint type into equivalent constraints.Bridges.AbstractBridge\nBridges.AbstractBridgeOptimizer\nBridges.SingleBridgeOptimizer\nBridges.LazyBridgeOptimizer\nBridges.add_bridgeBelow is the list of bridges implemented in this package.Bridges.VectorizeBridge\nBridges.SplitIntervalBridge\nBridges.RSOCBridge\nBridges.GeoMeanBridge\nBridges.SquarePSDBridge\nBridges.RootDetBridge\nBridges.LogDetBridge\nBridges.SOCtoPSDBridge\nBridges.RSOCtoPSDBridgeFor each bridge defined in this package, a corresponding bridge optimizer is available with the same name without the \"Bridge\" suffix, e.g., SplitInterval is an SingleBridgeOptimizer for the SplitIntervalBridge."
+    "text": "Bridges can be used for automatic reformulation of a certain constraint type into equivalent constraints.Bridges.AbstractBridge\nBridges.AbstractBridgeOptimizer\nBridges.SingleBridgeOptimizer\nBridges.LazyBridgeOptimizer\nBridges.add_bridgeBelow is the list of bridges implemented in this package.Bridges.VectorizeBridge\nBridges.SplitIntervalBridge\nBridges.RSOCBridge\nBridges.QuadtoSOCBridge\nBridges.GeoMeanBridge\nBridges.SquarePSDBridge\nBridges.RootDetBridge\nBridges.LogDetBridge\nBridges.SOCtoPSDBridge\nBridges.RSOCtoPSDBridgeFor each bridge defined in this package, a corresponding bridge optimizer is available with the same name without the \"Bridge\" suffix, e.g., SplitInterval is an SingleBridgeOptimizer for the SplitIntervalBridge."
 },
 
 {
