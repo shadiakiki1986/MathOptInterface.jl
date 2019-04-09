@@ -1077,7 +1077,7 @@ var documenterSearchIndex = {"docs": [
     "page": "Reference",
     "title": "MathOptInterface.ScalarQuadraticFunction",
     "category": "type",
-    "text": "ScalarQuadraticFunction{T}(affine_terms, quadratic_terms, constant)\n\nThe scalar-valued quadratic function frac12x^TQx + a^T x + b, where:\n\na is a sparse vector specified by a list of ScalarAffineTerm structs.\nb is a scalar specified by constant.\nQ is a symmetric matrix specified by a list of ScalarQuadraticTerm structs.\n\nDuplicate indices in a or Q are accepted, and the corresponding coefficients are summed together. \"Mirrored\" indices (q,r) and (r,q) (where r and q are VariableIndexes) are considered duplicates; only one need be specified.\n\n\n\n\n\n"
+    "text": "ScalarQuadraticFunction{T}(affine_terms, quadratic_terms, constant)\n\nThe scalar-valued quadratic function frac12x^TQx + a^T x + b, where:\n\na is a sparse vector specified by a list of ScalarAffineTerm structs.\nb is a scalar specified by constant.\nQ is a symmetric matrix specified by a list of ScalarQuadraticTerm structs.\n\nDuplicate indices in a or Q are accepted, and the corresponding coefficients are summed together. \"Mirrored\" indices (q,r) and (r,q) (where r and q are VariableIndexes) are considered duplicates; only one need be specified.\n\nFor example, for two scalar variables y z, the quadratic expression yz + y^2 is represented by the terms ScalarQuadraticTerm.([1.0, 2.0], [y, y], [z, y]).\n\n\n\n\n\n"
 },
 
 {
