@@ -725,7 +725,7 @@ var documenterSearchIndex = {"docs": [
     "page": "Reference",
     "title": "MathOptInterface.RawStatusString",
     "category": "type",
-    "text": "RawStatusString()\n\nA model attribute for a solver specific string explaning why the optimizer stopped.\n\n\n\n\n\n"
+    "text": "RawStatusString()\n\nA model attribute for a solver specific string explaining why the optimizer stopped.\n\n\n\n\n\n"
 },
 
 {
