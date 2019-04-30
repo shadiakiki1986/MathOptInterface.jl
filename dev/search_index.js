@@ -1337,6 +1337,14 @@ var documenterSearchIndex = {"docs": [
 },
 
 {
+    "location": "apireference/#MathOptInterface.IndicatorSet",
+    "page": "Reference",
+    "title": "MathOptInterface.IndicatorSet",
+    "category": "type",
+    "text": "IndicatorSet{A, S <: AbstractScalarSet}(set::S)\n\n((y x) in 0 1 times mathbbR^n  y = 0 implies x in set when A is ACTIVATE_ON_ZERO and ((y x) in 0 1 times mathbbR^n  y = 1 implies x in set when A is ACTIVATE_ON_ONE.\n\nS has to be a sub-type of AbstractScalarSet. A is one of the value of the ActivationCond enum. IndicatorSet is used with a VectorAffineFunction holding the indicator variable first.\n\nExample: (y x) in 0 1 times mathbbR^2  y = 1 implies x_1 + x_2 leq 9 \n\nf = MOI.VectorAffineFunction(\n    [MOI.VectorAffineTerm(1, MOI.ScalarAffineTerm(1.0, z)),\n     MOI.VectorAffineTerm(2, MOI.ScalarAffineTerm(0.2, x1)),\n     MOI.VectorAffineTerm(2, MOI.ScalarAffineTerm(1.0, x2)),\n    ],\n    [0.0, 0.0],\n)\n\nindicator_set = MOI.IndicatorSet{MOI.ACTIVATE_ON_ONE}(MOI.LessThan(9.0))\n\nMOI.add_constraint(model, f, indicator_set)\n\n\n\n\n\n"
+},
+
+{
     "location": "apireference/#MathOptInterface.dimension",
     "page": "Reference",
     "title": "MathOptInterface.dimension",
@@ -1349,7 +1357,7 @@ var documenterSearchIndex = {"docs": [
     "page": "Reference",
     "title": "Sets",
     "category": "section",
-    "text": "List of recognized sets.AbstractSet\nReals\nZeros\nNonnegatives\nNonpositives\nGreaterThan\nLessThan\nEqualTo\nInterval\nSecondOrderCone\nRotatedSecondOrderCone\nGeometricMeanCone\nExponentialCone\nDualExponentialCone\nPowerCone\nDualPowerCone\nPositiveSemidefiniteConeTriangle\nPositiveSemidefiniteConeSquare\nLogDetConeTriangle\nLogDetConeSquare\nRootDetConeTriangle\nRootDetConeSquare\nInteger\nZeroOne\nSemicontinuous\nSemiinteger\nSOS1\nSOS2Functions for getting and setting properties of sets.dimension"
+    "text": "List of recognized sets.AbstractSet\nReals\nZeros\nNonnegatives\nNonpositives\nGreaterThan\nLessThan\nEqualTo\nInterval\nSecondOrderCone\nRotatedSecondOrderCone\nGeometricMeanCone\nExponentialCone\nDualExponentialCone\nPowerCone\nDualPowerCone\nPositiveSemidefiniteConeTriangle\nPositiveSemidefiniteConeSquare\nLogDetConeTriangle\nLogDetConeSquare\nRootDetConeTriangle\nRootDetConeSquare\nInteger\nZeroOne\nSemicontinuous\nSemiinteger\nSOS1\nSOS2\nIndicatorSetFunctions for getting and setting properties of sets.dimension"
 },
 
 {
