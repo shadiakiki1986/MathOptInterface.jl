@@ -117,7 +117,7 @@ var documenterSearchIndex = {"docs": [
     "page": "Manual",
     "title": "Discrete and logical constraints",
     "category": "section",
-    "text": "Mathematical Constraint MOI Function MOI Set\nx_i in mathbbZ SingleVariable Integer\nx_i in 01 SingleVariable ZeroOne\nx_i in 0 cup lu SingleVariable Semicontinuous\nx_i in 0 cup ll+1ldotsu-1u SingleVariable Semiinteger\nAt most one component of x can be nonzero VectorOfVariables SOS1\nAt most two components of x can be nonzero, and if so they must be adjacent components VectorOfVariables SOS2"
+    "text": "Mathematical Constraint MOI Function MOI Set\nx_i in mathbbZ SingleVariable Integer\nx_i in 01 SingleVariable ZeroOne\nx_i in 0 cup lu SingleVariable Semicontinuous\nx_i in 0 cup ll+1ldotsu-1u SingleVariable Semiinteger\nAt most one component of x can be nonzero VectorOfVariables SOS1\nAt most two components of x can be nonzero, and if so they must be adjacent components VectorOfVariables SOS2\ny = 1 implies a^T x in S VectorAffineFunction IndicatorSet"
 },
 
 {
@@ -1105,11 +1105,43 @@ var documenterSearchIndex = {"docs": [
 },
 
 {
+    "location": "apireference/#MathOptInterface.constant-Tuple{Union{ScalarAffineFunction, ScalarQuadraticFunction}}",
+    "page": "Reference",
+    "title": "MathOptInterface.constant",
+    "category": "method",
+    "text": "constant(f::Union{ScalarAffineFunction, ScalarQuadraticFunction})\n\nReturns the constant term of the scalar function\n\n\n\n\n\n"
+},
+
+{
+    "location": "apireference/#MathOptInterface.constant-Tuple{Union{VectorAffineFunction, VectorQuadraticFunction}}",
+    "page": "Reference",
+    "title": "MathOptInterface.constant",
+    "category": "method",
+    "text": "constant(f::Union{VectorAffineFunction, VectorQuadraticFunction})\n\nReturns the vector of constant terms of the vector function\n\n\n\n\n\n"
+},
+
+{
+    "location": "apireference/#MathOptInterface.constant-Tuple{MathOptInterface.SingleVariable,DataType}",
+    "page": "Reference",
+    "title": "MathOptInterface.constant",
+    "category": "method",
+    "text": "constant(f::SingleVariable, T::DataType)\n\nThe constant term of a SingleVariable function is the zero value of the specified type T.\n\n\n\n\n\n"
+},
+
+{
+    "location": "apireference/#MathOptInterface.constant-Tuple{MathOptInterface.VectorOfVariables,DataType}",
+    "page": "Reference",
+    "title": "MathOptInterface.constant",
+    "category": "method",
+    "text": "constant(f::VectorOfVariables, T::DataType)\n\nThe constant term of a VectorOfVariables function is a vector of zero values of the specified type T.\n\n\n\n\n\n"
+},
+
+{
     "location": "apireference/#Functions-and-function-modifications-1",
     "page": "Reference",
     "title": "Functions and function modifications",
     "category": "section",
-    "text": "List of recognized functions.AbstractFunction\nSingleVariable\nVectorOfVariables\nScalarAffineTerm\nScalarAffineFunction\nVectorAffineTerm\nVectorAffineFunction\nScalarQuadraticTerm\nScalarQuadraticFunction\nVectorQuadraticTerm\nVectorQuadraticFunctionFunctions for getting and setting properties of sets.output_dimension"
+    "text": "List of recognized functions.AbstractFunction\nSingleVariable\nVectorOfVariables\nScalarAffineTerm\nScalarAffineFunction\nVectorAffineTerm\nVectorAffineFunction\nScalarQuadraticTerm\nScalarQuadraticFunction\nVectorQuadraticTerm\nVectorQuadraticFunctionFunctions for getting and setting properties of functions.output_dimension\nconstant(f::Union{ScalarAffineFunction, ScalarQuadraticFunction})\nconstant(f::Union{VectorAffineFunction, VectorQuadraticFunction})\nconstant(f::SingleVariable, ::DataType)\nconstant(f::VectorOfVariables, T::DataType)"
 },
 
 {
@@ -1353,11 +1385,19 @@ var documenterSearchIndex = {"docs": [
 },
 
 {
+    "location": "apireference/#MathOptInterface.constant-Tuple{MathOptInterface.EqualTo}",
+    "page": "Reference",
+    "title": "MathOptInterface.constant",
+    "category": "method",
+    "text": "constant(s::Union{EqualTo, GreaterThan, LessThan})\n\nReturns the constant of the set.\n\n\n\n\n\n"
+},
+
+{
     "location": "apireference/#Sets-1",
     "page": "Reference",
     "title": "Sets",
     "category": "section",
-    "text": "List of recognized sets.AbstractSet\nReals\nZeros\nNonnegatives\nNonpositives\nGreaterThan\nLessThan\nEqualTo\nInterval\nSecondOrderCone\nRotatedSecondOrderCone\nGeometricMeanCone\nExponentialCone\nDualExponentialCone\nPowerCone\nDualPowerCone\nPositiveSemidefiniteConeTriangle\nPositiveSemidefiniteConeSquare\nLogDetConeTriangle\nLogDetConeSquare\nRootDetConeTriangle\nRootDetConeSquare\nInteger\nZeroOne\nSemicontinuous\nSemiinteger\nSOS1\nSOS2\nIndicatorSetFunctions for getting and setting properties of sets.dimension"
+    "text": "List of recognized sets.AbstractSet\nReals\nZeros\nNonnegatives\nNonpositives\nGreaterThan\nLessThan\nEqualTo\nInterval\nSecondOrderCone\nRotatedSecondOrderCone\nGeometricMeanCone\nExponentialCone\nDualExponentialCone\nPowerCone\nDualPowerCone\nPositiveSemidefiniteConeTriangle\nPositiveSemidefiniteConeSquare\nLogDetConeTriangle\nLogDetConeSquare\nRootDetConeTriangle\nRootDetConeSquare\nInteger\nZeroOne\nSemicontinuous\nSemiinteger\nSOS1\nSOS2\nIndicatorSetFunctions for getting and setting properties of sets.dimension\nconstant(s::EqualTo)"
 },
 
 {
