@@ -1105,11 +1105,43 @@ var documenterSearchIndex = {"docs": [
 },
 
 {
+    "location": "apireference/#MathOptInterface.constant-Tuple{Union{ScalarAffineFunction, ScalarQuadraticFunction}}",
+    "page": "Reference",
+    "title": "MathOptInterface.constant",
+    "category": "method",
+    "text": "constant(f::Union{ScalarAffineFunction, ScalarQuadraticFunction})\n\nReturns the constant term of the scalar function\n\n\n\n\n\n"
+},
+
+{
+    "location": "apireference/#MathOptInterface.constant-Tuple{Union{VectorAffineFunction, VectorQuadraticFunction}}",
+    "page": "Reference",
+    "title": "MathOptInterface.constant",
+    "category": "method",
+    "text": "constant(f::Union{VectorAffineFunction, VectorQuadraticFunction})\n\nReturns the vector of constant terms of the vector function\n\n\n\n\n\n"
+},
+
+{
+    "location": "apireference/#MathOptInterface.constant-Tuple{MathOptInterface.SingleVariable,DataType}",
+    "page": "Reference",
+    "title": "MathOptInterface.constant",
+    "category": "method",
+    "text": "constant(f::SingleVariable, T::DataType)\n\nThe constant term of a SingleVariable function is the zero value of the specified type T.\n\n\n\n\n\n"
+},
+
+{
+    "location": "apireference/#MathOptInterface.constant-Tuple{MathOptInterface.VectorOfVariables,DataType}",
+    "page": "Reference",
+    "title": "MathOptInterface.constant",
+    "category": "method",
+    "text": "constant(f::VectorOfVariables, T::DataType)\n\nThe constant term of a VectorOfVariables function is a vector of zero values of the specified type T.\n\n\n\n\n\n"
+},
+
+{
     "location": "apireference/#Functions-and-function-modifications-1",
     "page": "Reference",
     "title": "Functions and function modifications",
     "category": "section",
-    "text": "List of recognized functions.AbstractFunction\nSingleVariable\nVectorOfVariables\nScalarAffineTerm\nScalarAffineFunction\nVectorAffineTerm\nVectorAffineFunction\nScalarQuadraticTerm\nScalarQuadraticFunction\nVectorQuadraticTerm\nVectorQuadraticFunctionFunctions for getting and setting properties of sets.output_dimension"
+    "text": "List of recognized functions.AbstractFunction\nSingleVariable\nVectorOfVariables\nScalarAffineTerm\nScalarAffineFunction\nVectorAffineTerm\nVectorAffineFunction\nScalarQuadraticTerm\nScalarQuadraticFunction\nVectorQuadraticTerm\nVectorQuadraticFunctionFunctions for getting and setting properties of functions.output_dimension\nconstant(f::Union{ScalarAffineFunction, ScalarQuadraticFunction})\nconstant(f::Union{VectorAffineFunction, VectorQuadraticFunction})\nconstant(f::SingleVariable, ::DataType)\nconstant(f::VectorOfVariables, T::DataType)"
 },
 
 {
@@ -1353,11 +1385,19 @@ var documenterSearchIndex = {"docs": [
 },
 
 {
+    "location": "apireference/#MathOptInterface.constant-Tuple{MathOptInterface.EqualTo}",
+    "page": "Reference",
+    "title": "MathOptInterface.constant",
+    "category": "method",
+    "text": "constant(s::Union{EqualTo, GreaterThan, LessThan})\n\nReturns the constant of the set.\n\n\n\n\n\n"
+},
+
+{
     "location": "apireference/#Sets-1",
     "page": "Reference",
     "title": "Sets",
     "category": "section",
-    "text": "List of recognized sets.AbstractSet\nReals\nZeros\nNonnegatives\nNonpositives\nGreaterThan\nLessThan\nEqualTo\nInterval\nSecondOrderCone\nRotatedSecondOrderCone\nGeometricMeanCone\nExponentialCone\nDualExponentialCone\nPowerCone\nDualPowerCone\nPositiveSemidefiniteConeTriangle\nPositiveSemidefiniteConeSquare\nLogDetConeTriangle\nLogDetConeSquare\nRootDetConeTriangle\nRootDetConeSquare\nInteger\nZeroOne\nSemicontinuous\nSemiinteger\nSOS1\nSOS2\nIndicatorSetFunctions for getting and setting properties of sets.dimension"
+    "text": "List of recognized sets.AbstractSet\nReals\nZeros\nNonnegatives\nNonpositives\nGreaterThan\nLessThan\nEqualTo\nInterval\nSecondOrderCone\nRotatedSecondOrderCone\nGeometricMeanCone\nExponentialCone\nDualExponentialCone\nPowerCone\nDualPowerCone\nPositiveSemidefiniteConeTriangle\nPositiveSemidefiniteConeSquare\nLogDetConeTriangle\nLogDetConeSquare\nRootDetConeTriangle\nRootDetConeSquare\nInteger\nZeroOne\nSemicontinuous\nSemiinteger\nSOS1\nSOS2\nIndicatorSetFunctions for getting and setting properties of sets.dimension\nconstant(s::EqualTo)"
 },
 
 {
@@ -1725,7 +1765,7 @@ var documenterSearchIndex = {"docs": [
     "page": "Reference",
     "title": "MathOptInterface.Bridges.SingleBridgeOptimizer",
     "category": "type",
-    "text": "SingleBridgeOptimizer{BT<:AbstractBridge, MT<:MOI.ModelLike, OT<:MOI.ModelLike} <: AbstractBridgeOptimizer\n\nThe SingleBridgeOptimizer bridges any constraint supported by the bridge BT. This is in contrast with the LazyBridgeOptimizer which only bridges the constraints that are unsupported by the internal model, even if they are supported by one of its bridges.\n\n\n\n\n\n"
+    "text": "SingleBridgeOptimizer{BT<:AbstractBridge, OT<:MOI.ModelLike} <: AbstractBridgeOptimizer\n\nThe SingleBridgeOptimizer bridges any constraint supported by the bridge BT. This is in contrast with the LazyBridgeOptimizer which only bridges the constraints that are unsupported by the internal model, even if they are supported by one of its bridges.\n\n\n\n\n\n"
 },
 
 {
@@ -1733,7 +1773,7 @@ var documenterSearchIndex = {"docs": [
     "page": "Reference",
     "title": "MathOptInterface.Bridges.LazyBridgeOptimizer",
     "category": "type",
-    "text": "LazyBridgeOptimizer{OT<:MOI.ModelLike, MT<:MOI.ModelLike} <: AbstractBridgeOptimizer\n\nThe LazyBridgeOptimizer combines several bridges, which are added using the add_bridge function. Whenever a constraint is added, it only attempts to bridge it if it is not supported by the internal model (hence its name Lazy). When bridging a constraint, it selects the minimal number of bridges needed. For instance, a constraint F-in-S can be bridged into a constraint F1-in-S1 (supported by the internal model) using bridge 1 or bridged into a constraint F2-in-S2 (unsupported by the internal model) using bridge 2 which can then be bridged into a constraint F3-in-S3 (supported by the internal model) using bridge 3, it will choose bridge 1 as it allows to bridge F-in-S using only one bridge instead of two if it uses bridge 2 and 3.\n\n\n\n\n\n"
+    "text": "LazyBridgeOptimizer{OT<:MOI.ModelLike} <: AbstractBridgeOptimizer\n\nThe LazyBridgeOptimizer combines several bridges, which are added using the add_bridge function. Whenever a constraint is added, it only attempts to bridge it if it is not supported by the internal model (hence its name Lazy). When bridging a constraint, it selects the minimal number of bridges needed. For instance, a constraint F-in-S can be bridged into a constraint F1-in-S1 (supported by the internal model) using bridge 1 or bridged into a constraint F2-in-S2 (unsupported by the internal model) using bridge 2 which can then be bridged into a constraint F3-in-S3 (supported by the internal model) using bridge 3, it will choose bridge 1 as it allows to bridge F-in-S using only one bridge instead of two if it uses bridge 2 and 3.\n\n\n\n\n\n"
 },
 
 {
@@ -1749,7 +1789,7 @@ var documenterSearchIndex = {"docs": [
     "page": "Reference",
     "title": "MathOptInterface.Bridges.VectorizeBridge",
     "category": "type",
-    "text": "VectorizeBridge{T}\n\nTransforms a constraint AbstractScalarFunction-in-S where S <: LPCone to AbstactVectorFunction-in-vector_set_type(S).\n\n\n\n\n\n"
+    "text": "VectorizeBridge{T, F, S, G}\n\nTransforms a constraint G-in-scalar_set_type(S, T) where S <: VectorLinearSet to F-in-S.\n\n\n\n\n\n"
 },
 
 {
@@ -1773,7 +1813,7 @@ var documenterSearchIndex = {"docs": [
     "page": "Reference",
     "title": "MathOptInterface.Bridges.QuadtoSOCBridge",
     "category": "type",
-    "text": "QuadtoSOCBridge{T}\n\nThe set of points x satisfying the constraint\n\nfrac12x^T Q x + a^T x + b le 0\n\nis a convex set if Q is positive semidefinite and is the union of two convex cones if a and b are zero (i.e. homogeneous case) and Q has only one negative eigenvalue. Currently, only the non-homogeneous transformation is implemented, see the Note section below for more details.\n\nNon-homogeneous case\n\nIf Q is positive semidefinite, there exists U such that Q = U^T U, the inequality can then be rewritten as\n\nU x_2 le 2 (a^T x + b)\n\nwhich is equivalent to the membership of (1, a^T x + b, Ux) to the rotated second-order cone.\n\nHomogeneous case\n\nIf Q has only one negative eigenvalue, the set of x such that x^T Q x le 0 is the union of a convex cone and its opposite. We can choose which one to model by checking the existence of bounds on variables as shown below.\n\nSecond-order cone\n\nIf Q is diagonal and has eigenvalues (1, 1, -1), the inequality x^2 + x^2 le z^2 combined with z ge 0 defines the Lorenz cone (i.e. the second-order cone) but when combined with z le 0, it gives the opposite of the second order cone. Therefore, we need to check if the variable z has a lower bound 0 or an upper bound 0 in order to determine which cone is\n\nRotated second-order cone\n\nThe matrix Q corresponding to the inequality x^2 le 2yz has one eigenvalue 1 with eigenvectors (1, 0, 0) and (0, 1, -1) and one eigenvalue -1 corresponding to the eigenvector (0, 1, 1). Hence if we intersect this union of two convex cone with the halfspace x + y ge 0, we get the rotated second-order cone and if we intersect it with the halfspace x + y le 0 we get the opposite of the rotated second-order cone. Note that y and z have the same sign since yz is nonnegative hence x + y ge 0 is equivalent to x ge 0 and y ge 0.\n\nNote\n\nThe check for existence of bound can be implemented (but inefficiently) with the current interface but if bound is removed or transformed (e.g. ≤ 0 transformed into ≥ 0) then the bridge is no longer valid. For this reason the homogeneous version of the bridge is not implemented yet.\n\n\n\n\n\n"
+    "text": "QuadtoSOCBridge{T}\n\nThe set of points x satisfying the constraint\n\nfrac12x^T Q x + a^T x + b le 0\n\nis a convex set if Q is positive semidefinite and is the union of two convex cones if a and b are zero (i.e. homogeneous case) and Q has only one negative eigenvalue. Currently, only the non-homogeneous transformation is implemented, see the Note section below for more details.\n\nNon-homogeneous case\n\nIf Q is positive semidefinite, there exists U such that Q = U^T U, the inequality can then be rewritten as\n\nU x_2^2 le 2 (-a^T x - b)\n\nwhich is equivalent to the membership of (1, -a^T x - b, Ux) to the rotated second-order cone.\n\nHomogeneous case\n\nIf Q has only one negative eigenvalue, the set of x such that x^T Q x le 0 is the union of a convex cone and its opposite. We can choose which one to model by checking the existence of bounds on variables as shown below.\n\nSecond-order cone\n\nIf Q is diagonal and has eigenvalues (1, 1, -1), the inequality x^2 + x^2 le z^2 combined with z ge 0 defines the Lorenz cone (i.e. the second-order cone) but when combined with z le 0, it gives the opposite of the second order cone. Therefore, we need to check if the variable z has a lower bound 0 or an upper bound 0 in order to determine which cone is\n\nRotated second-order cone\n\nThe matrix Q corresponding to the inequality x^2 le 2yz has one eigenvalue 1 with eigenvectors (1, 0, 0) and (0, 1, -1) and one eigenvalue -1 corresponding to the eigenvector (0, 1, 1). Hence if we intersect this union of two convex cone with the halfspace x + y ge 0, we get the rotated second-order cone and if we intersect it with the halfspace x + y le 0 we get the opposite of the rotated second-order cone. Note that y and z have the same sign since yz is nonnegative hence x + y ge 0 is equivalent to x ge 0 and y ge 0.\n\nNote\n\nThe check for existence of bound can be implemented (but inefficiently) with the current interface but if bound is removed or transformed (e.g. ≤ 0 transformed into ≥ 0) then the bridge is no longer valid. For this reason the homogeneous version of the bridge is not implemented yet.\n\n\n\n\n\n"
 },
 
 {
