@@ -665,6 +665,14 @@ var documenterSearchIndex = {"docs": [
 },
 
 {
+    "location": "apireference/#MathOptInterface.DualObjectiveValue",
+    "page": "Reference",
+    "title": "MathOptInterface.DualObjectiveValue",
+    "category": "type",
+    "text": "DualObjectiveValue(result_index::Int=1)\n\nA model attribute for the value of the objective function of the dual problem for the result_indexth dual result.\n\n\n\n\n\n"
+},
+
+{
     "location": "apireference/#MathOptInterface.ObjectiveBound",
     "page": "Reference",
     "title": "MathOptInterface.ObjectiveBound",
@@ -749,7 +757,7 @@ var documenterSearchIndex = {"docs": [
     "page": "Reference",
     "title": "Optimizers",
     "category": "section",
-    "text": "AbstractOptimizer\noptimize!List of optimizers attributesSolverName\nSilentList of attributes useful for optimizersRawSolver\nResultCount\nObjectiveFunction\nObjectiveFunctionType\nObjectiveValue\nObjectiveBound\nRelativeGap\nSolveTime\nSimplexIterations\nBarrierIterations\nNodeCount\nTerminationStatus\nRawStatusString\nPrimalStatus\nDualStatus"
+    "text": "AbstractOptimizer\noptimize!List of optimizers attributesSolverName\nSilentList of attributes useful for optimizersRawSolver\nResultCount\nObjectiveFunction\nObjectiveFunctionType\nObjectiveValue\nDualObjectiveValue\nObjectiveBound\nRelativeGap\nSolveTime\nSimplexIterations\nBarrierIterations\nNodeCount\nTerminationStatus\nRawStatusString\nPrimalStatus\nDualStatus"
 },
 
 {
