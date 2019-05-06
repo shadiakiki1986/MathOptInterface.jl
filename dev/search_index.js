@@ -661,7 +661,7 @@ var documenterSearchIndex = {"docs": [
     "page": "Reference",
     "title": "MathOptInterface.ObjectiveValue",
     "category": "type",
-    "text": "ObjectiveValue(resultidx::Int=1)\n\nA model attribute for the objective value of the resultindexth primal result.\n\n\n\n\n\n"
+    "text": "ObjectiveValue(resultidx::Int=1)\n\nA model attribute for the objective value of the result_indexth primal result.\n\n\n\n\n\n"
 },
 
 {
