@@ -341,7 +341,7 @@ var documenterSearchIndex = {"docs": [
     "page": "Manual",
     "title": "Testing guideline",
     "category": "section",
-    "text": "The skeleton below can be used for the wrapper test file of a solver name FooBar. A few bridges are used to give examples, you can find more bridges in the Bridges section.using MathOptInterface\nconst MOI = MathOptInterface\nconst MOIT = MOI.Test\nconst MOIB = MOI.Bridges\n\nconst optimizer = FooBarOptimizer()\nconst config = MOIT.TestConfig(atol=1e-6, rtol=1e-6)\n\n@testset \"MOI Continuous Linear\" begin\n    # If `optimizer` does not support the `Interval` set,\n    # the `SplitInterval` bridge can be used to split each `f`-in-`Interval(lb, ub)` constraint into\n    # a constraint `f`-in-`GreaterThan(lb)` and a constraint `f`-in-`LessThan(ub)`\n    MOIT.contlineartest(MOIB.SplitInterval{Float64}(optimizer), config)\nend\n\n@testset \"MOI Continuous Conic\" begin\n    # If the solver supports rotated second order cone, the `GeoMean` bridge can be used to make it support geometric mean cone constraints.\n    # If it additionally support positive semidefinite cone constraints, the `RootDet` bridge can be used to make it support root-det cone constraints.\n    MOIT.contlineartest(MOIB.RootDet{Float64}(MOIB.GeoMean{Float64}(optimizer)), config)\nend\n\n@testset \"MOI Integer Conic\" begin\n    MOIT.intconictest(optimizer, config)\nendIf the wrapper does not support building the model incrementally (i.e. with add_variable and add_constraint), the line const optimizer = FooBarOptimizer() can be replaced withconst MOIU = MOI.Utilities\n# Include here the functions/sets supported by the solver wrapper (not those that are supported through bridges)\nMOIU.@model FooBarModelData () (EqualTo, GreaterThan, LessThan) (Zeros, Nonnegatives, Nonpositives) () (SingleVariable,) (ScalarAffineFunction,) (VectorOfVariables,) (VectorAffineFunction,)\nconst optimizer = MOIU.CachingOptimizer(FooBarModelData{Float64}(), FooBarOptimizer())"
+    "text": "The skeleton below can be used for the wrapper test file of a solver named FooBar.using MathOptInterface\nconst MOI = MathOptInterface\nconst MOIT = MOI.Test\nconst MOIU = MOI.Utilities\nconst MOIB = MOI.Bridges\n\nimport FooBar\nconst optimizer = FooBar.Optimizer()\nMOI.set(optimizer, MOI.Silent(), true)\n\n@testset \"SolverName\" begin\n    @test MOI.get(optimizer, MOI.SolverName()) == \"FooBar\"\nend\n\n@testset \"supports_default_copy_to\" begin\n    @test MOIU.supports_default_copy_to(optimizer, false)\n    # Use `@test !...` if names are not supported\n    @test MOIU.supports_default_copy_to(optimizer, true)\nend\n\nconst bridged = MOIB.full_bridge_optimizer(optimizer, Float64)\nconst config = MOIT.TestConfig(atol=1e-6, rtol=1e-6)\n\n@testset \"Unit\" begin\n    MOIT.unittest(bridged, config)\nend\n\n@testset \"Continuous Linear\" begin\n    MOIT.contlineartest(bridged, config)\nend\n\n@testset \"Continuous Conic\" begin\n    MOIT.contlineartest(bridged, config)\nend\n\n@testset \"Integer Conic\" begin\n    MOIT.intconictest(bridged, config)\nendThe optimizer bridged constructed with Bridges.full_bridge_optimizer automatically bridges constraints that are not supported by optimizer using the bridges listed in Bridges. It is recommended for an implementation of MOI to only support constraints that are natively supported by the solver and let bridges transform the constraint to the appropriate form. For this reason it is expected that tests may not pass if optimizer is used instead of bridged.To test that a specific problem can be solved without bridges, a specific test can be run with optimizer instead of bridged. For instance@testset \"Interval constraints\" begin\n    MOIT.linear10test(optimizer, config)\nendchecks that optimizer implements support for ScalarAffineFunction-in-Interval.If the wrapper does not support building the model incrementally (i.e. with add_variable and add_constraint), then supports_default_copy_to can be replaced by supports_allocate_load if appropriate (see Implementing copy) and the line const bridged = ... can be replaced with# Include here the functions/sets supported by the solver wrapper (not those that are supported through bridges)\nMOIU.@model ModelData () (EqualTo, GreaterThan, LessThan) (Zeros, Nonnegatives, Nonpositives) () (SingleVariable,) (ScalarAffineFunction,) (VectorOfVariables,) (VectorAffineFunction,)\nconst cache = MOIU.UniversalFallback(ModelData{Float64}())\nconst cached = MOIU.CachingOptimizer(cache, optimizer)\nconst bridged = MOIB.full_bridge_optimizer(cached, Float64)"
 },
 
 {
@@ -1793,11 +1793,83 @@ var documenterSearchIndex = {"docs": [
 },
 
 {
+    "location": "apireference/#MathOptInterface.Bridges.GreaterToLessBridge",
+    "page": "Reference",
+    "title": "MathOptInterface.Bridges.GreaterToLessBridge",
+    "category": "type",
+    "text": "GreaterToLessBridge{T, F<:MOI.AbstractScalarFunction} <:\n    FlipSignBridge{T, MOI.GreaterThan{T}, MOI.LessThan{T}, F}\n\nTransforms a G-in-GreaterThan{T} constraint into an F-in-LessThan{T} constraint.\n\n\n\n\n\n"
+},
+
+{
+    "location": "apireference/#MathOptInterface.Bridges.LessToGreaterBridge",
+    "page": "Reference",
+    "title": "MathOptInterface.Bridges.LessToGreaterBridge",
+    "category": "type",
+    "text": "LessToGreaterBridge{T, F<:MOI.AbstractScalarFunction} <:\n    FlipSignBridge{T, MOI.LessThan{T}, MOI.GreaterThan{T}, F}\n\nTransforms a G-in-LessThan{T} constraint into an F-in-GreaterThan{T} constraint.\n\n\n\n\n\n"
+},
+
+{
+    "location": "apireference/#MathOptInterface.Bridges.NonnegToNonposBridge",
+    "page": "Reference",
+    "title": "MathOptInterface.Bridges.NonnegToNonposBridge",
+    "category": "type",
+    "text": "NonnegToNonposBridge{T, F<:MOI.AbstractVectorFunction} <:\n    FlipSignBridge{T, MOI.Nonnegatives, MOI.Nonpositives, F}\n\nTransforms a G-in-Nonnegatives constraint into a F-in-Nonpositives constraint.\n\n\n\n\n\n"
+},
+
+{
+    "location": "apireference/#MathOptInterface.Bridges.NonposToNonnegBridge",
+    "page": "Reference",
+    "title": "MathOptInterface.Bridges.NonposToNonnegBridge",
+    "category": "type",
+    "text": "NonposToNonnegBridge{T, F<:MOI.AbstractVectorFunction} <:\n    FlipSignBridge{T, MOI.Nonpositives, MOI.Nonnegatives, F}\n\nTransforms a G-in-Nonpositives constraint into a F-in-Nonnegatives constraint.\n\n\n\n\n\n"
+},
+
+{
     "location": "apireference/#MathOptInterface.Bridges.VectorizeBridge",
     "page": "Reference",
     "title": "MathOptInterface.Bridges.VectorizeBridge",
     "category": "type",
     "text": "VectorizeBridge{T, F, S, G}\n\nTransforms a constraint G-in-scalar_set_type(S, T) where S <: VectorLinearSet to F-in-S.\n\n\n\n\n\n"
+},
+
+{
+    "location": "apireference/#MathOptInterface.Bridges.ScalarizeBridge",
+    "page": "Reference",
+    "title": "MathOptInterface.Bridges.ScalarizeBridge",
+    "category": "type",
+    "text": "ScalarizeBridge{T, F, S}\n\nTransforms a constraint AbstractVectorFunction-in-vector_set(S) where S <: LPCone{T} to F-in-S.\n\n\n\n\n\n"
+},
+
+{
+    "location": "apireference/#MathOptInterface.Bridges.ScalarSlackBridge",
+    "page": "Reference",
+    "title": "MathOptInterface.Bridges.ScalarSlackBridge",
+    "category": "type",
+    "text": "ScalarSlackBridge{T, F, S}\n\nThe ScalarSlackBridge converts a constraint G-in-S where G is a function different from SingleVariable into the constraints F-in-EqualTo{T} and SingleVariable-in-S. F is the result of subtracting a SingleVariable from G. Tipically G is the same as F, but that is not mandatory.\n\n\n\n\n\n"
+},
+
+{
+    "location": "apireference/#MathOptInterface.Bridges.VectorSlackBridge",
+    "page": "Reference",
+    "title": "MathOptInterface.Bridges.VectorSlackBridge",
+    "category": "type",
+    "text": "VectorSlackBridge{T, F, S}\n\nThe VectorSlackBridge converts a constraint G-in-S where G is a function different from VectorOfVariables into the constraints Fin-Zeros and VectorOfVariables-in-S. F is the result of subtracting a VectorOfVariables from G. Tipically G is the same as F, but that is not mandatory.\n\n\n\n\n\n"
+},
+
+{
+    "location": "apireference/#MathOptInterface.Bridges.ScalarFunctionizeBridge",
+    "page": "Reference",
+    "title": "MathOptInterface.Bridges.ScalarFunctionizeBridge",
+    "category": "type",
+    "text": "ScalarFunctionizeBridge{T, S}\n\nThe ScalarFunctionizeBridge converts a constraint SingleVariable-in-S into the constraint ScalarAffineFunction{T}-in-S.\n\n\n\n\n\n"
+},
+
+{
+    "location": "apireference/#MathOptInterface.Bridges.VectorFunctionizeBridge",
+    "page": "Reference",
+    "title": "MathOptInterface.Bridges.VectorFunctionizeBridge",
+    "category": "type",
+    "text": "VectorFunctionizeBridge{T, S}\n\nThe VectorFunctionizeBridge converts a constraint VectorOfVariables-in-S into the constraint VectorAffineFunction{T}-in-S.\n\n\n\n\n\n"
 },
 
 {
@@ -1873,11 +1945,19 @@ var documenterSearchIndex = {"docs": [
 },
 
 {
+    "location": "apireference/#MathOptInterface.Bridges.full_bridge_optimizer",
+    "page": "Reference",
+    "title": "MathOptInterface.Bridges.full_bridge_optimizer",
+    "category": "function",
+    "text": "full_bridge_optimizer(model::MOI.ModelLike, ::Type{T}) where T\n\nReturns a LazyBridgeOptimizer bridging model for every bridge defined in this package and for the coefficient type T.\n\n\n\n\n\n"
+},
+
+{
     "location": "apireference/#Bridges-1",
     "page": "Reference",
     "title": "Bridges",
     "category": "section",
-    "text": "Bridges can be used for automatic reformulation of a certain constraint type into equivalent constraints.Bridges.AbstractBridge\nBridges.AbstractBridgeOptimizer\nBridges.SingleBridgeOptimizer\nBridges.LazyBridgeOptimizer\nBridges.add_bridgeBelow is the list of bridges implemented in this package.Bridges.VectorizeBridge\nBridges.SplitIntervalBridge\nBridges.RSOCBridge\nBridges.QuadtoSOCBridge\nBridges.GeoMeanBridge\nBridges.SquarePSDBridge\nBridges.RootDetBridge\nBridges.LogDetBridge\nBridges.SOCtoPSDBridge\nBridges.RSOCtoPSDBridgeFor each bridge defined in this package, a corresponding bridge optimizer is available with the same name without the \"Bridge\" suffix, e.g., SplitInterval is an SingleBridgeOptimizer for the SplitIntervalBridge."
+    "text": "Bridges can be used for automatic reformulation of a certain constraint type into equivalent constraints.Bridges.AbstractBridge\nBridges.AbstractBridgeOptimizer\nBridges.SingleBridgeOptimizer\nBridges.LazyBridgeOptimizer\nBridges.add_bridgeBelow is the list of bridges implemented in this package.Bridges.GreaterToLessBridge\nBridges.LessToGreaterBridge\nBridges.NonnegToNonposBridge\nBridges.NonposToNonnegBridge\nBridges.VectorizeBridge\nBridges.ScalarizeBridge\nBridges.ScalarSlackBridge\nBridges.VectorSlackBridge\nBridges.ScalarFunctionizeBridge\nBridges.VectorFunctionizeBridge\nBridges.SplitIntervalBridge\nBridges.RSOCBridge\nBridges.QuadtoSOCBridge\nBridges.GeoMeanBridge\nBridges.SquarePSDBridge\nBridges.RootDetBridge\nBridges.LogDetBridge\nBridges.SOCtoPSDBridge\nBridges.RSOCtoPSDBridgeFor each bridge defined in this package, a corresponding bridge optimizer is available with the same name without the \"Bridge\" suffix, e.g., SplitInterval is an SingleBridgeOptimizer for the SplitIntervalBridge. Moreover, a LazyBridgeOptimizer with all the bridges defined in this package can be obtained withBridges.full_bridge_optimizer"
 },
 
 {
