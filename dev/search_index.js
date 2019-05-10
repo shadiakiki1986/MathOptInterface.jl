@@ -1961,6 +1961,70 @@ var documenterSearchIndex = {"docs": [
 },
 
 {
+    "location": "apireference/#MathOptInterface.supports_constraint-Tuple{Type{#s1} where #s1<:MathOptInterface.Bridges.AbstractBridge,Type{#s2} where #s2<:MathOptInterface.AbstractFunction,Type{#s3} where #s3<:MathOptInterface.AbstractSet}",
+    "page": "Reference",
+    "title": "MathOptInterface.supports_constraint",
+    "category": "method",
+    "text": "MOI.supports_constraint(BT::Type{<:AbstractBridge}, F::Type{<:MOI.AbstractFunction}, S::Type{<:MOI.AbstractSet})::Bool\n\nReturn a Bool indicating whether the bridges of type BT support bridging F-in-S constraints.\n\n\n\n\n\n"
+},
+
+{
+    "location": "apireference/#MathOptInterface.Bridges.concrete_bridge_type",
+    "page": "Reference",
+    "title": "MathOptInterface.Bridges.concrete_bridge_type",
+    "category": "function",
+    "text": "concrete_bridge_type(BT::Type{<:AbstractBridge},\n                     F::Type{<:MOI.AbstractFunction},\n                     S::Type{<:MOI.AbstractSet})::DataType\n\nReturn the concrete type of the bridge supporting F-in-S constraints. This function can only be called if MOI.supports_constraint(BT, F, S) is true.\n\nExamples\n\nThe following returns SplitIntervalBridge{Float64, MOI.SingleVariable}:\n\nconcrete_bridge_type(SplitIntervalBridge{Float64}, MOI.SingleVariable,\n                                                   MOI.Interval{Float64})\n\n\n\n\n\n"
+},
+
+{
+    "location": "apireference/#MathOptInterface.Bridges.bridge_constraint",
+    "page": "Reference",
+    "title": "MathOptInterface.Bridges.bridge_constraint",
+    "category": "function",
+    "text": "bridge_constraint(BT::Type{<:AbstractBridge}, model::MOI.ModelLike,\n                  func::AbstractFunction, set::MOI.AbstractSet)\n\nBridge the constraint func-in-set using bridge BT to model and returns a bridge object of type BT.\n\n\n\n\n\n"
+},
+
+{
+    "location": "apireference/#MathOptInterface.Bridges.added_constraint_types",
+    "page": "Reference",
+    "title": "MathOptInterface.Bridges.added_constraint_types",
+    "category": "function",
+    "text": "added_constraint_types(BT::Type{<:AbstractBridge}, F::Type{<:MOI.AbstractFunction}, S::Type{<:MOI.AbstractSet})::Bool\n\nReturn a list of the types of constraints that bridges of type BT add for bridging an F-in-S constraints.\n\nadded_constraint_types(BT::Type{<:AbstractBridge})::Bool\n\nReturn a list of the types of constraints that bridges of concrete type BT add for F-in-S constraints.\n\n\n\n\n\n"
+},
+
+{
+    "location": "apireference/#MathOptInterface.get-Tuple{MathOptInterface.Bridges.AbstractBridge,MathOptInterface.NumberOfVariables}",
+    "page": "Reference",
+    "title": "MathOptInterface.get",
+    "category": "method",
+    "text": "MOI.get(b::AbstractBridge, ::MOI.NumberOfVariables)\n\nThe number of variables created by the bridge b in the model.\n\n\n\n\n\n"
+},
+
+{
+    "location": "apireference/#MathOptInterface.get-Tuple{MathOptInterface.Bridges.AbstractBridge,MathOptInterface.NumberOfConstraints}",
+    "page": "Reference",
+    "title": "MathOptInterface.get",
+    "category": "method",
+    "text": "MOI.get(b::AbstractBridge, ::MOI.NumberOfConstraints{F, S}) where {F, S}\n\nThe number of constraints of the type F-in-S created by the bridge b in the model.\n\n\n\n\n\n"
+},
+
+{
+    "location": "apireference/#MathOptInterface.get-Tuple{MathOptInterface.Bridges.AbstractBridge,MathOptInterface.ListOfConstraintIndices}",
+    "page": "Reference",
+    "title": "MathOptInterface.get",
+    "category": "method",
+    "text": "MOI.get(b::AbstractBridge, ::MOI.NumberOfConstraints{F, S}) where {F, S}\n\nA Vector{ConstraintIndex{F,S}} with indices of all constraints of type F-inS created by the bride b in the model (i.e., of length equal to the value of NumberOfConstraints{F,S}()).\n\n\n\n\n\n"
+},
+
+{
+    "location": "apireference/#Bridge-interface-1",
+    "page": "Reference",
+    "title": "Bridge interface",
+    "category": "section",
+    "text": "A bridge should implement the following functions to be usable by a bridge optimizer:supports_constraint(::Type{<:Bridges.AbstractBridge}, ::Type{<:AbstractFunction}, ::Type{<:AbstractSet})\nBridges.concrete_bridge_type\nBridges.bridge_constraint\nBridges.added_constraint_typesWhen querying the NumberOfVariables, NumberOfConstraints and ListOfConstraintIndices, the variables and constraints created by the bridges in the underlying model are hidden by the bridge optimizer. For this purpose, the bridge should provide access to the variables and constraints it has creates by implemented the following methods of get:get(::Bridges.AbstractBridge, ::NumberOfVariables)\nget(::Bridges.AbstractBridge, ::NumberOfConstraints)\nget(::Bridges.AbstractBridge, ::ListOfConstraintIndices)"
+},
+
+{
     "location": "apireference/#MathOptInterface.Utilities.automatic_copy_to",
     "page": "Reference",
     "title": "MathOptInterface.Utilities.automatic_copy_to",
