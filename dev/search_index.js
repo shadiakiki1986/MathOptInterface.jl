@@ -1161,35 +1161,43 @@ var documenterSearchIndex = {"docs": [
 },
 
 {
-    "location": "apireference/#MathOptInterface.Reals",
+    "location": "apireference/#MathOptInterface.AbstractScalarSet",
     "page": "Reference",
-    "title": "MathOptInterface.Reals",
+    "title": "MathOptInterface.AbstractScalarSet",
     "category": "type",
-    "text": "Reals(dimension)\n\nThe set mathbbR^dimension (containing all points) of dimension dimension.\n\n\n\n\n\n"
+    "text": "AbstractScalarSet\n\nAbstract supertype for subsets of mathbbR.\n\n\n\n\n\n"
 },
 
 {
-    "location": "apireference/#MathOptInterface.Zeros",
+    "location": "apireference/#MathOptInterface.AbstractVectorSet",
     "page": "Reference",
-    "title": "MathOptInterface.Zeros",
+    "title": "MathOptInterface.AbstractVectorSet",
     "category": "type",
-    "text": "Zeros(dimension)\n\nThe set  0 ^dimension (containing only the origin) of dimension dimension.\n\n\n\n\n\n"
+    "text": "AbstractVectorSet\n\nAbstract supertype for subsets of mathbbR^n for some n.\n\n\n\n\n\n"
 },
 
 {
-    "location": "apireference/#MathOptInterface.Nonnegatives",
+    "location": "apireference/#MathOptInterface.dimension",
     "page": "Reference",
-    "title": "MathOptInterface.Nonnegatives",
-    "category": "type",
-    "text": "Nonnegatives(dimension)\n\nThe nonnegative orthant  x in mathbbR^dimension  x ge 0  of dimension dimension.\n\n\n\n\n\n"
+    "title": "MathOptInterface.dimension",
+    "category": "function",
+    "text": "dimension(s::AbstractSet)\n\nReturn the output_dimension that an AbstractFunction should have to be used with the set s.\n\nExamples\n\njulia> dimension(Reals(4))\n4\n\njulia> dimension(LessThan(3.0))\n1\n\njulia> dimension(PositiveSemidefiniteConeTriangle(2))\n3\n\n\n\n\n\n"
 },
 
 {
-    "location": "apireference/#MathOptInterface.Nonpositives",
+    "location": "apireference/#MathOptInterface.constant-Tuple{MathOptInterface.EqualTo}",
     "page": "Reference",
-    "title": "MathOptInterface.Nonpositives",
-    "category": "type",
-    "text": "Nonpositives(dimension)\n\nThe nonpositive orthant  x in mathbbR^dimension  x le 0  of dimension dimension.\n\n\n\n\n\n"
+    "title": "MathOptInterface.constant",
+    "category": "method",
+    "text": "constant(s::Union{EqualTo, GreaterThan, LessThan})\n\nReturns the constant of the set.\n\n\n\n\n\n"
+},
+
+{
+    "location": "apireference/#Sets-1",
+    "page": "Reference",
+    "title": "Sets",
+    "category": "section",
+    "text": "All sets are subtypes of AbstractSet and they should either be scalar or vector sets.AbstractSet\nAbstractScalarSet\nAbstractVectorSetFunctions for getting properties of sets.dimension\nconstant(s::EqualTo)"
 },
 
 {
@@ -1222,6 +1230,78 @@ var documenterSearchIndex = {"docs": [
     "title": "MathOptInterface.Interval",
     "category": "type",
     "text": "Interval{T <: Real}(lower::T,upper::T)\n\nThe interval lower upper subseteq mathbbR. If lower or upper is -Inf or Inf, respectively, the set is interpreted as a one-sided interval.\n\nInterval(s::GreaterThan{<:AbstractFloat})\n\nConstruct a (right-unbounded) Interval equivalent to the given GreaterThan set.\n\nInterval(s::LessThan{<:AbstractFloat})\n\nConstruct a (left-unbounded) Interval equivalent to the given LessThan set.\n\nInterval(s::EqualTo{<:Real})\n\nConstruct a (degenerate) Interval equivalent to the given EqualTo set.\n\n\n\n\n\n"
+},
+
+{
+    "location": "apireference/#MathOptInterface.Integer",
+    "page": "Reference",
+    "title": "MathOptInterface.Integer",
+    "category": "type",
+    "text": "Integer()\n\nThe set of integers mathbbZ.\n\n\n\n\n\n"
+},
+
+{
+    "location": "apireference/#MathOptInterface.ZeroOne",
+    "page": "Reference",
+    "title": "MathOptInterface.ZeroOne",
+    "category": "type",
+    "text": "ZeroOne()\n\nThe set  0 1 .\n\n\n\n\n\n"
+},
+
+{
+    "location": "apireference/#MathOptInterface.Semicontinuous",
+    "page": "Reference",
+    "title": "MathOptInterface.Semicontinuous",
+    "category": "type",
+    "text": "Semicontinuous{T <: Real}(lower::T,upper::T)\n\nThe set 0 cup lowerupper.\n\n\n\n\n\n"
+},
+
+{
+    "location": "apireference/#MathOptInterface.Semiinteger",
+    "page": "Reference",
+    "title": "MathOptInterface.Semiinteger",
+    "category": "type",
+    "text": "Semiinteger{T <: Real}(lower::T,upper::T)\n\nThe set 0 cup lowerlower+1ldotsupper-1upper.\n\n\n\n\n\n"
+},
+
+{
+    "location": "apireference/#Scalar-sets-1",
+    "page": "Reference",
+    "title": "Scalar sets",
+    "category": "section",
+    "text": "List of recognized scalar sets.GreaterThan\nLessThan\nEqualTo\nInterval\nInteger\nZeroOne\nSemicontinuous\nSemiinteger"
+},
+
+{
+    "location": "apireference/#MathOptInterface.Reals",
+    "page": "Reference",
+    "title": "MathOptInterface.Reals",
+    "category": "type",
+    "text": "Reals(dimension)\n\nThe set mathbbR^dimension (containing all points) of dimension dimension.\n\n\n\n\n\n"
+},
+
+{
+    "location": "apireference/#MathOptInterface.Zeros",
+    "page": "Reference",
+    "title": "MathOptInterface.Zeros",
+    "category": "type",
+    "text": "Zeros(dimension)\n\nThe set  0 ^dimension (containing only the origin) of dimension dimension.\n\n\n\n\n\n"
+},
+
+{
+    "location": "apireference/#MathOptInterface.Nonnegatives",
+    "page": "Reference",
+    "title": "MathOptInterface.Nonnegatives",
+    "category": "type",
+    "text": "Nonnegatives(dimension)\n\nThe nonnegative orthant  x in mathbbR^dimension  x ge 0  of dimension dimension.\n\n\n\n\n\n"
+},
+
+{
+    "location": "apireference/#MathOptInterface.Nonpositives",
+    "page": "Reference",
+    "title": "MathOptInterface.Nonpositives",
+    "category": "type",
+    "text": "Nonpositives(dimension)\n\nThe nonpositive orthant  x in mathbbR^dimension  x le 0  of dimension dimension.\n\n\n\n\n\n"
 },
 
 {
@@ -1281,11 +1361,75 @@ var documenterSearchIndex = {"docs": [
 },
 
 {
+    "location": "apireference/#MathOptInterface.SOS1",
+    "page": "Reference",
+    "title": "MathOptInterface.SOS1",
+    "category": "type",
+    "text": "SOS1{T <: Real}(weights::Vector{T})\n\nThe set corresponding to the special ordered set (SOS) constraint of type 1. Of the variables in the set, at most one can be nonzero. The weights induce an ordering of the variables; as such, they should be unique values. The kth element in the set corresponds to the kth weight in weights. See here for a description of SOS constraints and their potential uses.\n\n\n\n\n\n"
+},
+
+{
+    "location": "apireference/#MathOptInterface.SOS2",
+    "page": "Reference",
+    "title": "MathOptInterface.SOS2",
+    "category": "type",
+    "text": "SOS2{T <: Real}(weights::Vector{T})\n\nThe set corresponding to the special ordered set (SOS) constraint of type 2. Of the variables in the set, at most two can be nonzero, and if two are nonzero, they must be adjacent in the ordering of the set. The weights induce an ordering of the variables; as such, they should be unique values. The kth element in the set corresponds to the kth weight in weights. See here for a description of SOS constraints and their potential uses.\n\n\n\n\n\n"
+},
+
+{
+    "location": "apireference/#MathOptInterface.IndicatorSet",
+    "page": "Reference",
+    "title": "MathOptInterface.IndicatorSet",
+    "category": "type",
+    "text": "IndicatorSet{A, S <: AbstractScalarSet}(set::S)\n\n((y x) in 0 1 times mathbbR^n  y = 0 implies x in set when A is ACTIVATE_ON_ZERO and ((y x) in 0 1 times mathbbR^n  y = 1 implies x in set when A is ACTIVATE_ON_ONE.\n\nS has to be a sub-type of AbstractScalarSet. A is one of the value of the ActivationCond enum. IndicatorSet is used with a VectorAffineFunction holding the indicator variable first.\n\nExample: (y x) in 0 1 times mathbbR^2  y = 1 implies x_1 + x_2 leq 9 \n\nf = MOI.VectorAffineFunction(\n    [MOI.VectorAffineTerm(1, MOI.ScalarAffineTerm(1.0, z)),\n     MOI.VectorAffineTerm(2, MOI.ScalarAffineTerm(0.2, x1)),\n     MOI.VectorAffineTerm(2, MOI.ScalarAffineTerm(1.0, x2)),\n    ],\n    [0.0, 0.0],\n)\n\nindicator_set = MOI.IndicatorSet{MOI.ACTIVATE_ON_ONE}(MOI.LessThan(9.0))\n\nMOI.add_constraint(model, f, indicator_set)\n\n\n\n\n\n"
+},
+
+{
+    "location": "apireference/#Vector-sets-1",
+    "page": "Reference",
+    "title": "Vector sets",
+    "category": "section",
+    "text": "List of recognized vector sets.Reals\nZeros\nNonnegatives\nNonpositives\nSecondOrderCone\nRotatedSecondOrderCone\nGeometricMeanCone\nExponentialCone\nDualExponentialCone\nPowerCone\nDualPowerCone\nSOS1\nSOS2\nIndicatorSet"
+},
+
+{
+    "location": "apireference/#MathOptInterface.AbstractSymmetricMatrixSetTriangle",
+    "page": "Reference",
+    "title": "MathOptInterface.AbstractSymmetricMatrixSetTriangle",
+    "category": "type",
+    "text": "abstract type AbstractSymmetricMatrixSetTriangle <: AbstractVectorSet end\n\nAbstract supertype for subsets of the (vectorized) cone of symmetric matrices, with side_dimension rows and columns. The entries of the upper-right triangular part of the matrix are given column by column (or equivalently, the entries of the lower-left triangular part are given row by row). A vectorized cone of dimension n corresponds to a square matrix with side dimension sqrt14 + 2 n - 12. (Because a d times d matrix has d(d + 1)  2 elements in the upper or lower triangle.)\n\nExamples\n\nThe matrix\n\nbeginbmatrix\n  1  2  4\n  2  3  5\n  4  5  6\nendbmatrix\n\nhas side_dimension 3 and vectorization (1 2 3 4 5 6).\n\nNote\n\nTwo packed storage formats exist for symmetric matrices, the respective orders of the entries are:\n\nupper triangular column by column (or lower triangular row by row);\nlower triangular column by column (or upper triangular row by row).\n\nThe advantage of the first format is the mapping between the (i, j) matrix indices and the k index of the vectorized form. It is simpler and does not depend on the side dimension of the matrix. Indeed,\n\nthe entry of matrix indices (i, j) has vectorized index k = div((j - 1) * j, 2) + i if i leq j and k = div((i - 1) * i, 2) + j if j leq i;\nand the entry with vectorized index k has matrix indices i = div(1 + isqrt(8k - 7), 2) and j = k - div((i - 1) * i, 2) or j = div(1 + isqrt(8k - 7), 2) and i = k - div((j - 1) * j, 2).\n\nDuality note\n\nThe scalar product for the symmetric matrix in its vectorized form is the sum of the pairwise product of the diagonal entries plus twice the sum of the pairwise product of the upper diagonal entries; see [p. 634, 1]. This has important consequence for duality.\n\nConsider for example the following problem (PositiveSemidefiniteConeTriangle is a subtype of AbstractSymmetricMatrixSetTriangle)\n\nbeginalign*\n     max_x in mathbbR  x\n    \n     textst \n    (1 -x 1)  in textPositiveSemidefiniteConeTriangle(2)\nendalign*\n\nThe dual is the following problem\n\nbeginalign*\n     min_x in mathbbR^3  y_1 + y_3\n    \n     textst  2y_2  = 1\n      y  in textPositiveSemidefiniteConeTriangle(2)\nendalign*\n\nWhy do we use 2y_2 in the dual constraint instead of y_2 ? The reason is that 2y_2 is the scalar product between y and the symmetric matrix whose vectorized form is (0 1 0). Indeed, with our modified scalar products we have\n\nlangle\n(0 1 0)\n(y_1 y_2 y_3)\nrangle\n=\nmathrmtrace\nbeginpmatrix\n  0  1\n  1  0\nendpmatrix\nbeginpmatrix\n  y_1  y_2\n  y_2  y_3\nendpmatrix\n= 2y_2\n\nReferences\n\n[1] Boyd, S. and Vandenberghe, L.. Convex optimization. Cambridge university press, 2004.\n\n\n\n\n\n"
+},
+
+{
+    "location": "apireference/#MathOptInterface.AbstractSymmetricMatrixSetSquare",
+    "page": "Reference",
+    "title": "MathOptInterface.AbstractSymmetricMatrixSetSquare",
+    "category": "type",
+    "text": "abstract type AbstractSymmetricMatrixSetSquare <: AbstractVectorSet end\n\nAbstract supertype for subsets of the (vectorized) cone of symmetric matrices, with side_dimension rows and columns. The entries of the matrix are given column by column (or equivalently, row by row). The matrix is both constrained to be symmetric and to have its triangular_form belong to the corresponding set. That is, if the functions in entries (i j) and (j i) are different, then a constraint will be added to make sure that the entries are equal.\n\nExamples\n\nPositiveSemidefiniteConeSquare is a subtype of AbstractSymmetricMatrixSetSquare and constraining the matrix\n\nbeginbmatrix\n  1  -y\n  -z  0\nendbmatrix\n\nto be symmetric positive semidefinite can be achieved by constraining the vector (1 -z -y 0) (or (1 -y -z 0)) to belong to the PositiveSemidefiniteConeSquare(2). It both constrains y = z and (1 -y 0) (or (1 -z 0)) to be in PositiveSemidefiniteConeTriangle(2), since triangular_form(PositiveSemidefiniteConeSquare) is PositiveSemidefiniteConeTriangle.\n\n\n\n\n\n"
+},
+
+{
+    "location": "apireference/#MathOptInterface.side_dimension",
+    "page": "Reference",
+    "title": "MathOptInterface.side_dimension",
+    "category": "function",
+    "text": "side_dimension(set::Union{AbstractSymmetricMatrixSetTriangle,\n                          AbstractSymmetricMatrixSetSquare})\n\nSide dimension of the matrices in set. By convention, it should be stored in the side_dimension field but if it is not the case for a subtype of AbstractSymmetricMatrixSetTriangle, the method should be implemented for this subtype.\n\n\n\n\n\n"
+},
+
+{
+    "location": "apireference/#MathOptInterface.triangular_form",
+    "page": "Reference",
+    "title": "MathOptInterface.triangular_form",
+    "category": "function",
+    "text": "triangular_form(S::Type{<:AbstractSymmetricMatrixSetSquare})\ntriangular_form(set::AbstractSymmetricMatrixSetSquare)\n\nReturn the AbstractSymmetricMatrixSetTriangle corresponding to the vectorization of the upper triangular part of matrices in the AbstractSymmetricMatrixSetSquare set.\n\n\n\n\n\n"
+},
+
+{
     "location": "apireference/#MathOptInterface.PositiveSemidefiniteConeTriangle",
     "page": "Reference",
     "title": "MathOptInterface.PositiveSemidefiniteConeTriangle",
     "category": "type",
-    "text": "PositiveSemidefiniteConeTriangle(side_dimension)\n\nThe (vectorized) cone of symmetric positive semidefinite matrices, with side_dimension rows and columns. The entries of the upper-right triangular part of the matrix are given column by column (or equivalently, the entries of the lower-left triangular part are given row by row). A vectorized cone of dimension n corresponds to a square matrix with side dimension sqrt14 + 2 n - 12. (Because a d times d matrix has d(d + 1)  2 elements in the upper or lower triangle.)\n\nExamples\n\nThe matrix\n\nbeginbmatrix\n  1  2  4\n  2  3  5\n  4  5  6\nendbmatrix\n\ncorresponds to (1 2 3 4 5 6) for PositiveSemidefiniteConeTriangle(3)\n\nNote\n\nTwo packed storage formats exist for symmetric matrices, the respective orders of the entries are:\n\nupper triangular column by column (or lower triangular row by row);\nlower triangular column by column (or upper triangular row by row).\n\nThe advantage of the first format is the mapping between the (i, j) matrix indices and the k index of the vectorized form. It is simpler and does not depend on the side dimension of the matrix. Indeed,\n\nthe entry of matrix indices (i, j) has vectorized index k = div((j - 1) * j, 2) + i if i leq j and k = div((i - 1) * i, 2) + j if j leq i;\nand the entry with vectorized index k has matrix indices i = div(1 + isqrt(8k - 7), 2) and j = k - div((i - 1) * i, 2) or j = div(1 + isqrt(8k - 7), 2) and i = k - div((j - 1) * j, 2).\n\nDuality note\n\nThe scalar product for the symmetric matrix in its vectorized form is the sum of the pairwise product of the diagonal entries plus twice the sum of the pairwise product of the upper diagonal entries; see [p. 634, 1]. This has important consequence for duality. Consider for example the following problem\n\nbeginalign*\n     max_x in mathbbR  x\n    \n     textst \n    (1 -x 1)  in textPositiveSemidefiniteConeTriangle(2)\nendalign*\n\nThe dual is the following problem\n\nbeginalign*\n     min_x in mathbbR^3  y_1 + y_3\n    \n     textst  2y_2  = 1\n      y  in textPositiveSemidefiniteConeTriangle(2)\nendalign*\n\nWhy do we use 2y_2 in the dual constraint instead of y_2 ? The reason is that 2y_2 is the scalar product between y and the symmetric matrix whose vectorized form is (0 1 0). Indeed, with our modified scalar products we have\n\nlangle\n(0 1 0)\n(y_1 y_2 y_3)\nrangle\n=\nmathrmtrace\nbeginpmatrix\n  0  1\n  1  0\nendpmatrix\nbeginpmatrix\n  y_1  y_2\n  y_2  y_3\nendpmatrix\n= 2y_2\n\nReferences\n\n[1] Boyd, S. and Vandenberghe, L.. Convex optimization. Cambridge university press, 2004.\n\n\n\n\n\n"
+    "text": "PositiveSemidefiniteConeTriangle(side_dimension) <: AbstractSymmetricMatrixSetTriangle\n\nThe (vectorized) cone of symmetric positive semidefinite matrices, with side_dimension rows and columns. See AbstractSymmetricMatrixSetTriangle for more details on the vectorized form.\n\n\n\n\n\n"
 },
 
 {
@@ -1293,7 +1437,7 @@ var documenterSearchIndex = {"docs": [
     "page": "Reference",
     "title": "MathOptInterface.PositiveSemidefiniteConeSquare",
     "category": "type",
-    "text": "PositiveSemidefiniteConeSquare(side_dimension)\n\nThe cone of symmetric positive semidefinite matrices, with side length side_dimension. The entries of the matrix are given column by column (or equivalently, row by row). The matrix is both constrained to be symmetric and to be positive semidefinite. That is, if the functions in entries (i j) and (j i) are different, then a constraint will be added to make sure that the entries are equal.\n\nExamples\n\nConstraining the matrix\n\nbeginbmatrix\n  1  -y\n  -z  0\nendbmatrix\n\nto be symmetric positive semidefinite can be achieved by constraining the vector (1 -z -y 0) (or (1 -y -z 0)) to belong to the PositiveSemidefiniteConeSquare(2). It both constrains y = z and (1 -y 0) (or (1 -z 0)) to be in PositiveSemidefiniteConeTriangle(2).\n\n\n\n\n\n"
+    "text": "PositiveSemidefiniteConeSquare(side_dimension) <: AbstractSymmetricMatrixSetSquare\n\nThe cone of symmetric positive semidefinite matrices, with side length side_dimension.  See AbstractSymmetricMatrixSetSquare for more details on the vectorized form.\n\nThe entries of the matrix are given column by column (or equivalently, row by row). The matrix is both constrained to be symmetric and to be positive semidefinite. That is, if the functions in entries (i j) and (j i) are different, then a constraint will be added to make sure that the entries are equal.\n\nExamples\n\nConstraining the matrix\n\nbeginbmatrix\n  1  -y\n  -z  0\nendbmatrix\n\nto be symmetric positive semidefinite can be achieved by constraining the vector (1 -z -y 0) (or (1 -y -z 0)) to belong to the PositiveSemidefiniteConeSquare(2). It both constrains y = z and (1 -y 0) (or (1 -z 0)) to be in PositiveSemidefiniteConeTriangle(2).\n\n\n\n\n\n"
 },
 
 {
@@ -1329,83 +1473,19 @@ var documenterSearchIndex = {"docs": [
 },
 
 {
-    "location": "apireference/#MathOptInterface.Integer",
+    "location": "apireference/#Matrix-sets-1",
     "page": "Reference",
-    "title": "MathOptInterface.Integer",
-    "category": "type",
-    "text": "Integer()\n\nThe set of integers mathbbZ.\n\n\n\n\n\n"
+    "title": "Matrix sets",
+    "category": "section",
+    "text": "Matrix sets are vectorized in order to be subtypes of AbstractVectorSet. For sets of symmetric matrices, storing both the (i, j) and (j, i) elements is redundant so there exists the AbstractSymmetricMatrixSetTriangle set to represent only the vectorization of the upper triangular part of the matrix. When the matrix of expressions constrained to be in the set is not symmetric and hence the (i, j) and (j, i) elements should be constrained to be symmetric, the AbstractSymmetricMatrixSetSquare set can be used. The Bridges.SquareBridge can transform a set from the square form to the triangular_form by adding appropriate constraints if the (i, j) and (j, i) expressions are different.AbstractSymmetricMatrixSetTriangle\nAbstractSymmetricMatrixSetSquare\nside_dimension\ntriangular_formList of recognized matrix sets.PositiveSemidefiniteConeTriangle\nPositiveSemidefiniteConeSquare\nLogDetConeTriangle\nLogDetConeSquare\nRootDetConeTriangle\nRootDetConeSquare"
 },
 
 {
-    "location": "apireference/#MathOptInterface.ZeroOne",
-    "page": "Reference",
-    "title": "MathOptInterface.ZeroOne",
-    "category": "type",
-    "text": "ZeroOne()\n\nThe set  0 1 .\n\n\n\n\n\n"
-},
-
-{
-    "location": "apireference/#MathOptInterface.Semicontinuous",
-    "page": "Reference",
-    "title": "MathOptInterface.Semicontinuous",
-    "category": "type",
-    "text": "Semicontinuous{T <: Real}(lower::T,upper::T)\n\nThe set 0 cup lowerupper.\n\n\n\n\n\n"
-},
-
-{
-    "location": "apireference/#MathOptInterface.Semiinteger",
-    "page": "Reference",
-    "title": "MathOptInterface.Semiinteger",
-    "category": "type",
-    "text": "Semiinteger{T <: Real}(lower::T,upper::T)\n\nThe set 0 cup lowerlower+1ldotsupper-1upper.\n\n\n\n\n\n"
-},
-
-{
-    "location": "apireference/#MathOptInterface.SOS1",
-    "page": "Reference",
-    "title": "MathOptInterface.SOS1",
-    "category": "type",
-    "text": "SOS1{T <: Real}(weights::Vector{T})\n\nThe set corresponding to the special ordered set (SOS) constraint of type 1. Of the variables in the set, at most one can be nonzero. The weights induce an ordering of the variables; as such, they should be unique values. The kth element in the set corresponds to the kth weight in weights. See here for a description of SOS constraints and their potential uses.\n\n\n\n\n\n"
-},
-
-{
-    "location": "apireference/#MathOptInterface.SOS2",
-    "page": "Reference",
-    "title": "MathOptInterface.SOS2",
-    "category": "type",
-    "text": "SOS2{T <: Real}(weights::Vector{T})\n\nThe set corresponding to the special ordered set (SOS) constraint of type 2. Of the variables in the set, at most two can be nonzero, and if two are nonzero, they must be adjacent in the ordering of the set. The weights induce an ordering of the variables; as such, they should be unique values. The kth element in the set corresponds to the kth weight in weights. See here for a description of SOS constraints and their potential uses.\n\n\n\n\n\n"
-},
-
-{
-    "location": "apireference/#MathOptInterface.IndicatorSet",
-    "page": "Reference",
-    "title": "MathOptInterface.IndicatorSet",
-    "category": "type",
-    "text": "IndicatorSet{A, S <: AbstractScalarSet}(set::S)\n\n((y x) in 0 1 times mathbbR^n  y = 0 implies x in set when A is ACTIVATE_ON_ZERO and ((y x) in 0 1 times mathbbR^n  y = 1 implies x in set when A is ACTIVATE_ON_ONE.\n\nS has to be a sub-type of AbstractScalarSet. A is one of the value of the ActivationCond enum. IndicatorSet is used with a VectorAffineFunction holding the indicator variable first.\n\nExample: (y x) in 0 1 times mathbbR^2  y = 1 implies x_1 + x_2 leq 9 \n\nf = MOI.VectorAffineFunction(\n    [MOI.VectorAffineTerm(1, MOI.ScalarAffineTerm(1.0, z)),\n     MOI.VectorAffineTerm(2, MOI.ScalarAffineTerm(0.2, x1)),\n     MOI.VectorAffineTerm(2, MOI.ScalarAffineTerm(1.0, x2)),\n    ],\n    [0.0, 0.0],\n)\n\nindicator_set = MOI.IndicatorSet{MOI.ACTIVATE_ON_ONE}(MOI.LessThan(9.0))\n\nMOI.add_constraint(model, f, indicator_set)\n\n\n\n\n\n"
-},
-
-{
-    "location": "apireference/#MathOptInterface.dimension",
-    "page": "Reference",
-    "title": "MathOptInterface.dimension",
-    "category": "function",
-    "text": "dimension(s::AbstractSet)\n\nReturn the output_dimension that an AbstractFunction should have to be used with the set s.\n\nExamples\n\njulia> dimension(Reals(4))\n4\n\njulia> dimension(LessThan(3.0))\n1\n\njulia> dimension(PositiveSemidefiniteConeTriangle(2))\n3\n\n\n\n\n\n"
-},
-
-{
-    "location": "apireference/#MathOptInterface.constant-Tuple{MathOptInterface.EqualTo}",
-    "page": "Reference",
-    "title": "MathOptInterface.constant",
-    "category": "method",
-    "text": "constant(s::Union{EqualTo, GreaterThan, LessThan})\n\nReturns the constant of the set.\n\n\n\n\n\n"
-},
-
-{
-    "location": "apireference/#Sets-1",
+    "location": "apireference/#Sets-2",
     "page": "Reference",
     "title": "Sets",
     "category": "section",
-    "text": "List of recognized sets.AbstractSet\nReals\nZeros\nNonnegatives\nNonpositives\nGreaterThan\nLessThan\nEqualTo\nInterval\nSecondOrderCone\nRotatedSecondOrderCone\nGeometricMeanCone\nExponentialCone\nDualExponentialCone\nPowerCone\nDualPowerCone\nPositiveSemidefiniteConeTriangle\nPositiveSemidefiniteConeSquare\nLogDetConeTriangle\nLogDetConeSquare\nRootDetConeTriangle\nRootDetConeSquare\nInteger\nZeroOne\nSemicontinuous\nSemiinteger\nSOS1\nSOS2\nIndicatorSetFunctions for getting and setting properties of sets.dimension\nconstant(s::EqualTo)"
+    "text": ""
 },
 
 {
@@ -1905,11 +1985,11 @@ var documenterSearchIndex = {"docs": [
 },
 
 {
-    "location": "apireference/#MathOptInterface.Bridges.SquarePSDBridge",
+    "location": "apireference/#MathOptInterface.Bridges.SquareBridge",
     "page": "Reference",
-    "title": "MathOptInterface.Bridges.SquarePSDBridge",
+    "title": "MathOptInterface.Bridges.SquareBridge",
     "category": "type",
-    "text": "SquarePSDBridge{T}\n\nThe SquarePSDBridge reformulates the constraint of a square matrix to be PSD and symmetric, i.e. belongs to the MOI.PositiveSemidefiniteConeSquare, to a list of equality constraints for pair or off-diagonal entries with different expressions and a PSD constraint the upper triangular part of the matrix.\n\nFor instance, the constraint for the matrix\n\nbeginpmatrix\n  1       1 + x  2 - 3x\n  1 +  x  2 + x  3 -  x\n  2 - 3x  2 + x      2x\nendpmatrix\n\nto be PSD can be broken down to the constraint of the symmetric matrix\n\nbeginpmatrix\n  1       1 + x  2 - 3x\n  cdot  2 + x  3 -  x\n  cdot  cdot     2x\nendpmatrix\n\nand the equality constraint between the off-diagonal entries (2, 3) and (3, 2) 2x == 1. Note that now symmetrization constraint need to be added between the off-diagonal entries (1, 2) and (2, 1) or between (1, 3) and (3, 1) since the expressions are the same.\n\n\n\n\n\n"
+    "text": "SquareBridge{T, F<:MOI.AbstractVectorFunction,\n             G<:MOI.AbstractScalarFunction,\n             TT<:MOI.AbstractSymmetricMatrixSetTriangle,\n             ST<:MOI.AbstractSymmetricMatrixSetSquare} <: AbstractBridge\n\nThe SquareBridge reformulates the constraint of a square matrix to be in ST to a list of equality constraints for pair or off-diagonal entries with different expressions and a TT constraint the upper triangular part of the matrix.\n\nFor instance, the constraint for the matrix\n\nbeginpmatrix\n  1       1 + x  2 - 3x\n  1 +  x  2 + x  3 -  x\n  2 - 3x  2 + x      2x\nendpmatrix\n\nto be PSD can be broken down to the constraint of the symmetric matrix\n\nbeginpmatrix\n  1       1 + x  2 - 3x\n  cdot  2 + x  3 -  x\n  cdot  cdot     2x\nendpmatrix\n\nand the equality constraint between the off-diagonal entries (2, 3) and (3, 2) 2x == 1. Note that now symmetrization constraint need to be added between the off-diagonal entries (1, 2) and (2, 1) or between (1, 3) and (3, 1) since the expressions are the same.\n\n\n\n\n\n"
 },
 
 {
@@ -1957,7 +2037,7 @@ var documenterSearchIndex = {"docs": [
     "page": "Reference",
     "title": "Bridges",
     "category": "section",
-    "text": "Bridges can be used for automatic reformulation of a certain constraint type into equivalent constraints.Bridges.AbstractBridge\nBridges.AbstractBridgeOptimizer\nBridges.SingleBridgeOptimizer\nBridges.LazyBridgeOptimizer\nBridges.add_bridgeBelow is the list of bridges implemented in this package.Bridges.GreaterToLessBridge\nBridges.LessToGreaterBridge\nBridges.NonnegToNonposBridge\nBridges.NonposToNonnegBridge\nBridges.VectorizeBridge\nBridges.ScalarizeBridge\nBridges.ScalarSlackBridge\nBridges.VectorSlackBridge\nBridges.ScalarFunctionizeBridge\nBridges.VectorFunctionizeBridge\nBridges.SplitIntervalBridge\nBridges.RSOCBridge\nBridges.QuadtoSOCBridge\nBridges.GeoMeanBridge\nBridges.SquarePSDBridge\nBridges.RootDetBridge\nBridges.LogDetBridge\nBridges.SOCtoPSDBridge\nBridges.RSOCtoPSDBridgeFor each bridge defined in this package, a corresponding bridge optimizer is available with the same name without the \"Bridge\" suffix, e.g., SplitInterval is an SingleBridgeOptimizer for the SplitIntervalBridge. Moreover, a LazyBridgeOptimizer with all the bridges defined in this package can be obtained withBridges.full_bridge_optimizer"
+    "text": "Bridges can be used for automatic reformulation of a certain constraint type into equivalent constraints.Bridges.AbstractBridge\nBridges.AbstractBridgeOptimizer\nBridges.SingleBridgeOptimizer\nBridges.LazyBridgeOptimizer\nBridges.add_bridgeBelow is the list of bridges implemented in this package.Bridges.GreaterToLessBridge\nBridges.LessToGreaterBridge\nBridges.NonnegToNonposBridge\nBridges.NonposToNonnegBridge\nBridges.VectorizeBridge\nBridges.ScalarizeBridge\nBridges.ScalarSlackBridge\nBridges.VectorSlackBridge\nBridges.ScalarFunctionizeBridge\nBridges.VectorFunctionizeBridge\nBridges.SplitIntervalBridge\nBridges.RSOCBridge\nBridges.QuadtoSOCBridge\nBridges.GeoMeanBridge\nBridges.SquareBridge\nBridges.RootDetBridge\nBridges.LogDetBridge\nBridges.SOCtoPSDBridge\nBridges.RSOCtoPSDBridgeFor each bridge defined in this package, a corresponding bridge optimizer is available with the same name without the \"Bridge\" suffix, e.g., SplitInterval is an SingleBridgeOptimizer for the SplitIntervalBridge. Moreover, a LazyBridgeOptimizer with all the bridges defined in this package can be obtained withBridges.full_bridge_optimizer"
 },
 
 {
