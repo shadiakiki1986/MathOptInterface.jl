@@ -1997,7 +1997,7 @@ var documenterSearchIndex = {"docs": [
     "page": "Reference",
     "title": "MathOptInterface.Bridges.RootDetBridge",
     "category": "type",
-    "text": "RootDetBridge{T}\n\nThe RootDetConeTriangle is representable by a PositiveSemidefiniteConeTriangle and an GeometricMeanCone constraints; see [1, p. 149]. Indeed, t le det(X)^(1n) if and only if there exists a lower triangular matrix Δ such that\n\nbeginalign*\n  beginpmatrix\n    X  Δ\n    Δ^top  mathrmDiag(Δ)\n  endpmatrix  succeq 0\n  t  le (Δ_11 Δ_22 cdots Δ_nn)^1n\nendalign*\n\n[1] Ben-Tal, Aharon, and Arkadi Nemirovski. Lectures on modern convex optimization: analysis, algorithms, and engineering applications. Society for Industrial and Applied Mathematics, 2001.\n\n\n\n\n\n"
+    "text": "RootDetBridge{T}\n\nThe RootDetConeTriangle is representable by a PositiveSemidefiniteConeTriangle and an GeometricMeanCone constraints; see [1, p. 149]. Indeed, t le det(X)^1n if and only if there exists a lower triangular matrix Δ such that\n\nbeginalign*\n  beginpmatrix\n    X  Δ\n    Δ^top  mathrmDiag(Δ)\n  endpmatrix  succeq 0\n  t  le (Δ_11 Δ_22 cdots Δ_nn)^1n\nendalign*\n\n[1] Ben-Tal, Aharon, and Arkadi Nemirovski. Lectures on modern convex optimization: analysis, algorithms, and engineering applications. Society for Industrial and Applied Mathematics, 2001.\n\n\n\n\n\n"
 },
 
 {
