@@ -341,7 +341,7 @@ var documenterSearchIndex = {"docs": [
     "page": "Manual",
     "title": "Testing guideline",
     "category": "section",
-    "text": "The skeleton below can be used for the wrapper test file of a solver named FooBar.using MathOptInterface\nconst MOI = MathOptInterface\nconst MOIT = MOI.Test\nconst MOIU = MOI.Utilities\nconst MOIB = MOI.Bridges\n\nimport FooBar\nconst optimizer = FooBar.Optimizer()\nMOI.set(optimizer, MOI.Silent(), true)\n\n@testset \"SolverName\" begin\n    @test MOI.get(optimizer, MOI.SolverName()) == \"FooBar\"\nend\n\n@testset \"supports_default_copy_to\" begin\n    @test MOIU.supports_default_copy_to(optimizer, false)\n    # Use `@test !...` if names are not supported\n    @test MOIU.supports_default_copy_to(optimizer, true)\nend\n\nconst bridged = MOIB.full_bridge_optimizer(optimizer, Float64)\nconst config = MOIT.TestConfig(atol=1e-6, rtol=1e-6)\n\n@testset \"Unit\" begin\n    MOIT.unittest(bridged, config)\nend\n\n@testset \"Continuous Linear\" begin\n    MOIT.contlineartest(bridged, config)\nend\n\n@testset \"Continuous Conic\" begin\n    MOIT.contlineartest(bridged, config)\nend\n\n@testset \"Integer Conic\" begin\n    MOIT.intconictest(bridged, config)\nendThe optimizer bridged constructed with Bridges.full_bridge_optimizer automatically bridges constraints that are not supported by optimizer using the bridges listed in Bridges. It is recommended for an implementation of MOI to only support constraints that are natively supported by the solver and let bridges transform the constraint to the appropriate form. For this reason it is expected that tests may not pass if optimizer is used instead of bridged.To test that a specific problem can be solved without bridges, a specific test can be run with optimizer instead of bridged. For instance@testset \"Interval constraints\" begin\n    MOIT.linear10test(optimizer, config)\nendchecks that optimizer implements support for ScalarAffineFunction-in-Interval.If the wrapper does not support building the model incrementally (i.e. with add_variable and add_constraint), then supports_default_copy_to can be replaced by supports_allocate_load if appropriate (see Implementing copy) and the line const bridged = ... can be replaced with# Include here the functions/sets supported by the solver wrapper (not those that are supported through bridges)\nMOIU.@model ModelData () (EqualTo, GreaterThan, LessThan) (Zeros, Nonnegatives, Nonpositives) () (SingleVariable,) (ScalarAffineFunction,) (VectorOfVariables,) (VectorAffineFunction,)\nconst cache = MOIU.UniversalFallback(ModelData{Float64}())\nconst cached = MOIU.CachingOptimizer(cache, optimizer)\nconst bridged = MOIB.full_bridge_optimizer(cached, Float64)"
+    "text": "The skeleton below can be used for the wrapper test file of a solver named FooBar.using MathOptInterface\nconst MOI = MathOptInterface\nconst MOIT = MOI.Test\nconst MOIU = MOI.Utilities\nconst MOIB = MOI.Bridges\n\nimport FooBar\nconst optimizer = FooBar.Optimizer()\nMOI.set(optimizer, MOI.Silent(), true)\n\n@testset \"SolverName\" begin\n    @test MOI.get(optimizer, MOI.SolverName()) == \"FooBar\"\nend\n\n@testset \"supports_default_copy_to\" begin\n    @test MOIU.supports_default_copy_to(optimizer, false)\n    # Use `@test !...` if names are not supported\n    @test MOIU.supports_default_copy_to(optimizer, true)\nend\n\nconst bridged = MOIB.full_bridge_optimizer(optimizer, Float64)\nconst config = MOIT.TestConfig(atol=1e-6, rtol=1e-6)\n\n@testset \"Unit\" begin\n    MOIT.unittest(bridged, config)\nend\n\n@testset \"Modification\" begin\n    MOIT.modificationtest(bridged, config)\nend\n\n@testset \"Continuous Linear\" begin\n    MOIT.contlineartest(bridged, config)\nend\n\n@testset \"Continuous Conic\" begin\n    MOIT.contlineartest(bridged, config)\nend\n\n@testset \"Integer Conic\" begin\n    MOIT.intconictest(bridged, config)\nendThe optimizer bridged constructed with Bridges.full_bridge_optimizer automatically bridges constraints that are not supported by optimizer using the bridges listed in Bridges. It is recommended for an implementation of MOI to only support constraints that are natively supported by the solver and let bridges transform the constraint to the appropriate form. For this reason it is expected that tests may not pass if optimizer is used instead of bridged.To test that a specific problem can be solved without bridges, a specific test can be run with optimizer instead of bridged. For instance@testset \"Interval constraints\" begin\n    MOIT.linear10test(optimizer, config)\nendchecks that optimizer implements support for ScalarAffineFunction-in-Interval.If the wrapper does not support building the model incrementally (i.e. with add_variable and add_constraint), then supports_default_copy_to can be replaced by supports_allocate_load if appropriate (see Implementing copy) and the line const bridged = ... can be replaced with# Include here the functions/sets supported by the solver wrapper (not those that are supported through bridges)\nMOIU.@model ModelData () (EqualTo, GreaterThan, LessThan) (Zeros, Nonnegatives, Nonpositives) () (SingleVariable,) (ScalarAffineFunction,) (VectorOfVariables,) (VectorAffineFunction,)\nconst cache = MOIU.UniversalFallback(ModelData{Float64}())\nconst cached = MOIU.CachingOptimizer(cache, optimizer)\nconst bridged = MOIB.full_bridge_optimizer(cached, Float64)"
 },
 
 {
@@ -429,7 +429,7 @@ var documenterSearchIndex = {"docs": [
     "page": "Reference",
     "title": "MathOptInterface.set",
     "category": "function",
-    "text": "set(optimizer::AbstractOptimizer, attr::AbstractOptimizerAttribute, value)\n\nAssign value to the attribute attr of the optimizer optimizer.\n\nset(model::ModelLike, attr::AbstractModelAttribute, value)\n\nAssign value to the attribute attr of the model model.\n\nset(model::ModelLike, attr::AbstractVariableAttribute, v::VariableIndex, value)\n\nAssign value to the attribute attr of variable v in model model.\n\nset(model::ModelLike, attr::AbstractVariableAttribute, v::Vector{VariableIndex}, vector_of_values)\n\nAssign a value respectively to the attribute attr of each variable in the collection v in model model.\n\nset(model::ModelLike, attr::AbstractConstraintAttribute, c::ConstraintIndex, value)\n\nAssign a value to the attribute attr of constraint c in model model.\n\nset(model::ModelLike, attr::AbstractConstraintAttribute, c::Vector{ConstraintIndex{F,S}}, vector_of_values)\n\nAssign a value respectively to the attribute attr of each constraint in the collection c in model model.\n\nAn UnsupportedAttribute error is thrown if model does not support the attribute attr (see supports) and a SetAttributeNotAllowed error is thrown if it supports the attribute attr but it cannot be set.\n\nReplace set in a constraint\n\nset(model::ModelLike, ::ConstraintSet, c::ConstraintIndex{F,S}, set::S)\n\nChange the set of constraint c to the new set set which should be of the same type as the original set.\n\nExamples\n\nIf c is a ConstraintIndex{F,Interval}\n\nset(model, ConstraintSet(), c, Interval(0, 5))\nset(model, ConstraintSet(), c, GreaterThan(0.0))  # Error\n\nReplace function in a constraint\n\nset(model::ModelLike, ::ConstraintFunction, c::ConstraintIndex{F,S}, func::F)\n\nReplace the function in constraint c with func. F must match the original function type used to define the constraint.\n\nExamples\n\nIf c is a ConstraintIndex{ScalarAffineFunction,S} and v1 and v2 are VariableIndex objects,\n\nset(model, ConstraintFunction(), c,\n    ScalarAffineFunction(ScalarAffineTerm.([1.0, 2.0], [v1, v2]), 5.0))\nset(model, ConstraintFunction(), c, SingleVariable(v1)) # Error\n\n\n\n\n\n"
+    "text": "set(optimizer::AbstractOptimizer, attr::AbstractOptimizerAttribute, value)\n\nAssign value to the attribute attr of the optimizer optimizer.\n\nset(model::ModelLike, attr::AbstractModelAttribute, value)\n\nAssign value to the attribute attr of the model model.\n\nset(model::ModelLike, attr::AbstractVariableAttribute, v::VariableIndex, value)\n\nAssign value to the attribute attr of variable v in model model.\n\nset(model::ModelLike, attr::AbstractVariableAttribute, v::Vector{VariableIndex}, vector_of_values)\n\nAssign a value respectively to the attribute attr of each variable in the collection v in model model.\n\nset(model::ModelLike, attr::AbstractConstraintAttribute, c::ConstraintIndex, value)\n\nAssign a value to the attribute attr of constraint c in model model.\n\nset(model::ModelLike, attr::AbstractConstraintAttribute, c::Vector{ConstraintIndex{F,S}}, vector_of_values)\n\nAssign a value respectively to the attribute attr of each constraint in the collection c in model model.\n\nAn UnsupportedAttribute error is thrown if model does not support the attribute attr (see supports) and a SetAttributeNotAllowed error is thrown if it supports the attribute attr but it cannot be set.\n\nReplace set in a constraint\n\nset(model::ModelLike, ::ConstraintSet, c::ConstraintIndex{F,S}, set::S)\n\nChange the set of constraint c to the new set set which should be of the same type as the original set.\n\nExamples\n\nIf c is a ConstraintIndex{F,Interval}\n\nset(model, ConstraintSet(), c, Interval(0, 5))\nset(model, ConstraintSet(), c, GreaterThan(0.0))  # Error\n\nReplace function in a constraint\n\nset(model::ModelLike, ::ConstraintFunction, c::ConstraintIndex{F,S}, func::F)\n\nReplace the function in constraint c with func. F must match the original function type used to define the constraint.\n\nNote\n\nSetting the constraint function is not allowed if F is SingleVariable, it throws a SettingSingleVariableFunctionNotAllowed error. Indeed, it would require changing the index c as the index of SingleVariable constraints should be the same as the index of the variable.\n\nExamples\n\nIf c is a ConstraintIndex{ScalarAffineFunction,S} and v1 and v2 are VariableIndex objects,\n\nset(model, ConstraintFunction(), c,\n    ScalarAffineFunction(ScalarAffineTerm.([1.0, 2.0], [v1, v2]), 5.0))\nset(model, ConstraintFunction(), c, SingleVariable(v1)) # Error\n\n\n\n\n\n"
 },
 
 {
@@ -837,7 +837,7 @@ var documenterSearchIndex = {"docs": [
     "page": "Reference",
     "title": "MathOptInterface.ConstraintIndex",
     "category": "type",
-    "text": "ConstraintIndex{F,S}\n\nA type-safe wrapper for Int64 for use in referencing F-in-S constraints in a model. The parameter F is the type of the function in the constraint, and the parameter S is the type of set in the constraint. To allow for deletion, indices need not be consecutive. Indices within a constraint type (i.e. F-in-S) must be unique, but non-unique indices across different constraint types are allowed.\n\n\n\n\n\n"
+    "text": "ConstraintIndex{F, S}\n\nA type-safe wrapper for Int64 for use in referencing F-in-S constraints in a model. The parameter F is the type of the function in the constraint, and the parameter S is the type of set in the constraint. To allow for deletion, indices need not be consecutive. Indices within a constraint type (i.e. F-in-S) must be unique, but non-unique indices across different constraint types are allowed. If F is SingleVariable then the index is equal to the index of the variable. That is for an index::ConstraintIndex{SingleVariable}, we always have\n\nindex.value == MOI.get(model, MOI.ConstraintFunction(), index).variable.value\n\n\n\n\n\n"
 },
 
 {
@@ -846,6 +846,14 @@ var documenterSearchIndex = {"docs": [
     "title": "MathOptInterface.is_valid",
     "category": "function",
     "text": "is_valid(model::ModelLike, index::Index)::Bool\n\nReturn a Bool indicating whether this index refers to a valid object in the model model.\n\n\n\n\n\n"
+},
+
+{
+    "location": "apireference/#MathOptInterface.throw_if_not_valid",
+    "page": "Reference",
+    "title": "MathOptInterface.throw_if_not_valid",
+    "category": "function",
+    "text": "throw_if_not_valid(model::ModelLike, index::Index)\n\nThrow an InvalidIndex(index) error if MOI.is_valid(model, index) returns false.\n\n\n\n\n\n"
 },
 
 {
@@ -861,7 +869,7 @@ var documenterSearchIndex = {"docs": [
     "page": "Reference",
     "title": "Index types",
     "category": "section",
-    "text": "VariableIndex\nConstraintIndex\nis_valid\ndelete(::ModelLike, ::Index)"
+    "text": "VariableIndex\nConstraintIndex\nis_valid\nthrow_if_not_valid\ndelete(::ModelLike, ::Index)"
 },
 
 {
@@ -925,7 +933,7 @@ var documenterSearchIndex = {"docs": [
     "page": "Reference",
     "title": "MathOptInterface.add_constraint",
     "category": "function",
-    "text": "add_constraint(model::ModelLike, func::F, set::S)::ConstraintIndex{F,S} where {F,S}\n\nAdd the constraint f(x) in mathcalS where f is defined by func, and mathcalS is defined by set.\n\nadd_constraint(model::ModelLike, v::VariableIndex, set::S)::ConstraintIndex{SingleVariable,S} where {S}\nadd_constraint(model::ModelLike, vec::Vector{VariableIndex}, set::S)::ConstraintIndex{VectorOfVariables,S} where {S}\n\nAdd the constraint v in mathcalS where v is the variable (or vector of variables) referenced by v and mathcalS is defined by set.\n\nAn UnsupportedConstraint error is thrown if model does not support F-in-S constraints,\na AddConstraintNotAllowed error is thrown if it supports F-in-S constraints but it cannot add the constraint(s) in its current state and\na ScalarFunctionConstantNotZero error may be thrown if func is an AbstractScalarFunction with nonzero constant and set is EqualTo, GreaterThan, LessThan or Interval.\n\n\n\n\n\n"
+    "text": "add_constraint(model::ModelLike, func::F, set::S)::ConstraintIndex{F,S} where {F,S}\n\nAdd the constraint f(x) in mathcalS where f is defined by func, and mathcalS is defined by set.\n\nadd_constraint(model::ModelLike, v::VariableIndex, set::S)::ConstraintIndex{SingleVariable,S} where {S}\nadd_constraint(model::ModelLike, vec::Vector{VariableIndex}, set::S)::ConstraintIndex{VectorOfVariables,S} where {S}\n\nAdd the constraint v in mathcalS where v is the variable (or vector of variables) referenced by v and mathcalS is defined by set.\n\nAn UnsupportedConstraint error is thrown if model does not support F-in-S constraints,\na AddConstraintNotAllowed error is thrown if it supports F-in-S constraints but it cannot add the constraint(s) in its current state and\na ScalarFunctionConstantNotZero error may be thrown if func is an AbstractScalarFunction with nonzero constant and set is EqualTo, GreaterThan, LessThan or Interval.\na LowerBoundAlreadySet error is thrown if F is a SingleVariable and a constraint was already added to this variable that sets a lower bound.\na UpperBoundAlreadySet error is thrown if F is a SingleVariable and a constraint was already added to this variable that sets an upper bound.\n\n\n\n\n\n"
 },
 
 {
@@ -957,7 +965,7 @@ var documenterSearchIndex = {"docs": [
     "page": "Reference",
     "title": "MathOptInterface.ConstraintName",
     "category": "type",
-    "text": "ConstraintName()\n\nA constraint attribute for a string identifying the constraint. It is valid for constraints variables to have the same name; however, constraints with duplicate names cannot be looked up using get regardless of if they have the same F-inS type. It has a default value of \"\" if not set`.\n\n\n\n\n\n"
+    "text": "ConstraintName()\n\nA constraint attribute for a string identifying the constraint. It is valid for constraints variables to have the same name; however, constraints with duplicate names cannot be looked up using get regardless of if they have the same F-in-S type. It has a default value of \"\" if not set.\n\n\n\n\n\n"
 },
 
 {
@@ -1017,11 +1025,19 @@ var documenterSearchIndex = {"docs": [
 },
 
 {
+    "location": "apireference/#MathOptInterface.SettingSingleVariableFunctionNotAllowed",
+    "page": "Reference",
+    "title": "MathOptInterface.SettingSingleVariableFunctionNotAllowed",
+    "category": "type",
+    "text": "ListOfOptimizerAttributesSet()\n\nError type that should be thrown when the user set the ConstraintFunction of a SingleVariable constraint.\n\n\n\n\n\n"
+},
+
+{
     "location": "apireference/#Constraints-1",
     "page": "Reference",
     "title": "Constraints",
     "category": "section",
-    "text": "Functions for adding and modifying constraints.is_valid(::ModelLike,::ConstraintIndex)\nadd_constraint\nadd_constraints\ntransform\nsupports_constraintList of attributes associated with constraints. [category AbstractConstraintAttribute] Calls to get and set should include as an argument a single ConstraintIndex or a vector of ConstraintIndex{F,S} objects.ConstraintName\nConstraintPrimalStart\nConstraintDualStart\nConstraintPrimal\nConstraintDual\nConstraintBasisStatus\nConstraintFunction\nConstraintSet"
+    "text": "Functions for adding and modifying constraints.is_valid(::ModelLike,::ConstraintIndex)\nadd_constraint\nadd_constraints\ntransform\nsupports_constraintList of attributes associated with constraints. [category AbstractConstraintAttribute] Calls to get and set should include as an argument a single ConstraintIndex or a vector of ConstraintIndex{F,S} objects.ConstraintName\nConstraintPrimalStart\nConstraintDualStart\nConstraintPrimal\nConstraintDual\nConstraintBasisStatus\nConstraintFunction\nConstraintSetNote that setting the ConstraintFunction of a [SingleVariable] constraint is not allowed:SettingSingleVariableFunctionNotAllowed"
 },
 
 {
@@ -1753,6 +1769,22 @@ var documenterSearchIndex = {"docs": [
 },
 
 {
+    "location": "apireference/#MathOptInterface.LowerBoundAlreadySet",
+    "page": "Reference",
+    "title": "MathOptInterface.LowerBoundAlreadySet",
+    "category": "type",
+    "text": "LowerBoundAlreadySet{S1, S2}\n\nError thrown when setting a SingleVariable-in-S2 when a SingleVariable-in-S1 has already been added and the sets S1, S2 both set a lower bound, i.e. they are EqualTo, GreaterThan, Interval, Semicontinuous or Semiinteger.\n\n\n\n\n\n"
+},
+
+{
+    "location": "apireference/#MathOptInterface.UpperBoundAlreadySet",
+    "page": "Reference",
+    "title": "MathOptInterface.UpperBoundAlreadySet",
+    "category": "type",
+    "text": "UpperBoundAlreadySet{S1, S2}\n\nError thrown when setting a SingleVariable-in-S2 when a SingleVariable-in-S1 has already been added and the sets S1, S2 both set an upper bound, i.e. they are EqualTo, LessThan, Interval, Semicontinuous or Semiinteger.\n\n\n\n\n\n"
+},
+
+{
     "location": "apireference/#MathOptInterface.UnsupportedError",
     "page": "Reference",
     "title": "MathOptInterface.UnsupportedError",
@@ -1837,7 +1869,7 @@ var documenterSearchIndex = {"docs": [
     "page": "Reference",
     "title": "Errors",
     "category": "section",
-    "text": "When an MOI call fails on a model, precise errors should be thrown when possible instead of simply calling error with a message. The docstrings for the respective methods describe the errors that the implementation should thrown in certain situations. This error-reporting system allows code to distinguish between internal errors (that should be shown to the user) and unsupported operations which may have automatic workarounds.When an invalid index is used in an MOI call, an InvalidIndex should be thrown:InvalidIndexAs discussed in JuMP mapping, for scalar constraint with a nonzero function constant, a ScalarFunctionConstantNotZero exception may be thrown:ScalarFunctionConstantNotZeroThe rest of the errors defined in MOI fall in two categories represented by the following two abstract types:UnsupportedError\nNotAllowedErrorThe different UnsupportedError and NotAllowedError are the following errors:UnsupportedAttribute\nSetAttributeNotAllowed\nAddVariableNotAllowed\nUnsupportedConstraint\nAddConstraintNotAllowed\nModifyConstraintNotAllowed\nModifyObjectiveNotAllowed\nDeleteNotAllowed"
+    "text": "When an MOI call fails on a model, precise errors should be thrown when possible instead of simply calling error with a message. The docstrings for the respective methods describe the errors that the implementation should thrown in certain situations. This error-reporting system allows code to distinguish between internal errors (that should be shown to the user) and unsupported operations which may have automatic workarounds.When an invalid index is used in an MOI call, an InvalidIndex should be thrown:InvalidIndexAs discussed in JuMP mapping, for scalar constraint with a nonzero function constant, a ScalarFunctionConstantNotZero exception may be thrown:ScalarFunctionConstantNotZeroSome SingleVariable constraints cannot be combined on the same variable:LowerBoundAlreadySet\nUpperBoundAlreadySetThe rest of the errors defined in MOI fall in two categories represented by the following two abstract types:UnsupportedError\nNotAllowedErrorThe different UnsupportedError and NotAllowedError are the following errors:UnsupportedAttribute\nSetAttributeNotAllowed\nAddVariableNotAllowed\nUnsupportedConstraint\nAddConstraintNotAllowed\nModifyConstraintNotAllowed\nModifyObjectiveNotAllowed\nDeleteNotAllowed"
 },
 
 {
