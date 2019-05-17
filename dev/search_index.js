@@ -625,6 +625,14 @@ var documenterSearchIndex = {"docs": [
 },
 
 {
+    "location": "apireference/#MathOptInterface.RawParameter",
+    "page": "Reference",
+    "title": "MathOptInterface.RawParameter",
+    "category": "type",
+    "text": "RawParameter(name)\n\nAn optimizer attribute for the solver-specific parameter identified by name which is typically an Enum or a String.\n\n\n\n\n\n"
+},
+
+{
     "location": "apireference/#MathOptInterface.RawSolver",
     "page": "Reference",
     "title": "MathOptInterface.RawSolver",
@@ -757,7 +765,7 @@ var documenterSearchIndex = {"docs": [
     "page": "Reference",
     "title": "Optimizers",
     "category": "section",
-    "text": "AbstractOptimizer\noptimize!List of optimizers attributesSolverName\nSilentList of attributes useful for optimizersRawSolver\nResultCount\nObjectiveFunction\nObjectiveFunctionType\nObjectiveValue\nDualObjectiveValue\nObjectiveBound\nRelativeGap\nSolveTime\nSimplexIterations\nBarrierIterations\nNodeCount\nTerminationStatus\nRawStatusString\nPrimalStatus\nDualStatus"
+    "text": "AbstractOptimizer\noptimize!List of optimizers attributesSolverName\nSilent\nRawParameterList of attributes useful for optimizersRawSolver\nResultCount\nObjectiveFunction\nObjectiveFunctionType\nObjectiveValue\nDualObjectiveValue\nObjectiveBound\nRelativeGap\nSolveTime\nSimplexIterations\nBarrierIterations\nNodeCount\nTerminationStatus\nRawStatusString\nPrimalStatus\nDualStatus"
 },
 
 {
