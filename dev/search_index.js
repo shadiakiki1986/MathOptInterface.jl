@@ -2065,6 +2065,14 @@ var documenterSearchIndex = {"docs": [
 },
 
 {
+    "location": "apireference/#MathOptInterface.Bridges.IndicatorActiveOnFalseBridge",
+    "page": "Reference",
+    "title": "MathOptInterface.Bridges.IndicatorActiveOnFalseBridge",
+    "category": "type",
+    "text": "IndicatorActiveOnFalseBridge{T}\n\nThe IndicatorActiveOnFalseBridge replaces an indicator constraint activated on 0 with a variable z_0 with the constraint activated on 1, with a variable z_1. It stores the added variable_index and added constraints:\n\nz_1 in mathbbB in zero_one_cons\nz_0 + z_1 == 1 in `indisjunction_cons`\nThe added ACTIVATE_ON_ONE indicator constraint in indicator_cons_index.\n\n\n\n\n\n"
+},
+
+{
     "location": "apireference/#MathOptInterface.Bridges.full_bridge_optimizer",
     "page": "Reference",
     "title": "MathOptInterface.Bridges.full_bridge_optimizer",
@@ -2077,7 +2085,7 @@ var documenterSearchIndex = {"docs": [
     "page": "Reference",
     "title": "Bridges",
     "category": "section",
-    "text": "Bridges can be used for automatic reformulation of a certain constraint type into equivalent constraints.Bridges.AbstractBridge\nBridges.AbstractBridgeOptimizer\nBridges.SingleBridgeOptimizer\nBridges.LazyBridgeOptimizer\nBridges.add_bridgeBelow is the list of bridges implemented in this package.Bridges.GreaterToLessBridge\nBridges.LessToGreaterBridge\nBridges.NonnegToNonposBridge\nBridges.NonposToNonnegBridge\nBridges.VectorizeBridge\nBridges.ScalarizeBridge\nBridges.ScalarSlackBridge\nBridges.VectorSlackBridge\nBridges.ScalarFunctionizeBridge\nBridges.VectorFunctionizeBridge\nBridges.SplitIntervalBridge\nBridges.RSOCBridge\nBridges.QuadtoSOCBridge\nBridges.GeoMeanBridge\nBridges.SquareBridge\nBridges.RootDetBridge\nBridges.LogDetBridge\nBridges.SOCtoPSDBridge\nBridges.RSOCtoPSDBridgeFor each bridge defined in this package, a corresponding bridge optimizer is available with the same name without the \"Bridge\" suffix, e.g., SplitInterval is an SingleBridgeOptimizer for the SplitIntervalBridge. Moreover, a LazyBridgeOptimizer with all the bridges defined in this package can be obtained withBridges.full_bridge_optimizer"
+    "text": "Bridges can be used for automatic reformulation of a certain constraint type into equivalent constraints.Bridges.AbstractBridge\nBridges.AbstractBridgeOptimizer\nBridges.SingleBridgeOptimizer\nBridges.LazyBridgeOptimizer\nBridges.add_bridgeBelow is the list of bridges implemented in this package.Bridges.GreaterToLessBridge\nBridges.LessToGreaterBridge\nBridges.NonnegToNonposBridge\nBridges.NonposToNonnegBridge\nBridges.VectorizeBridge\nBridges.ScalarizeBridge\nBridges.ScalarSlackBridge\nBridges.VectorSlackBridge\nBridges.ScalarFunctionizeBridge\nBridges.VectorFunctionizeBridge\nBridges.SplitIntervalBridge\nBridges.RSOCBridge\nBridges.QuadtoSOCBridge\nBridges.GeoMeanBridge\nBridges.SquareBridge\nBridges.RootDetBridge\nBridges.LogDetBridge\nBridges.SOCtoPSDBridge\nBridges.RSOCtoPSDBridge\nBridges.IndicatorActiveOnFalseBridgeFor each bridge defined in this package, a corresponding bridge optimizer is available with the same name without the \"Bridge\" suffix, e.g., SplitInterval is an SingleBridgeOptimizer for the SplitIntervalBridge. Moreover, a LazyBridgeOptimizer with all the bridges defined in this package can be obtained withBridges.full_bridge_optimizer"
 },
 
 {
