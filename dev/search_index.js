@@ -2005,7 +2005,7 @@ var documenterSearchIndex = {"docs": [
     "page": "Reference",
     "title": "MathOptInterface.Bridges.RSOCBridge",
     "category": "type",
-    "text": "RSOCBridge{T}\n\nThe RotatedSecondOrderCone is SecondOrderCone representable; see [1, p. 104]. Indeed, we have 2tu = (t2 + u2)^2 - (t2 - u2)^2 hence\n\n2tu ge  x _2^2\n\nis equivalent to\n\n(t2 + u2)^2 ge  x _2^2 + (t2 - u2)^2\n\nWe can therefore use the transformation (t u x) mapsto (t2+u2 t2-u2 x). Note that the linear transformation is a symmetric involution (i.e. it is its own transpose and its own inverse). That means in particular that the norm is of constraint primal and duals are preserved by the tranformation.\n\n[1] Ben-Tal, Aharon, and Arkadi Nemirovski. Lectures on modern convex optimization: analysis, algorithms, and engineering applications. Society for Industrial and Applied Mathematics, 2001.\n\n\n\n\n\n"
+    "text": "RSOCBridge{T, F, G}\n\nThe RotatedSecondOrderCone is SecondOrderCone representable; see [1, p. 104]. Indeed, we have 2tu = (t2 + u2)^2 - (t2 - u2)^2 hence\n\n2tu ge  x _2^2\n\nis equivalent to\n\n(t2 + u2)^2 ge  x _2^2 + (t2 - u2)^2\n\nWe can therefore use the transformation (t u x) mapsto (t2+u2 t2-u2 x). Note that the linear transformation is a symmetric involution (i.e. it is its own transpose and its own inverse). That means in particular that the norm is of constraint primal and duals are preserved by the tranformation.\n\n[1] Ben-Tal, Aharon, and Arkadi Nemirovski. Lectures on modern convex optimization: analysis, algorithms, and engineering applications. Society for Industrial and Applied Mathematics, 2001.\n\n\n\n\n\n"
 },
 
 {
