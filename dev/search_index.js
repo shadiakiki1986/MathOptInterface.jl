@@ -2109,7 +2109,7 @@ var documenterSearchIndex = {"docs": [
     "page": "Reference",
     "title": "MathOptInterface.Bridges.bridge_constraint",
     "category": "function",
-    "text": "bridge_constraint(BT::Type{<:AbstractBridge}, model::MOI.ModelLike,\n                  func::AbstractFunction, set::MOI.AbstractSet)\n\nBridge the constraint func-in-set using bridge BT to model and returns a bridge object of type BT.\n\n\n\n\n\n"
+    "text": "bridge_constraint(BT::Type{<:AbstractBridge}, model::MOI.ModelLike,\n                  func::AbstractFunction, set::MOI.AbstractSet)\n\nBridge the constraint func-in-set using bridge BT to model and returns a bridge object of type BT. The bridge type BT should be a concrete type, that is, all the type parameters of the bridge should be set. Use concrete_bridge_type to obtain a concrete type for given function and set types.\n\n\n\n\n\n"
 },
 
 {
