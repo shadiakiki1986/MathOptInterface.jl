@@ -1917,7 +1917,7 @@ var documenterSearchIndex = {"docs": [
     "page": "Reference",
     "title": "MathOptInterface.Bridges.GreaterToLessBridge",
     "category": "type",
-    "text": "GreaterToLessBridge{T, F<:MOI.AbstractScalarFunction} <:\n    FlipSignBridge{T, MOI.GreaterThan{T}, MOI.LessThan{T}, F}\n\nTransforms a G-in-GreaterThan{T} constraint into an F-in-LessThan{T} constraint.\n\n\n\n\n\n"
+    "text": "GreaterToLessBridge{T, F<:MOI.AbstractScalarFunction, G<:MOI.AbstractScalarFunction} <:\n    FlipSignBridge{T, MOI.GreaterThan{T}, MOI.LessThan{T}, F, G}\n\nTransforms a G-in-GreaterThan{T} constraint into an F-in-LessThan{T} constraint.\n\n\n\n\n\n"
 },
 
 {
@@ -1925,7 +1925,7 @@ var documenterSearchIndex = {"docs": [
     "page": "Reference",
     "title": "MathOptInterface.Bridges.LessToGreaterBridge",
     "category": "type",
-    "text": "LessToGreaterBridge{T, F<:MOI.AbstractScalarFunction} <:\n    FlipSignBridge{T, MOI.LessThan{T}, MOI.GreaterThan{T}, F}\n\nTransforms a G-in-LessThan{T} constraint into an F-in-GreaterThan{T} constraint.\n\n\n\n\n\n"
+    "text": "LessToGreaterBridge{T, F<:MOI.AbstractScalarFunction, G<:MOI.AbstractScalarFunction} <:\n    FlipSignBridge{T, MOI.LessThan{T}, MOI.GreaterThan{T}, F, G}\n\nTransforms a G-in-LessThan{T} constraint into an F-in-GreaterThan{T} constraint.\n\n\n\n\n\n"
 },
 
 {
@@ -1933,7 +1933,7 @@ var documenterSearchIndex = {"docs": [
     "page": "Reference",
     "title": "MathOptInterface.Bridges.NonnegToNonposBridge",
     "category": "type",
-    "text": "NonnegToNonposBridge{T, F<:MOI.AbstractVectorFunction} <:\n    FlipSignBridge{T, MOI.Nonnegatives, MOI.Nonpositives, F}\n\nTransforms a G-in-Nonnegatives constraint into a F-in-Nonpositives constraint.\n\n\n\n\n\n"
+    "text": "NonnegToNonposBridge{T, F<:MOI.AbstractVectorFunction, G<:MOI.AbstractVectorFunction} <:\n    FlipSignBridge{T, MOI.Nonnegatives, MOI.Nonpositives, F, G}\n\nTransforms a G-in-Nonnegatives constraint into a F-in-Nonpositives constraint.\n\n\n\n\n\n"
 },
 
 {
@@ -1941,7 +1941,7 @@ var documenterSearchIndex = {"docs": [
     "page": "Reference",
     "title": "MathOptInterface.Bridges.NonposToNonnegBridge",
     "category": "type",
-    "text": "NonposToNonnegBridge{T, F<:MOI.AbstractVectorFunction} <:\n    FlipSignBridge{T, MOI.Nonpositives, MOI.Nonnegatives, F}\n\nTransforms a G-in-Nonpositives constraint into a F-in-Nonnegatives constraint.\n\n\n\n\n\n"
+    "text": "NonposToNonnegBridge{T, F<:MOI.AbstractVectorFunction, G<:MOI.AbstractVectorFunction} <:\n    FlipSignBridge{T, MOI.Nonpositives, MOI.Nonnegatives, F, G}\n\nTransforms a G-in-Nonpositives constraint into a F-in-Nonnegatives constraint.\n\n\n\n\n\n"
 },
 
 {
