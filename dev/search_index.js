@@ -1501,7 +1501,7 @@ var documenterSearchIndex = {"docs": [
     "page": "Reference",
     "title": "Matrix sets",
     "category": "section",
-    "text": "Matrix sets are vectorized in order to be subtypes of AbstractVectorSet. For sets of symmetric matrices, storing both the (i, j) and (j, i) elements is redundant so there exists the AbstractSymmetricMatrixSetTriangle set to represent only the vectorization of the upper triangular part of the matrix. When the matrix of expressions constrained to be in the set is not symmetric and hence the (i, j) and (j, i) elements should be constrained to be symmetric, the AbstractSymmetricMatrixSetSquare set can be used. The Bridges.SquareBridge can transform a set from the square form to the triangular_form by adding appropriate constraints if the (i, j) and (j, i) expressions are different.AbstractSymmetricMatrixSetTriangle\nAbstractSymmetricMatrixSetSquare\nside_dimension\ntriangular_formList of recognized matrix sets.PositiveSemidefiniteConeTriangle\nPositiveSemidefiniteConeSquare\nLogDetConeTriangle\nLogDetConeSquare\nRootDetConeTriangle\nRootDetConeSquare"
+    "text": "Matrix sets are vectorized in order to be subtypes of AbstractVectorSet. For sets of symmetric matrices, storing both the (i, j) and (j, i) elements is redundant so there exists the AbstractSymmetricMatrixSetTriangle set to represent only the vectorization of the upper triangular part of the matrix. When the matrix of expressions constrained to be in the set is not symmetric and hence the (i, j) and (j, i) elements should be constrained to be symmetric, the AbstractSymmetricMatrixSetSquare set can be used. The Bridges.Constraint.SquareBridge can transform a set from the square form to the triangular_form by adding appropriate constraints if the (i, j) and (j, i) expressions are different.AbstractSymmetricMatrixSetTriangle\nAbstractSymmetricMatrixSetSquare\nside_dimension\ntriangular_formList of recognized matrix sets.PositiveSemidefiniteConeTriangle\nPositiveSemidefiniteConeSquare\nLogDetConeTriangle\nLogDetConeSquare\nRootDetConeTriangle\nRootDetConeSquare"
 },
 
 {
@@ -1873,9 +1873,9 @@ var documenterSearchIndex = {"docs": [
 },
 
 {
-    "location": "apireference/#MathOptInterface.Bridges.AbstractBridge",
+    "location": "apireference/#MathOptInterface.Bridges.Constraint.AbstractBridge",
     "page": "Reference",
-    "title": "MathOptInterface.Bridges.AbstractBridge",
+    "title": "MathOptInterface.Bridges.Constraint.AbstractBridge",
     "category": "type",
     "text": "AbstractBridge\n\nA bridge represents a bridged constraint in an AbstractBridgeOptimizer. It contains the indices of the constraints that it has created in the model. These can be obtained using MOI.NumberOfConstraints and MOI.ListOfConstraintIndices and using the bridge in place of a ModelLike. Attributes of the bridged model such as MOI.ConstraintDual and MOI.ConstraintPrimal, can be obtained using the bridge in place of the constraint index. These calls are used by the AbstractBridgeOptimizer to communicate with the bridge so they should be implemented by the bridge.\n\n\n\n\n\n"
 },
@@ -1889,11 +1889,11 @@ var documenterSearchIndex = {"docs": [
 },
 
 {
-    "location": "apireference/#MathOptInterface.Bridges.SingleBridgeOptimizer",
+    "location": "apireference/#MathOptInterface.Bridges.Constraint.SingleBridgeOptimizer",
     "page": "Reference",
-    "title": "MathOptInterface.Bridges.SingleBridgeOptimizer",
+    "title": "MathOptInterface.Bridges.Constraint.SingleBridgeOptimizer",
     "category": "type",
-    "text": "SingleBridgeOptimizer{BT<:AbstractBridge, OT<:MOI.ModelLike} <: AbstractBridgeOptimizer\n\nThe SingleBridgeOptimizer bridges any constraint supported by the bridge BT. This is in contrast with the LazyBridgeOptimizer which only bridges the constraints that are unsupported by the internal model, even if they are supported by one of its bridges.\n\n\n\n\n\n"
+    "text": "SingleBridgeOptimizer{BT<:AbstractBridge, OT<:MOI.ModelLike} <: AbstractBridgeOptimizer\n\nThe SingleBridgeOptimizer bridges any constraint supported by the bridge BT. This is in contrast with the MathOptInterface.Bridges.LazyBridgeOptimizer which only bridges the constraints that are unsupported by the internal model, even if they are supported by one of its bridges.\n\n\n\n\n\n"
 },
 
 {
@@ -1909,165 +1909,165 @@ var documenterSearchIndex = {"docs": [
     "page": "Reference",
     "title": "MathOptInterface.Bridges.add_bridge",
     "category": "function",
-    "text": "add_bridge(b::LazyBridgeOptimizer, BT::Type{<:AbstractBridge})\n\nEnable the use of the bridges of type BT by b.\n\n\n\n\n\n"
+    "text": "add_bridge(b::LazyBridgeOptimizer, BT::Type{<:Constraint.AbstractBridge})\n\nEnable the use of the bridges of type BT by b.\n\n\n\n\n\n"
 },
 
 {
-    "location": "apireference/#MathOptInterface.Bridges.GreaterToLessBridge",
+    "location": "apireference/#MathOptInterface.Bridges.Constraint.GreaterToLessBridge",
     "page": "Reference",
-    "title": "MathOptInterface.Bridges.GreaterToLessBridge",
+    "title": "MathOptInterface.Bridges.Constraint.GreaterToLessBridge",
     "category": "type",
     "text": "GreaterToLessBridge{T, F<:MOI.AbstractScalarFunction, G<:MOI.AbstractScalarFunction} <:\n    FlipSignBridge{T, MOI.GreaterThan{T}, MOI.LessThan{T}, F, G}\n\nTransforms a G-in-GreaterThan{T} constraint into an F-in-LessThan{T} constraint.\n\n\n\n\n\n"
 },
 
 {
-    "location": "apireference/#MathOptInterface.Bridges.LessToGreaterBridge",
+    "location": "apireference/#MathOptInterface.Bridges.Constraint.LessToGreaterBridge",
     "page": "Reference",
-    "title": "MathOptInterface.Bridges.LessToGreaterBridge",
+    "title": "MathOptInterface.Bridges.Constraint.LessToGreaterBridge",
     "category": "type",
     "text": "LessToGreaterBridge{T, F<:MOI.AbstractScalarFunction, G<:MOI.AbstractScalarFunction} <:\n    FlipSignBridge{T, MOI.LessThan{T}, MOI.GreaterThan{T}, F, G}\n\nTransforms a G-in-LessThan{T} constraint into an F-in-GreaterThan{T} constraint.\n\n\n\n\n\n"
 },
 
 {
-    "location": "apireference/#MathOptInterface.Bridges.NonnegToNonposBridge",
+    "location": "apireference/#MathOptInterface.Bridges.Constraint.NonnegToNonposBridge",
     "page": "Reference",
-    "title": "MathOptInterface.Bridges.NonnegToNonposBridge",
+    "title": "MathOptInterface.Bridges.Constraint.NonnegToNonposBridge",
     "category": "type",
     "text": "NonnegToNonposBridge{T, F<:MOI.AbstractVectorFunction, G<:MOI.AbstractVectorFunction} <:\n    FlipSignBridge{T, MOI.Nonnegatives, MOI.Nonpositives, F, G}\n\nTransforms a G-in-Nonnegatives constraint into a F-in-Nonpositives constraint.\n\n\n\n\n\n"
 },
 
 {
-    "location": "apireference/#MathOptInterface.Bridges.NonposToNonnegBridge",
+    "location": "apireference/#MathOptInterface.Bridges.Constraint.NonposToNonnegBridge",
     "page": "Reference",
-    "title": "MathOptInterface.Bridges.NonposToNonnegBridge",
+    "title": "MathOptInterface.Bridges.Constraint.NonposToNonnegBridge",
     "category": "type",
     "text": "NonposToNonnegBridge{T, F<:MOI.AbstractVectorFunction, G<:MOI.AbstractVectorFunction} <:\n    FlipSignBridge{T, MOI.Nonpositives, MOI.Nonnegatives, F, G}\n\nTransforms a G-in-Nonpositives constraint into a F-in-Nonnegatives constraint.\n\n\n\n\n\n"
 },
 
 {
-    "location": "apireference/#MathOptInterface.Bridges.VectorizeBridge",
+    "location": "apireference/#MathOptInterface.Bridges.Constraint.VectorizeBridge",
     "page": "Reference",
-    "title": "MathOptInterface.Bridges.VectorizeBridge",
+    "title": "MathOptInterface.Bridges.Constraint.VectorizeBridge",
     "category": "type",
     "text": "VectorizeBridge{T, F, S, G}\n\nTransforms a constraint G-in-scalar_set_type(S, T) where S <: VectorLinearSet to F-in-S.\n\n\n\n\n\n"
 },
 
 {
-    "location": "apireference/#MathOptInterface.Bridges.ScalarizeBridge",
+    "location": "apireference/#MathOptInterface.Bridges.Constraint.ScalarizeBridge",
     "page": "Reference",
-    "title": "MathOptInterface.Bridges.ScalarizeBridge",
+    "title": "MathOptInterface.Bridges.Constraint.ScalarizeBridge",
     "category": "type",
     "text": "ScalarizeBridge{T, F, S}\n\nTransforms a constraint AbstractVectorFunction-in-vector_set(S) where S <: LPCone{T} to F-in-S.\n\n\n\n\n\n"
 },
 
 {
-    "location": "apireference/#MathOptInterface.Bridges.ScalarSlackBridge",
+    "location": "apireference/#MathOptInterface.Bridges.Constraint.ScalarSlackBridge",
     "page": "Reference",
-    "title": "MathOptInterface.Bridges.ScalarSlackBridge",
+    "title": "MathOptInterface.Bridges.Constraint.ScalarSlackBridge",
     "category": "type",
     "text": "ScalarSlackBridge{T, F, S}\n\nThe ScalarSlackBridge converts a constraint G-in-S where G is a function different from SingleVariable into the constraints F-in-EqualTo{T} and SingleVariable-in-S. F is the result of subtracting a SingleVariable from G. Tipically G is the same as F, but that is not mandatory.\n\n\n\n\n\n"
 },
 
 {
-    "location": "apireference/#MathOptInterface.Bridges.VectorSlackBridge",
+    "location": "apireference/#MathOptInterface.Bridges.Constraint.VectorSlackBridge",
     "page": "Reference",
-    "title": "MathOptInterface.Bridges.VectorSlackBridge",
+    "title": "MathOptInterface.Bridges.Constraint.VectorSlackBridge",
     "category": "type",
     "text": "VectorSlackBridge{T, F, S}\n\nThe VectorSlackBridge converts a constraint G-in-S where G is a function different from VectorOfVariables into the constraints Fin-Zeros and VectorOfVariables-in-S. F is the result of subtracting a VectorOfVariables from G. Tipically G is the same as F, but that is not mandatory.\n\n\n\n\n\n"
 },
 
 {
-    "location": "apireference/#MathOptInterface.Bridges.ScalarFunctionizeBridge",
+    "location": "apireference/#MathOptInterface.Bridges.Constraint.ScalarFunctionizeBridge",
     "page": "Reference",
-    "title": "MathOptInterface.Bridges.ScalarFunctionizeBridge",
+    "title": "MathOptInterface.Bridges.Constraint.ScalarFunctionizeBridge",
     "category": "type",
     "text": "ScalarFunctionizeBridge{T, S}\n\nThe ScalarFunctionizeBridge converts a constraint SingleVariable-in-S into the constraint ScalarAffineFunction{T}-in-S.\n\n\n\n\n\n"
 },
 
 {
-    "location": "apireference/#MathOptInterface.Bridges.VectorFunctionizeBridge",
+    "location": "apireference/#MathOptInterface.Bridges.Constraint.VectorFunctionizeBridge",
     "page": "Reference",
-    "title": "MathOptInterface.Bridges.VectorFunctionizeBridge",
+    "title": "MathOptInterface.Bridges.Constraint.VectorFunctionizeBridge",
     "category": "type",
     "text": "VectorFunctionizeBridge{T, S}\n\nThe VectorFunctionizeBridge converts a constraint VectorOfVariables-in-S into the constraint VectorAffineFunction{T}-in-S.\n\n\n\n\n\n"
 },
 
 {
-    "location": "apireference/#MathOptInterface.Bridges.SplitIntervalBridge",
+    "location": "apireference/#MathOptInterface.Bridges.Constraint.SplitIntervalBridge",
     "page": "Reference",
-    "title": "MathOptInterface.Bridges.SplitIntervalBridge",
+    "title": "MathOptInterface.Bridges.Constraint.SplitIntervalBridge",
     "category": "type",
     "text": "SplitIntervalBridge{T}\n\nThe SplitIntervalBridge splits a constraint l  a x + α  u into the constraints a x + α  l and a x + α  u.\n\n\n\n\n\n"
 },
 
 {
-    "location": "apireference/#MathOptInterface.Bridges.RSOCBridge",
+    "location": "apireference/#MathOptInterface.Bridges.Constraint.RSOCBridge",
     "page": "Reference",
-    "title": "MathOptInterface.Bridges.RSOCBridge",
+    "title": "MathOptInterface.Bridges.Constraint.RSOCBridge",
     "category": "type",
     "text": "RSOCBridge{T, F, G}\n\nThe RotatedSecondOrderCone is SecondOrderCone representable; see [1, p. 104]. Indeed, we have 2tu = (t2 + u2)^2 - (t2 - u2)^2 hence\n\n2tu ge  x _2^2\n\nis equivalent to\n\n(t2 + u2)^2 ge  x _2^2 + (t2 - u2)^2\n\nWe can therefore use the transformation (t u x) mapsto (t2+u2 t2-u2 x). Note that the linear transformation is a symmetric involution (i.e. it is its own transpose and its own inverse). That means in particular that the norm is of constraint primal and duals are preserved by the tranformation.\n\n[1] Ben-Tal, Aharon, and Arkadi Nemirovski. Lectures on modern convex optimization: analysis, algorithms, and engineering applications. Society for Industrial and Applied Mathematics, 2001.\n\n\n\n\n\n"
 },
 
 {
-    "location": "apireference/#MathOptInterface.Bridges.QuadtoSOCBridge",
+    "location": "apireference/#MathOptInterface.Bridges.Constraint.QuadtoSOCBridge",
     "page": "Reference",
-    "title": "MathOptInterface.Bridges.QuadtoSOCBridge",
+    "title": "MathOptInterface.Bridges.Constraint.QuadtoSOCBridge",
     "category": "type",
     "text": "QuadtoSOCBridge{T}\n\nThe set of points x satisfying the constraint\n\nfrac12x^T Q x + a^T x + b le 0\n\nis a convex set if Q is positive semidefinite and is the union of two convex cones if a and b are zero (i.e. homogeneous case) and Q has only one negative eigenvalue. Currently, only the non-homogeneous transformation is implemented, see the Note section below for more details.\n\nNon-homogeneous case\n\nIf Q is positive semidefinite, there exists U such that Q = U^T U, the inequality can then be rewritten as\n\nU x_2^2 le 2 (-a^T x - b)\n\nwhich is equivalent to the membership of (1, -a^T x - b, Ux) to the rotated second-order cone.\n\nHomogeneous case\n\nIf Q has only one negative eigenvalue, the set of x such that x^T Q x le 0 is the union of a convex cone and its opposite. We can choose which one to model by checking the existence of bounds on variables as shown below.\n\nSecond-order cone\n\nIf Q is diagonal and has eigenvalues (1, 1, -1), the inequality x^2 + x^2 le z^2 combined with z ge 0 defines the Lorenz cone (i.e. the second-order cone) but when combined with z le 0, it gives the opposite of the second order cone. Therefore, we need to check if the variable z has a lower bound 0 or an upper bound 0 in order to determine which cone is\n\nRotated second-order cone\n\nThe matrix Q corresponding to the inequality x^2 le 2yz has one eigenvalue 1 with eigenvectors (1, 0, 0) and (0, 1, -1) and one eigenvalue -1 corresponding to the eigenvector (0, 1, 1). Hence if we intersect this union of two convex cone with the halfspace x + y ge 0, we get the rotated second-order cone and if we intersect it with the halfspace x + y le 0 we get the opposite of the rotated second-order cone. Note that y and z have the same sign since yz is nonnegative hence x + y ge 0 is equivalent to x ge 0 and y ge 0.\n\nNote\n\nThe check for existence of bound can be implemented (but inefficiently) with the current interface but if bound is removed or transformed (e.g. ≤ 0 transformed into ≥ 0) then the bridge is no longer valid. For this reason the homogeneous version of the bridge is not implemented yet.\n\n\n\n\n\n"
 },
 
 {
-    "location": "apireference/#MathOptInterface.Bridges.GeoMeanBridge",
+    "location": "apireference/#MathOptInterface.Bridges.Constraint.GeoMeanBridge",
     "page": "Reference",
-    "title": "MathOptInterface.Bridges.GeoMeanBridge",
+    "title": "MathOptInterface.Bridges.Constraint.GeoMeanBridge",
     "category": "type",
     "text": "GeoMeanBridge{T}\n\nThe GeometricMeanCone is SecondOrderCone representable; see [1, p. 105]. The reformulation is best described in an example. Consider the cone of dimension 4\n\nt le sqrt3x_1 x_2 x_3\n\nThis can be rewritten as exists x_21 ge 0 such that\n\nbeginalign*\n  t  le x_21\n  x_21^4  le x_1 x_2 x_3 x_21\nendalign*\n\nNote that we need to create x_21 and not use t^4 directly as t is allowed to be negative. Now, this is equivalent to\n\nbeginalign*\n  t  le x_21sqrt4\n  x_21^2  le 2x_11 x_12\n  x_11^2  le 2x_1 x_2  x_21^2  le 2x_3(x_21sqrt4)\nendalign*\n\n[1] Ben-Tal, Aharon, and Arkadi Nemirovski. Lectures on modern convex optimization: analysis, algorithms, and engineering applications. Society for Industrial and Applied Mathematics, 2001.\n\n\n\n\n\n"
 },
 
 {
-    "location": "apireference/#MathOptInterface.Bridges.SquareBridge",
+    "location": "apireference/#MathOptInterface.Bridges.Constraint.SquareBridge",
     "page": "Reference",
-    "title": "MathOptInterface.Bridges.SquareBridge",
+    "title": "MathOptInterface.Bridges.Constraint.SquareBridge",
     "category": "type",
     "text": "SquareBridge{T, F<:MOI.AbstractVectorFunction,\n             G<:MOI.AbstractScalarFunction,\n             TT<:MOI.AbstractSymmetricMatrixSetTriangle,\n             ST<:MOI.AbstractSymmetricMatrixSetSquare} <: AbstractBridge\n\nThe SquareBridge reformulates the constraint of a square matrix to be in ST to a list of equality constraints for pair or off-diagonal entries with different expressions and a TT constraint the upper triangular part of the matrix.\n\nFor instance, the constraint for the matrix\n\nbeginpmatrix\n  1       1 + x  2 - 3x\n  1 +  x  2 + x  3 -  x\n  2 - 3x  2 + x      2x\nendpmatrix\n\nto be PSD can be broken down to the constraint of the symmetric matrix\n\nbeginpmatrix\n  1       1 + x  2 - 3x\n  cdot  2 + x  3 -  x\n  cdot  cdot     2x\nendpmatrix\n\nand the equality constraint between the off-diagonal entries (2, 3) and (3, 2) 2x == 1. Note that now symmetrization constraint need to be added between the off-diagonal entries (1, 2) and (2, 1) or between (1, 3) and (3, 1) since the expressions are the same.\n\n\n\n\n\n"
 },
 
 {
-    "location": "apireference/#MathOptInterface.Bridges.RootDetBridge",
+    "location": "apireference/#MathOptInterface.Bridges.Constraint.RootDetBridge",
     "page": "Reference",
-    "title": "MathOptInterface.Bridges.RootDetBridge",
+    "title": "MathOptInterface.Bridges.Constraint.RootDetBridge",
     "category": "type",
     "text": "RootDetBridge{T}\n\nThe RootDetConeTriangle is representable by a PositiveSemidefiniteConeTriangle and an GeometricMeanCone constraints; see [1, p. 149]. Indeed, t le det(X)^1n if and only if there exists a lower triangular matrix Δ such that\n\nbeginalign*\n  beginpmatrix\n    X  Δ\n    Δ^top  mathrmDiag(Δ)\n  endpmatrix  succeq 0\n  t  le (Δ_11 Δ_22 cdots Δ_nn)^1n\nendalign*\n\n[1] Ben-Tal, Aharon, and Arkadi Nemirovski. Lectures on modern convex optimization: analysis, algorithms, and engineering applications. Society for Industrial and Applied Mathematics, 2001.\n\n\n\n\n\n"
 },
 
 {
-    "location": "apireference/#MathOptInterface.Bridges.LogDetBridge",
+    "location": "apireference/#MathOptInterface.Bridges.Constraint.LogDetBridge",
     "page": "Reference",
-    "title": "MathOptInterface.Bridges.LogDetBridge",
+    "title": "MathOptInterface.Bridges.Constraint.LogDetBridge",
     "category": "type",
     "text": "LogDetBridge{T}\n\nThe LogDetConeTriangle is representable by a PositiveSemidefiniteConeTriangle and ExponentialCone constraints. Indeed, logdet(X) = log(delta_1) + cdots + log(delta_n) where delta_1, ..., delta_n are the eigenvalues of X. Adapting the method from [1, p. 149], we see that t le u log(det(Xu)) for u  0 if and only if there exists a lower triangular matrix Δ such that\n\nbeginalign*\n  beginpmatrix\n    X  Δ\n    Δ^top  mathrmDiag(Δ)\n  endpmatrix  succeq 0\n  t  le u log(Δ_11u) + u log(Δ_22u) + cdots + u log(Δ_nnu)\nendalign*\n\n[1] Ben-Tal, Aharon, and Arkadi Nemirovski. Lectures on modern convex optimization: analysis, algorithms, and engineering applications. Society for Industrial and Applied Mathematics, 2001. ```\n\n\n\n\n\n"
 },
 
 {
-    "location": "apireference/#MathOptInterface.Bridges.SOCtoPSDBridge",
+    "location": "apireference/#MathOptInterface.Bridges.Constraint.SOCtoPSDBridge",
     "page": "Reference",
-    "title": "MathOptInterface.Bridges.SOCtoPSDBridge",
+    "title": "MathOptInterface.Bridges.Constraint.SOCtoPSDBridge",
     "category": "type",
     "text": "The SOCtoPSDBridge transforms the second order cone constraint lVert x rVert le t into the semidefinite cone constraints\n\nbeginpmatrix\n  t  x^top\n  x  tI\nendpmatrix succeq 0\n\nIndeed by the Schur Complement, it is positive definite iff\n\nbeginalign*\n  tI  succ 0\n  t - x^top (tI)^-1 x  succ 0\nendalign*\n\nwhich is equivalent to\n\nbeginalign*\n  t   0\n  t^2   x^top x\nendalign*\n\n\n\n\n\n"
 },
 
 {
-    "location": "apireference/#MathOptInterface.Bridges.RSOCtoPSDBridge",
+    "location": "apireference/#MathOptInterface.Bridges.Constraint.RSOCtoPSDBridge",
     "page": "Reference",
-    "title": "MathOptInterface.Bridges.RSOCtoPSDBridge",
+    "title": "MathOptInterface.Bridges.Constraint.RSOCtoPSDBridge",
     "category": "type",
     "text": "The RSOCtoPSDBridge transforms the second order cone constraint lVert x rVert le 2tu with u ge 0 into the semidefinite cone constraints\n\nbeginpmatrix\n  t  x^top\n  x  2uI\nendpmatrix succeq 0\n\nIndeed by the Schur Complement, it is positive definite iff\n\nbeginalign*\n  uI  succ 0\n  t - x^top (2uI)^-1 x  succ 0\nendalign*\n\nwhich is equivalent to\n\nbeginalign*\n  u   0\n  2tu   x^top x\nendalign*\n\n\n\n\n\n"
 },
 
 {
-    "location": "apireference/#MathOptInterface.Bridges.IndicatorActiveOnFalseBridge",
+    "location": "apireference/#MathOptInterface.Bridges.Constraint.IndicatorActiveOnFalseBridge",
     "page": "Reference",
-    "title": "MathOptInterface.Bridges.IndicatorActiveOnFalseBridge",
+    "title": "MathOptInterface.Bridges.Constraint.IndicatorActiveOnFalseBridge",
     "category": "type",
     "text": "IndicatorActiveOnFalseBridge{T}\n\nThe IndicatorActiveOnFalseBridge replaces an indicator constraint activated on 0 with a variable z_0 with the constraint activated on 1, with a variable z_1. It stores the added variable_index and added constraints:\n\nz_1 in mathbbB in zero_one_cons\nz_0 + z_1 == 1 in `indisjunction_cons`\nThe added ACTIVATE_ON_ONE indicator constraint in indicator_cons_index.\n\n\n\n\n\n"
 },
@@ -2085,11 +2085,11 @@ var documenterSearchIndex = {"docs": [
     "page": "Reference",
     "title": "Bridges",
     "category": "section",
-    "text": "Bridges can be used for automatic reformulation of a certain constraint type into equivalent constraints.Bridges.AbstractBridge\nBridges.AbstractBridgeOptimizer\nBridges.SingleBridgeOptimizer\nBridges.LazyBridgeOptimizer\nBridges.add_bridgeBelow is the list of bridges implemented in this package.Bridges.GreaterToLessBridge\nBridges.LessToGreaterBridge\nBridges.NonnegToNonposBridge\nBridges.NonposToNonnegBridge\nBridges.VectorizeBridge\nBridges.ScalarizeBridge\nBridges.ScalarSlackBridge\nBridges.VectorSlackBridge\nBridges.ScalarFunctionizeBridge\nBridges.VectorFunctionizeBridge\nBridges.SplitIntervalBridge\nBridges.RSOCBridge\nBridges.QuadtoSOCBridge\nBridges.GeoMeanBridge\nBridges.SquareBridge\nBridges.RootDetBridge\nBridges.LogDetBridge\nBridges.SOCtoPSDBridge\nBridges.RSOCtoPSDBridge\nBridges.IndicatorActiveOnFalseBridgeFor each bridge defined in this package, a corresponding bridge optimizer is available with the same name without the \"Bridge\" suffix, e.g., SplitInterval is an SingleBridgeOptimizer for the SplitIntervalBridge. Moreover, a LazyBridgeOptimizer with all the bridges defined in this package can be obtained withBridges.full_bridge_optimizer"
+    "text": "Bridges can be used for automatic reformulation of a certain constraint type into equivalent constraints.Bridges.Constraint.AbstractBridge\nBridges.AbstractBridgeOptimizer\nBridges.Constraint.SingleBridgeOptimizer\nBridges.LazyBridgeOptimizer\nBridges.add_bridgeBelow is the list of bridges implemented in this package.Bridges.Constraint.GreaterToLessBridge\nBridges.Constraint.LessToGreaterBridge\nBridges.Constraint.NonnegToNonposBridge\nBridges.Constraint.NonposToNonnegBridge\nBridges.Constraint.VectorizeBridge\nBridges.Constraint.ScalarizeBridge\nBridges.Constraint.ScalarSlackBridge\nBridges.Constraint.VectorSlackBridge\nBridges.Constraint.ScalarFunctionizeBridge\nBridges.Constraint.VectorFunctionizeBridge\nBridges.Constraint.SplitIntervalBridge\nBridges.Constraint.RSOCBridge\nBridges.Constraint.QuadtoSOCBridge\nBridges.Constraint.GeoMeanBridge\nBridges.Constraint.SquareBridge\nBridges.Constraint.RootDetBridge\nBridges.Constraint.LogDetBridge\nBridges.Constraint.SOCtoPSDBridge\nBridges.Constraint.RSOCtoPSDBridge\nBridges.Constraint.IndicatorActiveOnFalseBridgeFor each bridge defined in this package, a corresponding bridge optimizer is available with the same name without the \"Bridge\" suffix, e.g., SplitInterval is an SingleBridgeOptimizer for the SplitIntervalBridge. Moreover, a LazyBridgeOptimizer with all the bridges defined in this package can be obtained withBridges.full_bridge_optimizer"
 },
 
 {
-    "location": "apireference/#MathOptInterface.supports_constraint-Tuple{Type{#s1} where #s1<:MathOptInterface.Bridges.AbstractBridge,Type{#s2} where #s2<:MathOptInterface.AbstractFunction,Type{#s3} where #s3<:MathOptInterface.AbstractSet}",
+    "location": "apireference/#MathOptInterface.supports_constraint-Tuple{Type{#s1} where #s1<:MathOptInterface.Bridges.Constraint.AbstractBridge,Type{#s2} where #s2<:MathOptInterface.AbstractFunction,Type{#s3} where #s3<:MathOptInterface.AbstractSet}",
     "page": "Reference",
     "title": "MathOptInterface.supports_constraint",
     "category": "method",
@@ -2097,31 +2097,31 @@ var documenterSearchIndex = {"docs": [
 },
 
 {
-    "location": "apireference/#MathOptInterface.Bridges.concrete_bridge_type",
+    "location": "apireference/#MathOptInterface.Bridges.Constraint.concrete_bridge_type",
     "page": "Reference",
-    "title": "MathOptInterface.Bridges.concrete_bridge_type",
+    "title": "MathOptInterface.Bridges.Constraint.concrete_bridge_type",
     "category": "function",
     "text": "concrete_bridge_type(BT::Type{<:AbstractBridge},\n                     F::Type{<:MOI.AbstractFunction},\n                     S::Type{<:MOI.AbstractSet})::DataType\n\nReturn the concrete type of the bridge supporting F-in-S constraints. This function can only be called if MOI.supports_constraint(BT, F, S) is true.\n\nExamples\n\nThe following returns SplitIntervalBridge{Float64, MOI.SingleVariable}:\n\nconcrete_bridge_type(SplitIntervalBridge{Float64}, MOI.SingleVariable,\n                                                   MOI.Interval{Float64})\n\n\n\n\n\n"
 },
 
 {
-    "location": "apireference/#MathOptInterface.Bridges.bridge_constraint",
+    "location": "apireference/#MathOptInterface.Bridges.Constraint.bridge_constraint",
     "page": "Reference",
-    "title": "MathOptInterface.Bridges.bridge_constraint",
+    "title": "MathOptInterface.Bridges.Constraint.bridge_constraint",
     "category": "function",
     "text": "bridge_constraint(BT::Type{<:AbstractBridge}, model::MOI.ModelLike,\n                  func::AbstractFunction, set::MOI.AbstractSet)\n\nBridge the constraint func-in-set using bridge BT to model and returns a bridge object of type BT. The bridge type BT should be a concrete type, that is, all the type parameters of the bridge should be set. Use concrete_bridge_type to obtain a concrete type for given function and set types.\n\n\n\n\n\n"
 },
 
 {
-    "location": "apireference/#MathOptInterface.Bridges.added_constraint_types",
+    "location": "apireference/#MathOptInterface.Bridges.Constraint.added_constraint_types",
     "page": "Reference",
-    "title": "MathOptInterface.Bridges.added_constraint_types",
+    "title": "MathOptInterface.Bridges.Constraint.added_constraint_types",
     "category": "function",
     "text": "added_constraint_types(BT::Type{<:AbstractBridge}, F::Type{<:MOI.AbstractFunction}, S::Type{<:MOI.AbstractSet})::Bool\n\nReturn a list of the types of constraints that bridges of type BT add for bridging an F-in-S constraints.\n\nadded_constraint_types(BT::Type{<:AbstractBridge})::Bool\n\nReturn a list of the types of constraints that bridges of concrete type BT add for F-in-S constraints.\n\n\n\n\n\n"
 },
 
 {
-    "location": "apireference/#MathOptInterface.get-Tuple{MathOptInterface.Bridges.AbstractBridge,MathOptInterface.NumberOfVariables}",
+    "location": "apireference/#MathOptInterface.get-Tuple{MathOptInterface.Bridges.Constraint.AbstractBridge,MathOptInterface.NumberOfVariables}",
     "page": "Reference",
     "title": "MathOptInterface.get",
     "category": "method",
@@ -2129,7 +2129,7 @@ var documenterSearchIndex = {"docs": [
 },
 
 {
-    "location": "apireference/#MathOptInterface.get-Tuple{MathOptInterface.Bridges.AbstractBridge,MathOptInterface.NumberOfConstraints}",
+    "location": "apireference/#MathOptInterface.get-Tuple{MathOptInterface.Bridges.Constraint.AbstractBridge,MathOptInterface.NumberOfConstraints}",
     "page": "Reference",
     "title": "MathOptInterface.get",
     "category": "method",
@@ -2137,7 +2137,7 @@ var documenterSearchIndex = {"docs": [
 },
 
 {
-    "location": "apireference/#MathOptInterface.get-Tuple{MathOptInterface.Bridges.AbstractBridge,MathOptInterface.ListOfConstraintIndices}",
+    "location": "apireference/#MathOptInterface.get-Tuple{MathOptInterface.Bridges.Constraint.AbstractBridge,MathOptInterface.ListOfConstraintIndices}",
     "page": "Reference",
     "title": "MathOptInterface.get",
     "category": "method",
@@ -2149,7 +2149,7 @@ var documenterSearchIndex = {"docs": [
     "page": "Reference",
     "title": "Bridge interface",
     "category": "section",
-    "text": "A bridge should implement the following functions to be usable by a bridge optimizer:supports_constraint(::Type{<:Bridges.AbstractBridge}, ::Type{<:AbstractFunction}, ::Type{<:AbstractSet})\nBridges.concrete_bridge_type\nBridges.bridge_constraint\nBridges.added_constraint_typesWhen querying the NumberOfVariables, NumberOfConstraints and ListOfConstraintIndices, the variables and constraints created by the bridges in the underlying model are hidden by the bridge optimizer. For this purpose, the bridge should provide access to the variables and constraints it has creates by implemented the following methods of get:get(::Bridges.AbstractBridge, ::NumberOfVariables)\nget(::Bridges.AbstractBridge, ::NumberOfConstraints)\nget(::Bridges.AbstractBridge, ::ListOfConstraintIndices)"
+    "text": "A bridge should implement the following functions to be usable by a bridge optimizer:supports_constraint(::Type{<:Bridges.Constraint.AbstractBridge}, ::Type{<:AbstractFunction}, ::Type{<:AbstractSet})\nBridges.Constraint.concrete_bridge_type\nBridges.Constraint.bridge_constraint\nBridges.Constraint.added_constraint_typesWhen querying the NumberOfVariables, NumberOfConstraints and ListOfConstraintIndices, the variables and constraints created by the bridges in the underlying model are hidden by the bridge optimizer. For this purpose, the bridge should provide access to the variables and constraints it has creates by implemented the following methods of get:get(::Bridges.Constraint.AbstractBridge, ::NumberOfVariables)\nget(::Bridges.Constraint.AbstractBridge, ::NumberOfConstraints)\nget(::Bridges.Constraint.AbstractBridge, ::ListOfConstraintIndices)"
 },
 
 {
