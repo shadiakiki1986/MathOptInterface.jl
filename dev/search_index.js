@@ -1505,14 +1505,6 @@ var documenterSearchIndex = {"docs": [
 },
 
 {
-    "location": "apireference/#Sets-2",
-    "page": "Reference",
-    "title": "Sets",
-    "category": "section",
-    "text": ""
-},
-
-{
     "location": "apireference/#MathOptInterface.modify",
     "page": "Reference",
     "title": "MathOptInterface.modify",
