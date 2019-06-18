@@ -345,6 +345,14 @@ var documenterSearchIndex = {"docs": [
 },
 
 {
+    "location": "apimanual/#Benchmarking-1",
+    "page": "Manual",
+    "title": "Benchmarking",
+    "category": "section",
+    "text": "To aid the development of efficient solver wrappers, MathOptInterface provides benchmarking functionality. Benchmarking a wrapper follows a two-step process.First, prior to making changes, run and save the benchmark results on a given benchmark suite as follows:using SolverPackage, MathOptInterface\n\nconst MOI = MathOptInterface\n\nsuite = MOI.Benchmarks.suite() do\n    SolverPackage.Optimizer()\nend\n\nMOI.Benchmarks.create_baseline(\n    suite, \"current\"; directory = \"/tmp\", verbose = true\n)Use the exclude argument to Benchmarks.suite to exclude benchmarks that the solver doesn\'t support.Second, after making changes to the package, re-run the benchmark suite and compare to the prior saved results:using SolverPackage, MathOptInterface\n\nconst MOI = MathOptInterface\n\nsuite = MOI.Benchmarks.suite() do\n    SolverPackage.Optimizer()\nend\n\nMOI.Benchmarks.compare_against_baseline(\n    suite, \"current\"; directory = \"/tmp\", verbose = true\n)This comparison will create a report detailing improvements and regressions."
+},
+
+{
     "location": "apireference/#",
     "page": "Reference",
     "title": "Reference",
@@ -2270,6 +2278,38 @@ var documenterSearchIndex = {"docs": [
     "title": "Allocate-Load API",
     "category": "section",
     "text": "The Allocate-Load API allows solvers that do not support loading the problem incrementally to implement copy_to in a way that still allows transformations to be applied in the copy between the cache and the model if the transformations are implemented as MOI layers implementing the Allocate-Load API, see Implementing copy for more details.Loading a model using the Allocate-Load interface consists of two passes through the model data:the allocate pass where the model typically records the necessary information about the constraints and attributes such as their number and size. This information may be used by the solver to allocate datastructures of appropriate size.\nthe load pass where the model typically loads the constraint and attribute data to the model.The description above only gives a suggestion of what to achieve in each pass. In fact the exact same constraint and attribute data is provided to each pass, so an implementation of the Allocate-Load API is free to do whatever is more convenient in each pass.The main difference between each pass, apart from the fact that one is executed before the other during a copy, is that the allocate pass needs to create and return new variable and constraint indices, while during the load pass the appropriate constraint indices are provided.The Allocate-Load API is not meant to be used outside a copy operation, that is, the interface is not meant to be used to create new constraints with Utilities.allocate_constraint followed by Utilities.load_constraint after a solve. This means that the order in which the different functions of the API are called is fixed by Utilities.allocate_load and models implementing the API can rely on the fact that functions will be called in this order. That is, it can be assumed that the different functions will the called in the following order:Utilities.allocate_variables\nUtilities.allocate and Utilities.allocate_constraint\nUtilities.load_variables\nUtilities.load and Utilities.load_constraintUtilities.allocate_load\nUtilities.supports_allocate_load\nUtilities.allocate_variables\nUtilities.allocate\nUtilities.allocate_constraint\nUtilities.load_variables\nUtilities.load\nUtilities.load_constraint"
+},
+
+{
+    "location": "apireference/#MathOptInterface.Benchmarks.suite",
+    "page": "Reference",
+    "title": "MathOptInterface.Benchmarks.suite",
+    "category": "function",
+    "text": "suite(\n    new_model::Function;\n    exclude::Vector{Regex} = Regex[]\n)\n\nCreate a suite of benchmarks. new_model should be a function that takes no arguments, and returns a new instance of the optimizer you wish to benchmark.\n\nUse exclude to exclude a subset of benchmarks.\n\nExamples\n\n```julia suite() do     GLPK.Optimizer() end\n\nsuite(exclude = [r\"delete\"]) do     Gurobi.Optimizer(OutputFlag=0) end ````\n\n\n\n\n\n"
+},
+
+{
+    "location": "apireference/#MathOptInterface.Benchmarks.create_baseline",
+    "page": "Reference",
+    "title": "MathOptInterface.Benchmarks.create_baseline",
+    "category": "function",
+    "text": "create_baseline(suite, name::String; directory::String = \"\"; kwargs...)\n\nRun all benchmarks in suite and save to files called name in directory.\n\nExtra kwargs are based to BenchmarkTools.run.\n\nExamples\n\nmy_suite = suite(() -> GLPK.Optimizer())\ncreate_baseline(my_suite, \"glpk_master\"; directory = \"/tmp\", verbose = true)\n\n\n\n\n\n"
+},
+
+{
+    "location": "apireference/#MathOptInterface.Benchmarks.compare_against_baseline",
+    "page": "Reference",
+    "title": "MathOptInterface.Benchmarks.compare_against_baseline",
+    "category": "function",
+    "text": "compare_against_baseline(\n    suite, name::String; directory::String = \"\",\n    report_filename::String = \"report.txt\"\n)\n\nRun all benchmarks in suite and compare against files called name in directory that were created by a call to create_baseline.\n\nA report summarizing the comparison is written to report_filename in directory.\n\nExtra kwargs are based to BenchmarkTools.run.\n\nExamples\n\nmy_suite = suite(() -> GLPK.Optimizer())\ncompare_against_baseline(\n    my_suite, \"glpk_master\"; directory = \"/tmp\", verbose = true\n)\n\n\n\n\n\n"
+},
+
+{
+    "location": "apireference/#Benchmarks-1",
+    "page": "Reference",
+    "title": "Benchmarks",
+    "category": "section",
+    "text": "Functions to help benchmark the performance of solver wrappers. See Benchmarking for more details.Benchmarks.suite\nBenchmarks.create_baseline\nBenchmarks.compare_against_baseline"
 },
 
 ]}

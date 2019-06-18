@@ -232,4 +232,24 @@ MOIU.@model(ModelData, (), (MOI.EqualTo, MOI.GreaterThan, MOI.LessThan) (MOI.Zer
             (), (MOI.ScalarAffineFunction,), (MOI.VectorOfVariables,), (MOI.VectorAffineFunction,))
 const cache = MOIU.UniversalFallback(ModelData{Float64}())
 const cached = MOIU.CachingOptimizer(cache, optimizer)
-const bridged = MOIB.full_bridge_optimizer(cached, Float64)</code></pre><footer><hr/><a class="previous" href="../"><span class="direction">Previous</span><span class="title">Introduction</span></a><a class="next" href="../apireference/"><span class="direction">Next</span><span class="title">Reference</span></a></footer></article></body></html>
+const bridged = MOIB.full_bridge_optimizer(cached, Float64)</code></pre><h3><a class="nav-anchor" id="Benchmarking-1" href="#Benchmarking-1">Benchmarking</a></h3><p>To aid the development of efficient solver wrappers, MathOptInterface provides benchmarking functionality. Benchmarking a wrapper follows a two-step process.</p><p>First, prior to making changes, run and save the benchmark results on a given benchmark suite as follows:</p><pre><code class="language-julia">using SolverPackage, MathOptInterface
+
+const MOI = MathOptInterface
+
+suite = MOI.Benchmarks.suite() do
+    SolverPackage.Optimizer()
+end
+
+MOI.Benchmarks.create_baseline(
+    suite, &quot;current&quot;; directory = &quot;/tmp&quot;, verbose = true
+)</code></pre><p>Use the <code>exclude</code> argument to <a href="../apireference/#MathOptInterface.Benchmarks.suite"><code>Benchmarks.suite</code></a> to exclude benchmarks that the solver doesn&#39;t support.</p><p>Second, after making changes to the package, re-run the benchmark suite and compare to the prior saved results:</p><pre><code class="language-julia">using SolverPackage, MathOptInterface
+
+const MOI = MathOptInterface
+
+suite = MOI.Benchmarks.suite() do
+    SolverPackage.Optimizer()
+end
+
+MOI.Benchmarks.compare_against_baseline(
+    suite, &quot;current&quot;; directory = &quot;/tmp&quot;, verbose = true
+)</code></pre><p>This comparison will create a report detailing improvements and regressions.</p><footer><hr/><a class="previous" href="../"><span class="direction">Previous</span><span class="title">Introduction</span></a><a class="next" href="../apireference/"><span class="direction">Next</span><span class="title">Reference</span></a></footer></article></body></html>
