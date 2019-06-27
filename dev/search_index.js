@@ -2285,7 +2285,7 @@ var documenterSearchIndex = {"docs": [
     "page": "Reference",
     "title": "MathOptInterface.Benchmarks.suite",
     "category": "function",
-    "text": "suite(\n    new_model::Function;\n    exclude::Vector{Regex} = Regex[]\n)\n\nCreate a suite of benchmarks. new_model should be a function that takes no arguments, and returns a new instance of the optimizer you wish to benchmark.\n\nUse exclude to exclude a subset of benchmarks.\n\nExamples\n\n```julia suite() do     GLPK.Optimizer() end\n\nsuite(exclude = [r\"delete\"]) do     Gurobi.Optimizer(OutputFlag=0) end ````\n\n\n\n\n\n"
+    "text": "suite(\n    new_model::Function;\n    exclude::Vector{Regex} = Regex[]\n)\n\nCreate a suite of benchmarks. new_model should be a function that takes no arguments, and returns a new instance of the optimizer you wish to benchmark.\n\nUse exclude to exclude a subset of benchmarks.\n\nExamples\n\nsuite() do\n    GLPK.Optimizer()\nend\n\nsuite(exclude = [r\"delete\"]) do\n    Gurobi.Optimizer(OutputFlag=0)\nend\n\n\n\n\n\n"
 },
 
 {
