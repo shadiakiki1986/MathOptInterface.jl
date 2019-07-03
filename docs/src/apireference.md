@@ -170,6 +170,8 @@ Functions for adding variables. For deleting, see index types section.
 ```@docs
 add_variables
 add_variable
+add_constrained_variables
+add_constrained_variable
 ```
 
 List of attributes associated with variables. [category AbstractVariableAttribute]

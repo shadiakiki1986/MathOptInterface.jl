@@ -6,8 +6,28 @@
 Return a `Bool` indicating whether `model` supports `F`-in-`S` constraints, that is,
 `copy_to(model, src)` does not return `CopyUnsupportedConstraint` when `src` contains `F`-in-`S` constraints.
 If `F`-in-`S` constraints are only not supported in specific circumstances, e.g. `F`-in-`S` constraints cannot be combined with another type of constraint, it should still return `true`.
+
+Even if free variables are not explicitly set to be free by calling
+[`add_constraint`](@ref) with the set [`Reals`](@ref), `supports_constraint(::ModelLike`
 """
 supports_constraint(model::ModelLike, ::Type{<:AbstractFunction}, ::Type{<:AbstractSet}) = false
+
+"""
+    supports_constraint(model::ModelLike, ::Type{VectorOfVariables}, ::Type{Reals})::Bool
+
+Return a `Bool` indicating whether `model` supports free variables.
+By default, this method returns `true` so it should only be implemented if
+`model` does not support free variables.
+
+Not that free variables are not explicitly set to be free by calling
+[`add_constraint`](@ref) with the set [`Reals`](@ref), instead, free variables
+are created with [`add_variable`](@ref) and [`add_variables`](@ref).
+If `model` does not support free variables, it should not implement
+[`add_variable`](@ref) nor [`add_variables`](@ref) but should implement
+this method and return `false`. This allows free variables to be bridged as the
+sum of a nonnegative and a nonpositive variables.
+"""
+supports_constraint(model::ModelLike, ::Type{VectorOfVariables}, ::Type{Reals}) = true
 
 """
     struct UnsupportedConstraint{F<:AbstractFunction, S<:AbstractSet} <: UnsupportedError
