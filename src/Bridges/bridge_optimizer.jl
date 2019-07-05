@@ -48,12 +48,6 @@ function supports_bridging_constraint(::AbstractBridgeOptimizer,
     return false
 end
 
-#function supports_bridging_constrained_variables(
-#    ::AbstractBridgeOptimizer, ::Type{<:MOI.AbstractVectorSet})
-#    return false
-#end
-
-
 """
     bridge_type(b::AbstractBridgeOptimizer,
                 F::Type{<:MOI.AbstractFunction},
@@ -737,14 +731,6 @@ function MOI.add_variables(b::AbstractBridgeOptimizer, n)
     end
 end
 
-#function MOI.supports_constrained_variables(b::AbstractBridgeOptimizer,
-#                                            S::Type{<:MOI.AbstractVectorSet})
-#    if is_bridged(b, S)
-#        return supports_bridging_constrained_variables(b, S)
-#    else
-#        return MOI.supports_constrained_variables(b.model, S)
-#    end
-#end
 function MOI.add_constrained_variables(b::AbstractBridgeOptimizer,
                                        set::MOI.AbstractVectorSet)
     if is_bridged(b, typeof(set))
@@ -779,6 +765,15 @@ function MOI.add_constrained_variable(b::AbstractBridgeOptimizer,
 end
 
 
+"""
+    variable_bridged_function(b::AbstractBridgeOptimizer,
+                              vi::MOI.VariableIndex)
+
+Return a `MOI.AbstractScalarFunction` of variables of `b.model` that equals
+`vi`. That is, if the variable `vi` is bridged, it returns its expression in
+terms of the variables of `b.model`. Otherwise, it returns
+`MOI.SingleVariable(vi)`.
+"""
 function variable_bridged_function(b::AbstractBridgeOptimizer,
                                    vi::MOI.VariableIndex)
     if is_bridged(b, vi)
@@ -791,8 +786,14 @@ function variable_bridged_function(b::AbstractBridgeOptimizer,
     end
 end
 
-# Returns the function where every bridged variable is replaced by the bridged
-# function. The function returned should have the same type.
+"""
+    bridged_function(b::AbstractBridgeOptimizer,
+                     func::MOI.AbstractFunction)::typeof(func)
+
+Return a function of variables of `b.model` that equals `func`. That is,
+bridged variables are substituted for an equivalent expression in terms
+of variables of `b.model`.
+"""
 function bridged_function(bridge::AbstractBridgeOptimizer,
                           func::MOI.AbstractFunction)
     if !Variable.has_bridges(Variable.bridges(bridge))
@@ -818,6 +819,15 @@ function bridged_function(b::AbstractBridgeOptimizer,
 end
 bridged_function(bridge::AbstractBridgeOptimizer, value) = value
 
+"""
+    variable_bridged_function(b::AbstractBridgeOptimizer,
+                              vi::MOI.VariableIndex)
+
+Return a `MOI.AbstractScalarFunction` of variables of `b` that equals `vi`.
+That is, if the variable `vi` is an internal variable of `b.model` created by a
+but not visible to the user, it returns its expression in terms of the variables
+of bridged variables. Otherwise, it returns `MOI.SingleVariable(vi)`.
+"""
 function variable_unbridged_function(b, vi::MOI.VariableIndex)
     func = Variable.unbridged_function(Variable.bridges(b), vi)
     if func === nothing
@@ -828,6 +838,15 @@ function variable_unbridged_function(b, vi::MOI.VariableIndex)
         return unbridged_function(b, func)
     end
 end
+
+"""
+    unbridged_function(b::AbstractBridgeOptimizer,
+                       func::MOI.AbstractFunction)::typeof(func)
+
+Return a function of variables of `b` that equals `func`. That is,
+internals variable of `b.model` created by a but not visible to the user, are
+substituted for expressions in terms of bridged variables.
+"""
 function unbridged_function(b::AbstractBridgeOptimizer,
                             func::MOI.AbstractFunction)
     if !Variable.has_bridges(Variable.bridges(b))

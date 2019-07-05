@@ -179,7 +179,7 @@ end
 """
     add_bridge(b::LazyBridgeOptimizer, BT::Type{<:Variable.AbstractBridge})
 
-Enable the use of the bridges of type `BT` by `b`.
+Enable the use of the variable bridges of type `BT` by `b`.
 """
 function add_bridge(b::LazyBridgeOptimizer, BT::Type{<:Variable.AbstractBridge})
     push!(b.variable_bridge_types, BT)
@@ -193,7 +193,7 @@ end
 """
     add_bridge(b::LazyBridgeOptimizer, BT::Type{<:Constraint.AbstractBridge})
 
-Enable the use of the bridges of type `BT` by `b`.
+Enable the use of the constraint bridges of type `BT` by `b`.
 """
 function add_bridge(b::LazyBridgeOptimizer, BT::Type{<:Constraint.AbstractBridge})
     push!(b.constraint_bridge_types, BT)
