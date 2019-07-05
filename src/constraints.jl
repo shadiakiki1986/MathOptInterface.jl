@@ -9,10 +9,7 @@ If `F`-in-`S` constraints are only not supported in specific circumstances, e.g.
 
 Even if free variables are not explicitly set to be free by calling
 [`add_constraint`](@ref) with the set [`Reals`](@ref), `supports_constraint(::ModelLike`
-"""
-supports_constraint(model::ModelLike, ::Type{<:AbstractFunction}, ::Type{<:AbstractSet}) = false
 
-"""
     supports_constraint(model::ModelLike, ::Type{VectorOfVariables}, ::Type{Reals})::Bool
 
 Return a `Bool` indicating whether `model` supports free variables.
@@ -26,8 +23,12 @@ If `model` does not support free variables, it should not implement
 [`add_variable`](@ref) nor [`add_variables`](@ref) but should implement
 this method and return `false`. This allows free variables to be bridged as the
 sum of a nonnegative and a nonpositive variables.
-"""
-supports_constraint(model::ModelLike, ::Type{VectorOfVariables}, ::Type{Reals}) = true
+
+""" # Implemented as only one method to avoid ambiguity
+function supports_constraint(model::ModelLike, F::Type{<:AbstractFunction},
+                             S::Type{<:AbstractSet})
+    return F == VectorOfVariables && S == Reals
+end
 
 """
     struct UnsupportedConstraint{F<:AbstractFunction, S<:AbstractSet} <: UnsupportedError
