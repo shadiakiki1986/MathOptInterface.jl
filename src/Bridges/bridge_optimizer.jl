@@ -37,8 +37,8 @@ is_bridged(::AbstractBridgeOptimizer, vi::MOI.VariableIndex) = vi.value < 0
 
 """
     supports_bridging_constraint(b::AbstractBridgeOptimizer,
-                               F::Type{<:MOI.AbstractFunction},
-                               S::Type{<:MOI.AbstractSet})::Bool
+                                 F::Type{<:MOI.AbstractFunction},
+                                 S::Type{<:MOI.AbstractSet})::Bool
 
 Return a `Bool` indicating whether `b` supports bridging `F`-in-`S` constraints.
 """
@@ -58,15 +58,23 @@ This function should only be called if `is_bridged(b, F, S)`.
 """
 function bridge_type end
 
-# If `ci.value < 0` is the constraint of a bridged constrained variable,
-# but if `S` is `SingleVariable`, it can also simply be a constraint on a
+"""
+    is_variable_bridged(b::AbstractBridgeOptimizer,
+                        ci::MOI.ConstraintIndex)
+
+Returns whether `ci` is the constraint of a bridged constrained variable. That
+is, if it was returned by `Variable.add_key_for_bridge` or
+`Variable.add_keys_for_bridge`.
+# If `ci.value < 0` is
+# but if `S` is `SingleVariable` or `VectorOfVariables`, it can also simply be a constraint on a
 # bridged variable.
-function is_variable_bridged(b::AbstractBridgeOptimizer,
-                             ci::MOI.ConstraintIndex)
-    return ci.value < 0
-end
-function is_variable_bridged(b::AbstractBridgeOptimizer,
-                             ci::MOI.ConstraintIndex{<:Union{MOI.SingleVariable, MOI.VectorOfVariables}})
+"""
+is_variable_bridged(::AbstractBridgeOptimizer, ::MOI.ConstraintIndex) = false
+function is_variable_bridged(
+    b::AbstractBridgeOptimizer,
+    ci::MOI.ConstraintIndex{<:Union{MOI.SingleVariable, MOI.VectorOfVariables}})
+    # It can be a constraint of bridged constrained variables so we `check` with
+    # `haskey(Constraint.bridges(b), ci)` whether this is the case.
     return ci.value < 0 && !haskey(Constraint.bridges(b), ci)
 end
 
@@ -75,7 +83,7 @@ end
 
 Return the `AbstractBridge` used to bridge the constraint with index `ci`.
 """
-function bridge(b::AbstractBridgeOptimizer, ci::MOI.ConstraintIndex{S}) where S
+function bridge(b::AbstractBridgeOptimizer, ci::MOI.ConstraintIndex)
     if is_variable_bridged(b, ci)
         return bridge(b, MOI.VariableIndex(ci.value))
     else
@@ -193,9 +201,9 @@ function MOI.delete(b::AbstractBridgeOptimizer, ci::MOI.ConstraintIndex)
         MOI.throw_if_not_valid(b, ci)
         MOI.delete(b, bridge(b, ci))
         if is_variable_bridged(b, ci)
-            error("Cannot delete constraint index of bridged constrained,",
-                  " delete the scalar variable or the vector of variables",
-                  " instead.")
+            error("Cannot delete constraint index of bridged constrained",
+                  " variables, delete the scalar variable or the vector of",
+                  " variables instead.")
         else
             delete!(Constraint.bridges(b), ci)
         end
