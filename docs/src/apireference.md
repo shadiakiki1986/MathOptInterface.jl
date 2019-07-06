@@ -441,14 +441,28 @@ Utilities.@model
 
 Bridges can be used for automatic reformulation of a certain constraint type into equivalent constraints.
 ```@docs
-Bridges.Constraint.AbstractBridge
+Bridges.AbstractBridge
 Bridges.AbstractBridgeOptimizer
 Bridges.Constraint.SingleBridgeOptimizer
 Bridges.LazyBridgeOptimizer
 Bridges.add_bridge
 ```
 
-Below is the list of bridges implemented in this package.
+## Variable bridges
+
+```@docs
+Bridges.Variable.AbstractBridge
+```
+
+Below is the list of variable bridges implemented in this package.
+
+## Constraint bridges
+
+```@docs
+Bridges.Constraint.AbstractBridge
+```
+
+Below is the list of constraint bridges implemented in this package.
 ```@docs
 Bridges.Constraint.GreaterToLessBridge
 Bridges.Constraint.LessToGreaterBridge

@@ -50,6 +50,12 @@ const SOCtoPSD{T, OT<:MOI.ModelLike} = SingleBridgeOptimizer{SOCtoPSDBridge{T}, 
 const RSOCtoPSD{T, OT<:MOI.ModelLike} = SingleBridgeOptimizer{RSOCtoPSDBridge{T}, OT}
 include("indicator.jl")
 
+"""
+    add_all_bridges(bridged_model, T::Type)
+
+Add all bridges defined in the `Bridges.Constraint` submodule to
+`bridged_model`. The coefficient type used is `T`.
+"""
 function add_all_bridges(bridged_model, T::Type)
     MOIB.add_bridge(bridged_model, GreaterToLessBridge{T})
     MOIB.add_bridge(bridged_model, LessToGreaterBridge{T})

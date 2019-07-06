@@ -11,9 +11,9 @@ struct FreeBridge{T} <: AbstractBridge
     nonpos_variables::Vector{MOI.VariableIndex}
     nonpos_constraint::MOI.ConstraintIndex{MOI.VectorOfVariables, MOI.Nonpositives}
 end
-function bridge_constrained_variables(::Type{FreeBridge{T}},
-                                      model::MOI.ModelLike,
-                                      set::MOI.Reals) where T
+function bridge_constrained_variable(::Type{FreeBridge{T}},
+                                     model::MOI.ModelLike,
+                                     set::MOI.Reals) where T
     nonneg_variables, nonneg_constraint = MOI.add_constrained_variables(
         model, MOI.Nonnegatives(MOI.dimension(set)))
     nonpos_variables, nonpos_constraint = MOI.add_constrained_variables(

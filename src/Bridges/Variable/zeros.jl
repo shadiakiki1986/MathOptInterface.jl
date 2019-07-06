@@ -16,9 +16,9 @@ as functions cannot be unbridged.
 struct ZerosBridge{T} <: AbstractBridge
     n::Int # Number of variables
 end
-function bridge_constrained_variables(::Type{ZerosBridge{T}},
-                                      model::MOI.ModelLike,
-                                      set::MOI.Zeros) where T
+function bridge_constrained_variable(::Type{ZerosBridge{T}},
+                                     model::MOI.ModelLike,
+                                     set::MOI.Zeros) where T
     return ZerosBridge{T}(MOI.dimension(set))
 end
 
