@@ -13,9 +13,9 @@ struct RSOCtoPSDBridge{T} <: AbstractBridge
     off_diag::Vector{MOI.ConstraintIndex{MOI.SingleVariable, MOI.EqualTo{T}}}
     diag::Vector{MOI.ConstraintIndex{MOI.ScalarAffineFunction{T}, MOI.EqualTo{T}}}
 end
-function bridge_constrained_variables(::Type{RSOCtoPSDBridge{T}},
-                                      model::MOI.ModelLike,
-                                      set::MOI.RotatedSecondOrderCone) where T
+function bridge_constrained_variable(::Type{RSOCtoPSDBridge{T}},
+                                     model::MOI.ModelLike,
+                                     set::MOI.RotatedSecondOrderCone) where T
     dim = set.dimension - 1
     variables, psd = MOI.add_constrained_variables(
         model, MOI.PositiveSemidefiniteConeTriangle(dim))

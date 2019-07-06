@@ -82,9 +82,9 @@ struct NonposToNonnegBridge{T} <: FlipSignBridge{T, MOI.Nonpositives, MOI.Nonneg
     flipped_variables::Vector{MOI.VariableIndex}
     flipped_constraint::MOI.ConstraintIndex{MOI.VectorOfVariables, MOI.Nonnegatives}
 end
-function bridge_constrained_variables(::Type{NonposToNonnegBridge{T}},
-                                      model::MOI.ModelLike,
-                                      set::MOI.Nonpositives) where T
+function bridge_constrained_variable(::Type{NonposToNonnegBridge{T}},
+                                     model::MOI.ModelLike,
+                                     set::MOI.Nonpositives) where T
     flipped_variables, flipped_constraint = MOI.add_constrained_variables(
         model, MOI.Nonnegatives(set.dimension))
     return NonposToNonnegBridge{T}(flipped_variables, flipped_constraint)

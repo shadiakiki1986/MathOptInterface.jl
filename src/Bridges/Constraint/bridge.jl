@@ -1,10 +1,8 @@
 """
     AbstractBridge
 
-A bridge represents a bridged constraint in an `AbstractBridgeOptimizer`. It contains the indices of the constraints that it has created in the model.
-These can be obtained using `MOI.NumberOfConstraints` and `MOI.ListOfConstraintIndices` and using the bridge in place of a `ModelLike`.
-Attributes of the bridged model such as `MOI.ConstraintDual` and `MOI.ConstraintPrimal`, can be obtained using the bridge in place of the constraint index.
-These calls are used by the `AbstractBridgeOptimizer` to communicate with the bridge so they should be implemented by the bridge.
+Subtype of [`MathOptInterface.Bridges.AbstractBridge`](@ref) for constraint
+bridges.
 """
 abstract type AbstractBridge <: MOIB.AbstractBridge end
 
@@ -33,24 +31,6 @@ The number of variables created by the bridge `b` in the model.
 MOI.get(::AbstractBridge, ::MOI.NumberOfVariables) = 0
 
 MOI.get(::AbstractBridge, ::MOI.ListOfVariableIndices) = MOI.VariableIndex[]
-
-"""
-    MOI.get(b::AbstractBridge, ::MOI.NumberOfConstraints{F, S}) where {F, S}
-
-The number of constraints of the type `F`-in-`S` created by the bridge `b` in the model.
-"""
-MOI.get(::AbstractBridge, ::MOI.NumberOfConstraints) = 0
-
-"""
-    MOI.get(b::AbstractBridge, ::MOI.NumberOfConstraints{F, S}) where {F, S}
-
-A `Vector{ConstraintIndex{F,S}}` with indices of all constraints of
-type `F`-in`S` created by the bride `b` in the model (i.e., of length equal to the value of `NumberOfConstraints{F,S}()`).
-"""
-function MOI.get(::AbstractBridge,
-                 ::MOI.ListOfConstraintIndices{F, S}) where {F, S}
-    return MOI.ConstraintIndex{F, S}[]
-end
 
 """
     MOI.supports_constraint(BT::Type{<:AbstractBridge}, F::Type{<:MOI.AbstractFunction}, S::Type{<:MOI.AbstractSet})::Bool

@@ -743,7 +743,7 @@ function MOI.add_constrained_variables(b::AbstractBridgeOptimizer,
                                        set::MOI.AbstractVectorSet)
     if is_bridged(b, typeof(set))
         BridgeType = Variable.concrete_bridge_type(b, typeof(set))
-        bridge = Variable.bridge_constrained_variables(BridgeType, b, set)
+        bridge = Variable.bridge_constrained_variable(BridgeType, b, set)
         return Variable.add_keys_for_bridge(Variable.bridges(b), bridge, set)
     else
         if is_bridged(b, MOI.VectorOfVariables, typeof(set))
