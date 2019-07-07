@@ -125,6 +125,20 @@ end
 # Custom interface for information needed by `AbstractBridgeOptimizer`s that is
 # not part of the `AbstractDict` interface.
 
+"""
+    number_of_type(map::Map, C::Type{<:MOI.ConstraintIndex})
+
+Return the number of keys of type `C` in `map`.
+"""
+function number_of_type end
+
+"""
+    keys_of_type(map::Map, C::Type{<:MOI.ConstraintIndex})
+
+Return a list of all the keys of type `C` in `map`.
+"""
+function keys_of_type end
+
 function number_of_type(map::Map, C::Type{MOI.ConstraintIndex{F, S}}) where {F, S}
     return count(i -> haskey(map, C(i)), eachindex(map.bridges))
 end
@@ -152,6 +166,12 @@ function keys_of_type(map::Map, C::Type{MOI.ConstraintIndex{MOI.VectorOfVariable
         MOI.Bridges.LazyFilter(key -> key[2] == S, keys(map.vector_of_variables_constraints))
     )
 end
+
+"""
+    list_of_key_types(map::Map)
+
+Return a list of all the different concrete type of keys in `map`.
+"""
 function list_of_key_types(map::Map)
     list = Set{Tuple{DataType, DataType}}()
     for i in eachindex(map.bridges)
@@ -167,6 +187,13 @@ function list_of_key_types(map::Map)
     end
     return list
 end
+
+"""
+    variable_constraints(map::Map, vi::MOI.VariableIndex)
+
+Return the list of all keys corresponding to [`MathOptInterface.SingleVariable`]
+constraints on the variable `vi`.
+"""
 function variable_constraints(map::Map, vi::MOI.VariableIndex)
     cis = MOI.ConstraintIndex{MOI.SingleVariable}[]
     for key in keys(map.single_variable_constraints)
@@ -176,6 +203,15 @@ function variable_constraints(map::Map, vi::MOI.VariableIndex)
     end
     return cis
 end
+
+"""
+    add_key_for_bridge(map::Map, bridge::AbstractBridge,
+                       func::MOI.AbstractFunction, set::MOI.AbstractSet)
+
+Return a new constraint index `ci` and stores the mapping `ci => bridge`.
+"""
+function add_key_for_bridge end
+
 function add_key_for_bridge(map::Map, bridge::AbstractBridge,
                             func::MOI.AbstractFunction, set::MOI.AbstractSet)
     push!(map.bridges, bridge)
@@ -195,7 +231,7 @@ function add_key_for_bridge(map::Map, bridge::AbstractBridge,
 end
 
 """
-    EmptyMap <: AbstractDict{MOI.VariableIndex, AbstractBridge}
+    EmptyMap <: AbstractDict{MOI.ConstraintIndex, AbstractBridge}
 
 Empty version of [`Map`](@ref). It is used by
 [`MathOptInterface.Bridges.Variable.SingleBridgeOptimizer`](@ref) as it does

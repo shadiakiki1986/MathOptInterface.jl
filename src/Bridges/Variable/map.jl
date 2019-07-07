@@ -234,6 +234,8 @@ end
 """
     function_for(map::Map, ci::MOI.ConstraintIndex{MOI.SingleVariable})
 
+Return `MOI.SingleVariable(vi)` where `vi` is the bridged variable
+corresponding to `ci`.
 """
 function function_for(map::Map, ci::MOI.ConstraintIndex{MOI.SingleVariable})
     return MOI.SingleVariable(MOI.VariableIndex(ci.value))
@@ -242,6 +244,8 @@ end
 """
     function_for(map::Map, ci::MOI.ConstraintIndex{MOI.VectorOfVariables})
 
+Return `MOI.VectorOfVariables(vis)` where `vis` is the vector of bridged
+variables corresponding to `ci`.
 """
 function function_for(map::Map, ci::MOI.ConstraintIndex{MOI.VectorOfVariables})
     variables = MOI.VariableIndex[]
@@ -259,6 +263,7 @@ end
 """
     unbridged_function(map::Map, vi::MOI.VariableIndex)
 
+Return the expression of `vi` in terms of bridged variables.
 """
 function unbridged_function(map::Map, vi::MOI.VariableIndex)
     if map.unbridged_function === nothing
