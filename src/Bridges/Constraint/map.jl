@@ -1,4 +1,9 @@
-struct Map <: AbstractDict{MOI.VariableIndex, AbstractBridge}
+"""
+    Map <: AbstractDict{MOI.VariableIndex, AbstractBridge}
+
+Mapping between bridged constraints and the bridge that bridged the constraint.
+"""
+struct Map <: AbstractDict{MOI.ConstraintIndex, AbstractBridge}
     # Constraint Index of bridged constraint -> Bridge.
     # It is set to `nothing` when the constraint is deleted.
     bridges::Vector{Union{Nothing, AbstractBridge}}
@@ -15,6 +20,9 @@ function Map()
                Dict{Tuple{Int64, DataType}, AbstractBridge}(),
                Dict{Tuple{Int64, DataType}, AbstractBridge}())
 end
+
+# Implementation of `AbstractDict` interface.
+
 function Base.isempty(map::Map)
     return all(bridge -> bridge === nothing, map.bridges) &&
         isempty(map.single_variable_constraints) &&
@@ -62,6 +70,61 @@ function Base.delete!(map::Map, ci::MOI.ConstraintIndex{MOI.VectorOfVariables, S
     delete!(map.vector_of_variables_constraints, (ci.value, S))
     return map
 end
+function Base.values(map::Map)
+    return MOI.Bridges.LazyCat((
+        MOI.Bridges.LazyFilter(bridge -> bridge !== nothing, map.bridges),
+        values(map.single_variable_constraints),
+        values(map.vector_of_variables_constraints)
+    ))
+end
+
+# Implementation of iterate: it should combine non-variablewise constraints,
+# `SingleVariable` constraints and `VectorOfVariables` constraints.
+function _iterate_vov(map::Map, elem_state=iterate(map.vector_of_variables_constraints))
+    if elem_state === nothing
+        return nothing
+    else
+        i, S = elem_state[1].first
+        bridge = elem_state[1].second
+        ci = MOI.ConstraintIndex{MOI.VectorOfVariables, S}(i)
+        return ci => bridge, (2, elem_state[2])
+    end
+end
+function _iterate_sv(map::Map, elem_state=iterate(map.single_variable_constraints))
+    if elem_state === nothing
+        return _iterate_vov(map)
+    else
+        i, S = elem_state[1].first
+        bridge = elem_state[1].second
+        ci = MOI.ConstraintIndex{MOI.SingleVariable, S}(i)
+        return ci => bridge, (2, elem_state[2])
+    end
+end
+function _iterate(map::Map, state=1)
+    while state ≤ length(map.bridges) && map.bridges[state] === nothing
+        state += 1
+    end
+    if state > length(map.bridges)
+        return _iterate_sv(map)
+    else
+        F, S = map.constraint_types[state]
+        return MOI.ConstraintIndex{F, S}(state) => map.bridges[state], (1, state + 1)
+    end
+end
+Base.iterate(map::Map) = _iterate(map)
+function Base.iterate(map::Map, state)
+    if state[1] == 1
+        return _iterate(map, state[2])
+    elseif state[1] == 2
+        return _iterate_sv(map, iterate(map.single_variable_constraints, state[2]))
+    else
+        return _iterate_vov(map, iterate(map.vector_of_variables_constraints, state[2]))
+    end
+end
+
+# Custom interface for information needed by `AbstractBridgeOptimizer`s that is
+# not part of the `AbstractDict` interface.
+
 function number_of_type(map::Map, C::Type{MOI.ConstraintIndex{F, S}}) where {F, S}
     return count(i -> haskey(map, C(i)), eachindex(map.bridges))
 end
@@ -104,13 +167,6 @@ function list_of_key_types(map::Map)
     end
     return list
 end
-function Base.values(map::Map)
-    return MOI.Bridges.LazyCat((
-        MOI.Bridges.LazyFilter(bridge -> bridge !== nothing, map.bridges),
-        values(map.single_variable_constraints),
-        values(map.vector_of_variables_constraints)
-    ))
-end
 function variable_constraints(map::Map, vi::MOI.VariableIndex)
     cis = MOI.ConstraintIndex{MOI.SingleVariable}[]
     for key in keys(map.single_variable_constraints)
@@ -137,48 +193,14 @@ function add_key_for_bridge(map::Map, bridge::AbstractBridge,
     map.vector_of_variables_constraints[(index, typeof(set))] = bridge
     return MOI.ConstraintIndex{MOI.VectorOfVariables, typeof(set)}(index)
 end
-function _iterate3(map::Map, elem_state=iterate(map.vector_of_variables_constraints))
-    if elem_state === nothing
-        return nothing
-    else
-        i, S = elem_state[1].first
-        bridge = elem_state[1].second
-        ci = MOI.ConstraintIndex{MOI.VectorOfVariables, S}(i)
-        return ci => bridge, (2, elem_state[2])
-    end
-end
-function _iterate2(map::Map, elem_state=iterate(map.single_variable_constraints))
-    if elem_state === nothing
-        return _iterate3(map)
-    else
-        i, S = elem_state[1].first
-        bridge = elem_state[1].second
-        ci = MOI.ConstraintIndex{MOI.SingleVariable, S}(i)
-        return ci => bridge, (2, elem_state[2])
-    end
-end
-function _iterate1(map::Map, state=1)
-    while state ≤ length(map.bridges) && map.bridges[state] === nothing
-        state += 1
-    end
-    if state > length(map.bridges)
-        return _iterate2(map)
-    else
-        F, S = map.constraint_types[state]
-        return MOI.ConstraintIndex{F, S}(state) => map.bridges[state], (1, state + 1)
-    end
-end
-Base.iterate(map::Map) = _iterate1(map)
-function Base.iterate(map::Map, state)
-    if state[1] == 1
-        return _iterate1(map, state[2])
-    elseif state[1] == 2
-        return _iterate2(map, iterate(map.single_variable_constraints, state[2]))
-    else
-        return _iterate3(map, iterate(map.vector_of_variables_constraints, state[2]))
-    end
-end
 
+"""
+    EmptyMap <: AbstractDict{MOI.VariableIndex, AbstractBridge}
+
+Empty version of [`Map`](@ref). It is used by
+[`MathOptInterface.Bridges.Variable.SingleBridgeOptimizer`](@ref) as it does
+not bridge any constraint.
+"""
 struct EmptyMap <: AbstractDict{MOI.VariableIndex, AbstractBridge} end
 Base.isempty(::EmptyMap) = true
 function Base.empty!(::EmptyMap) end
