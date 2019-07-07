@@ -40,7 +40,7 @@ function bridge_constrained_variable(::Type{RSOCtoPSDBridge{T}},
     return RSOCtoPSDBridge{T}(variables, psd, off_diag, diag)
 end
 
-function supports_constrained_variables(
+function supports_constrained_variable(
     ::Type{<:RSOCtoPSDBridge}, ::Type{MOI.RotatedSecondOrderCone})
     return true
 end

@@ -25,12 +25,12 @@ bridges(bridge::SingleBridgeOptimizer) = bridge.map
 function MOIB.supports_bridging_constraint(
     b::SingleBridgeOptimizer{BT}, ::Type{MOI.SingleVariable},
     S::Type{<:MOI.AbstractScalarSet}) where BT
-    return supports_constrained_variables(BT, S)
+    return supports_constrained_variable(BT, S)
 end
 function MOIB.supports_bridging_constraint(
     b::SingleBridgeOptimizer{BT}, ::Type{MOI.VectorOfVariables},
     S::Type{<:MOI.AbstractVectorSet}) where BT
-    return supports_constrained_variables(BT, S)
+    return supports_constrained_variable(BT, S)
 end
 function MOIB.is_bridged(b::SingleBridgeOptimizer, S::Type{<:MOI.AbstractScalarSet})
     return MOIB.supports_bridging_constraint(b, MOI.SingleVariable, S)

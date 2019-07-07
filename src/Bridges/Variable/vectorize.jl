@@ -17,7 +17,7 @@ function bridge_constrained_variable(
     return VectorizeBridge{T, S}(variables[1], vector_constraint, set_constant)
 end
 
-function supports_constrained_variables(
+function supports_constrained_variable(
     ::Type{VectorizeBridge{T}}, ::Type{<:MOIU.ScalarLinearSet{T}}) where T
     return true
 end

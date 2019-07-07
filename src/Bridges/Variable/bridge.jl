@@ -51,13 +51,13 @@ function MOI.get(::MOI.ModelLike, attr::MOI.AbstractVariableAttribute,
 end
 
 """
-    supports_constrained_variables(::Type{<:AbstractBridge},
+    supports_constrained_variable(::Type{<:AbstractBridge},
                                    ::Type{<:MOI.AbstractSet})::Bool
 
 Return a `Bool` indicating whether the bridges of type `BT` support bridging
 constrained variables in `S`.
 """
-function supports_constrained_variables(::Type{<:AbstractBridge},
+function supports_constrained_variable(::Type{<:AbstractBridge},
                                         ::Type{<:MOI.AbstractSet})
     return false
 end
@@ -128,7 +128,7 @@ end
                          S::Type{<:MOI.AbstractSet})::DataType
 
 Return the concrete type of the bridge supporting variables in `S` constraints.
-This function can only be called if `MOI.supports_constrained_variables(BT, S)`
+This function can only be called if `MOI.supports_constrained_variable(BT, S)`
 is `true`.
 
 ## Examples
