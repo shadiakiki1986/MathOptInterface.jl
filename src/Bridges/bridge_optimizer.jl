@@ -232,12 +232,22 @@ end
 function get_all_including_bridged(
     b::AbstractBridgeOptimizer,
     attr::MOI.ListOfConstraintIndices{F, S}) where {F, S}
-    if is_bridged(b, F, S)
-        return collect(Constraint.keys_of_type(Constraint.bridges(b),
-                                               MOI.ConstraintIndex{F, S}))
+    list = if is_bridged(b, F, S)
+        collect(Constraint.keys_of_type(Constraint.bridges(b),
+                                        MOI.ConstraintIndex{F, S}))
     else
-        return MOI.get(b.model, attr)
+        MOI.get(b.model, attr)
     end
+    if F == MOI.VectorOfVariables || F == MOI.SingleVariable
+        if !is_bridged(b, F, S)
+            # Even it it is not bridged, it may have been force-bridged because one of the
+            # variable in the function was bridged.
+            append!(list, Constraint.keys_of_type(Constraint.bridges(b),
+                                                  MOI.ConstraintIndex{F, S}))
+        end
+        append!(list, Variable.constraints_with_set(Variable.bridges(b), S))
+    end
+    return list
 end
 # Remove constraints bridged by `bridge` from `list`
 function _remove_bridged(list, bridge, attr)
