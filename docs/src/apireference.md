@@ -1,5 +1,10 @@
 ```@meta
 CurrentModule = MathOptInterface
+DocTestSetup = quote
+    using MathOptInterface
+    const MOI = MathOptInterface
+end
+DocTestFilters = [r"MathOptInterface|MOI"]
 ```
 
 # API Reference
@@ -44,6 +49,23 @@ set
 supports
 ```
 
+### Fallbacks
+
+The value of some attributes can be inferred from the value of other
+attributes. For instance, the value of [`ObjectiveValue`](@ref) can be computed
+using [`ObjectiveFunction`](@ref) and [`VariablePrimal`](@ref). When a solver
+gives access to the objective value, it is better to return this value but
+otherwise, [`Utilities.get_fallback`](@ref) can be used.
+```julia
+function MOI.get(optimizer::Optimizer, attr::MOI.ObjectiveValue)
+    return MOI.Utilities.get_fallback(optimizer, attr)
+end
+```
+
+```@docs
+Utilities.get_fallback
+```
+
 ### Submit
 
 Objects may be submitted to an optimizer using [`submit`](@ref).
@@ -51,7 +73,6 @@ Objects may be submitted to an optimizer using [`submit`](@ref).
 AbstractSubmittable
 submit
 ```
-
 
 ## Model Interface
 
@@ -448,15 +469,22 @@ Bridges.LazyBridgeOptimizer
 Bridges.add_bridge
 ```
 
-## Variable bridges
+### Variable bridges
 
 ```@docs
 Bridges.Variable.AbstractBridge
 ```
 
 Below is the list of variable bridges implemented in this package.
+```@docs
+Bridges.Variable.ZerosBridge
+Bridges.Variable.FreeBridge
+Bridges.Variable.NonposToNonnegBridge
+Bridges.Variable.VectorizeBridge
+Bridges.Variable.RSOCtoPSDBridge
+```
 
-## Constraint bridges
+### Constraint bridges
 
 ```@docs
 Bridges.Constraint.AbstractBridge
@@ -496,10 +524,18 @@ Bridges.full_bridge_optimizer
 A bridge should implement the following functions to be usable by a bridge optimizer:
 ```@docs
 supports_constraint(::Type{<:Bridges.Constraint.AbstractBridge}, ::Type{<:AbstractFunction}, ::Type{<:AbstractSet})
-Bridges.Constraint.concrete_bridge_type
-Bridges.Constraint.bridge_constraint
 Bridges.added_constrained_variable_types
 Bridges.added_constraint_types
+```
+Additionally, variable bridges should implement:
+```@docs
+Bridges.Variable.concrete_bridge_type
+Bridges.Variable.bridge_constrained_variable
+```
+and constraint bridges should implement
+```@docs
+Bridges.Constraint.concrete_bridge_type
+Bridges.Constraint.bridge_constraint
 ```
 
 When querying the [`NumberOfVariables`](@ref), [`NumberOfConstraints`](@ref)
@@ -510,8 +546,9 @@ constraints it has creates by implemented the following methods of
 [`get`](@ref):
 ```@docs
 get(::Bridges.Constraint.AbstractBridge, ::NumberOfVariables)
-get(::Bridges.Constraint.AbstractBridge, ::NumberOfConstraints)
-get(::Bridges.Constraint.AbstractBridge, ::ListOfConstraintIndices)
+get(::Bridges.Constraint.AbstractBridge, ::ListOfVariableIndices)
+get(::Bridges.AbstractBridge, ::NumberOfConstraints)
+get(::Bridges.AbstractBridge, ::ListOfConstraintIndices)
 ```
 
 ## Copy utilities

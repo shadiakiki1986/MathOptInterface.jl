@@ -18,11 +18,6 @@ and set types.
 """
 function bridge_constraint end
 
-function MOI.get(::MOI.ModelLike, attr::MOI.AbstractConstraintAttribute,
-                 bridge::AbstractBridge)
-    throw(ArgumentError("Constraint bridge of type `$(typeof(bridge))` does not support accessing the attribute `$attr`."))
-end
-
 """
     MOI.get(b::AbstractBridge, ::MOI.NumberOfVariables)
 
@@ -30,6 +25,11 @@ The number of variables created by the bridge `b` in the model.
 """
 MOI.get(::AbstractBridge, ::MOI.NumberOfVariables) = 0
 
+"""
+    MOI.get(b::AbstractBridge, ::MOI.NumberOfVariables)
+
+The list of variables created by the bridge `b` in the model.
+"""
 MOI.get(::AbstractBridge, ::MOI.ListOfVariableIndices) = MOI.VariableIndex[]
 
 """
@@ -40,12 +40,14 @@ Return a `Bool` indicating whether the bridges of type `BT` support bridging `F`
 MOI.supports_constraint(::Type{<:AbstractBridge}, ::Type{<:MOI.AbstractFunction}, ::Type{<:MOI.AbstractSet}) = false
 
 """
-    added_constrained_variable_types(BT::Type{<:AbstractBridge},
+    added_constrained_variable_types(BT::Type{<:MOI.Bridges.Constraint.AbstractBridge},
                                      F::Type{<:MOI.AbstractFunction},
                                      S::Type{<:MOI.AbstractSet})
 
 Return a list of the types of constrained variables that bridges of type `BT` add for
-bridging an `F`-in-`S` constraints.
+bridging an `F`-in-`S` constraints. This fallbacks to
+`added_constrained_variable_types(concrete_bridge_type(BT, F, S))`
+so bridges should not implement this method.
 """
 function MOIB.added_constrained_variable_types(BT::Type{<:AbstractBridge},
                                                F::Type{<:MOI.AbstractFunction},
@@ -54,12 +56,14 @@ function MOIB.added_constrained_variable_types(BT::Type{<:AbstractBridge},
 end
 
 """
-    added_constraint_types(BT::Type{<:AbstractBridge},
+    added_constraint_types(BT::Type{<:MOI.Bridges.Constraint.AbstractBridge},
                            F::Type{<:MOI.AbstractFunction},
                            S::Type{<:MOI.AbstractSet})
 
 Return a list of the types of constraints that bridges of type `BT` add for
-bridging an `F`-in-`S` constraints.
+bridging an `F`-in-`S` constraints. This fallbacks to
+`added_constraint_types(concrete_bridge_type(BT, F, S))`
+so bridges should not implement this method.
 """
 function MOIB.added_constraint_types(BT::Type{<:AbstractBridge},
                                      F::Type{<:MOI.AbstractFunction},
@@ -77,10 +81,21 @@ function can only be called if `MOI.supports_constraint(BT, F, S)` is `true`.
 
 ## Examples
 
-The following returns `SplitIntervalBridge{Float64, MOI.SingleVariable}`:
-```julia
-concrete_bridge_type(SplitIntervalBridge{Float64}, MOI.SingleVariable,
-                                                   MOI.Interval{Float64})
+As a [`MathOptInterface.SingleVariable`](@ref)-in-[`MathOptInterface.Interval`](@ref)
+constraint is bridged into a
+[`MathOptInterface.SingleVariable`](@ref)-in-[`MathOptInterface.GreaterThan`](@ref)
+and a
+[`MathOptInterface.SingleVariable`](@ref)-in-[`MathOptInterface.LessThan`](@ref)
+by teh [`SplitIntervalBridge`](@ref),
+```jldoctest
+BT = MOI.Bridges.Constraint.SplitIntervalBridge{Float64}
+F = MOI.SingleVariable
+S = MOI.Interval{Float64}
+MOI.Bridges.Constraint.concrete_bridge_type(BT, F, S)
+
+# output
+
+MOI.Bridges.Constraint.SplitIntervalBridge{Float64,MOI.SingleVariable}
 ```
 """
 function concrete_bridge_type(bridge_type::DataType,

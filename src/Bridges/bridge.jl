@@ -38,13 +38,20 @@ function MOI.get(::AbstractBridge,
     return MOI.ConstraintIndex{F, S}[]
 end
 
+"""
+    function MOI.get(model::MOI.ModelLike, attr::MOI.AbstractConstraintAttribute,
+                     bridge::AbstractBridge)
+
+Return the value of the attribute `attr` of the model `model` for the
+constraint bridged by `bridge`.
+"""
 function MOI.get(::MOI.ModelLike, attr::MOI.AbstractConstraintAttribute,
                  bridge::AbstractBridge)
     throw(ArgumentError("Bridge of type `$(typeof(bridge))` does not support accessing the attribute `$attr`."))
 end
 
 """
-    added_constraint_types(BT::Type{<:Variable.AbstractBridge})::Bool
+    added_constrained_variable_types(BT::Type{<:Variable.AbstractBridge})::Bool
 
 Return a list of the types of constrained variables that bridges of concrete
 type `BT` add. This is used by the [`LazyBridgeOptimizer`](@ref).

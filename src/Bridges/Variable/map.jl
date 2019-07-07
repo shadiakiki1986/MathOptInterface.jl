@@ -1,3 +1,8 @@
+"""
+    Map <: AbstractDict{MOI.VariableIndex, AbstractBridge}
+
+Mapping between bridged variables and the bridge that bridged the variable.
+"""
 mutable struct Map <: AbstractDict{MOI.VariableIndex, AbstractBridge}
     # Bridged constrained variables
     # `i` ->  `0`: `VariableIndex(-i)` was added with `add_constrained_variable`.
