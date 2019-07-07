@@ -121,6 +121,16 @@ function number_with_set(map::Map, S::Type{<:MOI.AbstractSet})
 end
 
 """
+    constraints_with_set(map::Map, S::Type{<:MOI.AbstractSet})
+
+Return the list of constraints corresponding to bridged variables in `S`.
+"""
+function constraints_with_set(map::Map, S::Type{<:MOI.AbstractSet})
+    F = S <: MOI.AbstractScalarFunction ? MOI.SingleVariable : MOI.VectorOfVariables
+    return [MOI.ConstraintIndex{F, S}(-i) for i in eachindex(map.sets) if map.sets[i] == S]
+end
+
+"""
     has_keys(map::Map, vis::Vector{MOI.VariableIndex})::Bool
 
 Return a `Bool` indicating whether `vis` was returned by
@@ -299,3 +309,5 @@ Base.values(::EmptyMap) = MOIB.EmptyVector{AbstractBridge}()
 has_bridges(::EmptyMap) = false
 number_of_variables(::EmptyMap) = 0
 number_with_set(::EmptyMap, ::Type{<:MOI.AbstractSet}) = 0
+constraints_with_set(::EmptyMap, S::Type{<:MOI.AbstractScalarSet}) = MOI.ConstraintIndex{MOI.SingleVariable, S}[]
+constraints_with_set(::EmptyMap, S::Type{<:MOI.AbstractVectorSet}) = MOI.ConstraintIndex{MOI.VectorOfVariables, S}[]

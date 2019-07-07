@@ -11,7 +11,7 @@ the bridged variables were use.
 The dual values cannot be determined by the bridge but they can be determined
 by the bridged optimizer using [`MathOptInterface.Utilities.get_fallback`](@ref)
 if a `CachingOptimizer` is used (since `ConstraintFunction` cannot be got
-as functions cannot be unbridged.
+as functions cannot be unbridged).
 """
 struct ZerosBridge{T} <: AbstractBridge
     n::Int # Number of variables

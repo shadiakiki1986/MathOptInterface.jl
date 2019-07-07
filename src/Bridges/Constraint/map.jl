@@ -243,4 +243,5 @@ function Base.empty!(::EmptyMap) end
 Base.keys(::EmptyMap) = MOIB.EmptyVector{MOI.VariableIndex}()
 Base.values(::EmptyMap) = MOIB.EmptyVector{AbstractBridge}()
 has_bridges(::EmptyMap) = false
-number_with_set(::EmptyMap, ::Type{<:MOI.AbstractSet}) = 0
+number_of_type(::EmptyMap, ::Type{<:MOI.ConstraintIndex}) = 0
+keys_of_type(::EmptyMap, C::Type{<:MOI.ConstraintIndex}) = C[]
