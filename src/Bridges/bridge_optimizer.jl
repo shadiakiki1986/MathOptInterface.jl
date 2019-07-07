@@ -828,7 +828,7 @@ end
 bridged_function(bridge::AbstractBridgeOptimizer, value) = value
 
 """
-    variable_bridged_function(b::AbstractBridgeOptimizer,
+    variable_unbridged_function(b::AbstractBridgeOptimizer,
                               vi::MOI.VariableIndex)
 
 Return a `MOI.AbstractScalarFunction` of variables of `b` that equals `vi`.
@@ -836,7 +836,8 @@ That is, if the variable `vi` is an internal variable of `b.model` created by a
 but not visible to the user, it returns its expression in terms of the variables
 of bridged variables. Otherwise, it returns `MOI.SingleVariable(vi)`.
 """
-function variable_unbridged_function(b, vi::MOI.VariableIndex)
+function variable_unbridged_function(b::AbstractBridgeOptimizer,
+                                     vi::MOI.VariableIndex)
     func = Variable.unbridged_function(Variable.bridges(b), vi)
     if func === nothing
         return MOI.SingleVariable(vi)
@@ -860,6 +861,10 @@ function unbridged_function(b::AbstractBridgeOptimizer,
     if !Variable.has_bridges(Variable.bridges(b))
         return func
     end
+    # If `func` does not contain any variable, this will never call
+    # `variable_unbridged_function` hence it might silently return an incorrect
+    # function so we call `throw_if_cannot_unbridge` here.
+    Variable.throw_if_cannot_unbridge(Variable.bridges(b))
     return MOIU.substitute_variables(
         vi -> variable_unbridged_function(b, vi),
         func)::typeof(func)

@@ -22,7 +22,7 @@ function bridge_constrained_variable(::Type{FreeBridge{T}},
                          nonpos_variables, nonpos_constraint)
 end
 
-function supports_constrained_variables(
+function supports_constrained_variable(
     ::Type{<:FreeBridge}, ::Type{MOI.Reals})
     return true
 end

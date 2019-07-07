@@ -86,7 +86,7 @@ function update_dist!(b::LazyBridgeOptimizer, variables, constraints)
         changed = false
         for BT in b.variable_bridge_types
             for (S,) in variables
-                if Variable.supports_constrained_variables(BT, S) &&
+                if Variable.supports_constrained_variable(BT, S) &&
                     supports_added_no_update(b, BT, S)
                     # Number of bridges needed using BT
                     dist = 1 + added_dist(b, BT, S)
@@ -130,7 +130,7 @@ function fill_required!(required_variables::Set{Tuple{DataType}},
     # `required_variables` the required variables types to bridge it.
     push!(required_variables, (S,))
     for BT in b.variable_bridge_types
-        if Variable.supports_constrained_variables(BT, S)
+        if Variable.supports_constrained_variable(BT, S)
             for C in added_constrained_variable_types(BT, S)
                 fill_required!(required_variables, required_constraints, b, C[1])
             end

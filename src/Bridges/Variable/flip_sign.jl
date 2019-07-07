@@ -9,7 +9,7 @@ stored in the `flipped_constraint` field by convention.
 abstract type FlipSignBridge{
     T, S1<:MOI.AbstractSet, S2<:MOI.AbstractSet} <: AbstractBridge end
 
-function supports_constrained_variables(
+function supports_constrained_variable(
     ::Type{<:FlipSignBridge{T, S1}}, ::Type{S1}) where {T, S1<:MOI.AbstractVectorSet}
     return true
 end

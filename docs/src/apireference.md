@@ -460,19 +460,59 @@ Utilities.@model
 
 ## Bridges
 
-Bridges can be used for automatic reformulation of a certain constraint type into equivalent constraints.
+Bridges can be used for automatic reformulation of a certain constrained
+variables or constraints into equivalent formulations using constrained
+variables and constraints of different types.
+There are two important concepts to distinguish:
+* [`Bridges.AbstractBridge`](@ref)s are recipes implementing a specific
+  reformulation. Bridges are not directly subtypes of
+  [`Bridges.AbstractBridge`](@ref), they are either
+  [`Bridges.Variable.AbstractBridge`](@ref) or
+  [`Bridges.Constraint.AbstractBridge`](@ref).
+* [`Bridges.AbstractBridgeOptimizer`](@ref)s is a layer that can applied to
+  another [`ModelLike`](@ref) to apply the reformulation. The
+  [`Bridges.LazyBridgeOptimizer`](@ref) automatically choose the appropriate
+  bridges to use when a constrained variable or constraint is not supported
+  using the list of bridges that were added to it by [`Bridges.add_bridge`](@ref).
+  [`Bridges.full_bridge_optimizer`](@ref) wraps a model in a
+  [`Bridges.LazyBridgeOptimizer`](@ref) where all the bridges defined in MOI
+  are added. This is the recommended way to use bridges in the
+  [Testing guideline](@ref) and JuMP automatically calls this function when
+  attaching an optimizer.
+
 ```@docs
 Bridges.AbstractBridge
 Bridges.AbstractBridgeOptimizer
-Bridges.Constraint.SingleBridgeOptimizer
 Bridges.LazyBridgeOptimizer
 Bridges.add_bridge
+Bridges.full_bridge_optimizer
 ```
 
 ### Variable bridges
 
+When variables are added, either free with
+[`add_variable`](@ref)/[`add_variables`](@ref),
+or constrained with
+[`add_constrained_variable`](@ref)/[`add_constrained_variables`](@ref),
+variable bridges allow to return *bridged variables* that do not correspond to
+variables of the underlying model. These variables are parametrized by
+variables of the underlying model and this parametrization can be obtained with
+[`Bridges.variable_bridged_function`](@ref). Similarly, the variables of the
+underlying model that were created by the bridge can be expressed in terms of
+the bridged variables and this expression can be obtained with
+[`Bridges.variable_unbridged_function`](@ref).
+
+!!! note
+    A notable exception is with [`Bridges.Variable.ZerosBridge`](@ref) where no
+    variable is created in the underlying model as the variables are simply
+    transformed to zeros. When this bridge is used, it is not possible to
+    recover functions with bridged variables from functions of the underlying
+    model.
+
 ```@docs
 Bridges.Variable.AbstractBridge
+Bridges.variable_bridged_function
+Bridges.variable_unbridged_function
 ```
 
 Below is the list of variable bridges implemented in this package.
@@ -484,8 +524,25 @@ Bridges.Variable.VectorizeBridge
 Bridges.Variable.RSOCtoPSDBridge
 ```
 
+For each bridge defined in this package, a corresponding
+[`Bridges.Variable.SingleBridgeOptimizer`](@ref) is available with the same
+name without the "Bridge" suffix, e.g., `SplitInterval` is a
+`SingleBridgeOptimizer` for the `SplitIntervalBridge`. Moreover, they are all
+added in the [`Bridges.LazyBridgeOptimizer`](@ref) returned by
+[`Bridges.full_bridge_optimizer`](@ref) as it calls
+[`Bridges.Variable.add_all_bridges`](@ref).
+```@docs
+Bridges.Variable.SingleBridgeOptimizer
+Bridges.Variable.add_all_bridges
+```
+
 ### Constraint bridges
 
+When constraints are added with [`add_constraint`](@ref), constraint bridges
+allow to return *bridged constraints* that do not correspond to
+constraints of the underlying model. These constraints were enforced by an
+equivalent formulation that added constraints (and possibly also variables) in
+the underlying model.
 ```@docs
 Bridges.Constraint.AbstractBridge
 ```
@@ -513,27 +570,34 @@ Bridges.Constraint.SOCtoPSDBridge
 Bridges.Constraint.RSOCtoPSDBridge
 Bridges.Constraint.IndicatorActiveOnFalseBridge
 ```
-For each bridge defined in this package, a corresponding bridge optimizer is available with the same name without the "Bridge" suffix, e.g., `SplitInterval` is an `SingleBridgeOptimizer` for the `SplitIntervalBridge`.
-Moreover, a `LazyBridgeOptimizer` with all the bridges defined in this package can be obtained with
+For each bridge defined in this package, a corresponding
+[`Bridges.Constraint.SingleBridgeOptimizer`](@ref) is available with the same
+name without the "Bridge" suffix, e.g., `SplitInterval` is a
+`SingleBridgeOptimizer` for the `SplitIntervalBridge`. Moreover, they are all
+added in the [`Bridges.LazyBridgeOptimizer`](@ref) returned by
+[`Bridges.full_bridge_optimizer`](@ref) as it calls
+[`Bridges.Constraint.add_all_bridges`](@ref).
 ```@docs
-Bridges.full_bridge_optimizer
+Bridges.Constraint.SingleBridgeOptimizer
+Bridges.Constraint.add_all_bridges
 ```
 
 ### Bridge interface
 
 A bridge should implement the following functions to be usable by a bridge optimizer:
 ```@docs
-supports_constraint(::Type{<:Bridges.Constraint.AbstractBridge}, ::Type{<:AbstractFunction}, ::Type{<:AbstractSet})
 Bridges.added_constrained_variable_types
 Bridges.added_constraint_types
 ```
 Additionally, variable bridges should implement:
 ```@docs
+Bridges.Variable.supports_constrained_variable
 Bridges.Variable.concrete_bridge_type
 Bridges.Variable.bridge_constrained_variable
 ```
 and constraint bridges should implement
 ```@docs
+supports_constraint(::Type{<:Bridges.Constraint.AbstractBridge}, ::Type{<:AbstractFunction}, ::Type{<:AbstractSet})
 Bridges.Constraint.concrete_bridge_type
 Bridges.Constraint.bridge_constraint
 ```

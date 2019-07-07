@@ -261,18 +261,26 @@ function function_for(map::Map, ci::MOI.ConstraintIndex{MOI.VectorOfVariables})
 end
 
 """
+    throw_if_cannot_unbridge(map::Map)
+
+Throw an error if some bridged variables do not have any reverse mapping.
+"""
+function throw_if_cannot_unbridge(map::Map)
+    if map.unbridged_function === nothing
+        error("Cannot unbridge function because some variables are bridged by",
+              " variable bridges that do not support reverse mapping, e.g.,",
+              " `ZerosBridge`.")
+    end
+end
+
+"""
     unbridged_function(map::Map, vi::MOI.VariableIndex)
 
 Return the expression of `vi` in terms of bridged variables.
 """
 function unbridged_function(map::Map, vi::MOI.VariableIndex)
-    if map.unbridged_function === nothing
-        error("Cannot unbridge function because some variables are bridged by",
-              " variable bridges that do not support reverse mapping, e.g.,",
-              " `ZerosBridge`.")
-    else
-        return get(map.unbridged_function, vi, nothing)
-    end
+    throw_if_cannot_unbridge(map)
+    return get(map.unbridged_function, vi, nothing)
 end
 
 """

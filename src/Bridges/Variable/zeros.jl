@@ -22,7 +22,7 @@ function bridge_constrained_variable(::Type{ZerosBridge{T}},
     return ZerosBridge{T}(MOI.dimension(set))
 end
 
-function supports_constrained_variables(
+function supports_constrained_variable(
     ::Type{<:ZerosBridge}, ::Type{MOI.Zeros})
     return true
 end
