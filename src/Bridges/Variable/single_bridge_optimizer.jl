@@ -5,6 +5,11 @@ The `SingleBridgeOptimizer` bridges any constrained variables supported by the
 bridge `BT`. This is in contrast with the [`MathOptInterface.Bridges.LazyBridgeOptimizer`](@ref)
 which only bridges the constrained variables that are unsupported by the internal model,
 even if they are supported by one of its bridges.
+
+!!! note
+    Two bridge optimizers using variable bridges cannot be used together as both
+    of them assume that the underlying model only return variable indices with
+    nonnegative index.
 """
 mutable struct SingleBridgeOptimizer{BT<:AbstractBridge, OT<:MOI.ModelLike} <: MOIB.AbstractBridgeOptimizer
     model::OT
