@@ -8,7 +8,7 @@ const MOIB = MathOptInterface.Bridges
 
 include("../utilities.jl")
 
-mock = MOIU.MockOptimizer(MOIU.Model{Float64}())
+mock = MOIU.MockOptimizer(MOIU.UniversalFallback(MOIU.Model{Float64}()))
 config = MOIT.TestConfig()
 
 @testset "Free" begin
@@ -37,4 +37,22 @@ config = MOIT.TestConfig()
         (MOI.VectorOfVariables, MOI.Nonnegatives, 0),
         (MOI.VectorOfVariables, MOI.Nonpositives, 0)
     ))
+
+    function set_mock_optimize_linear7Test!(mock)
+        MOIU.set_mock_optimize!(mock,
+            (mock::MOIU.MockOptimizer) -> MOIU.mock_optimize!(mock, [0, 0, 0, 0]),
+            (mock::MOIU.MockOptimizer) -> MOIU.mock_optimize!(mock, [100, 0, 0, 0]),
+            (mock::MOIU.MockOptimizer) -> MOIU.mock_optimize!(mock, [100, 0, 0, -100]))
+    end
+    set_mock_optimize_linear7Test!(mock)
+    MOIT.linear7test(bridged_mock, config)
+
+    x, y = MOI.get(bridged_mock, MOI.ListOfVariableIndices())
+    MOI.set(bridged_mock, MOI.VariablePrimalStart(), x, 1.0)
+    MOI.set(bridged_mock, MOI.VariablePrimalStart(), y, -1.0)
+    xa, xb, ya, yb = MOI.get(mock, MOI.ListOfVariableIndices())
+    @test MOI.get(mock, MOI.VariablePrimalStart(), xa) == 1
+    @test MOI.get(mock, MOI.VariablePrimalStart(), xb) == 0
+    @test MOI.get(mock, MOI.VariablePrimalStart(), ya) == 0
+    @test MOI.get(mock, MOI.VariablePrimalStart(), yb) == -1
 end
