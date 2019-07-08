@@ -156,10 +156,12 @@ function MOI.is_valid(b::AbstractBridgeOptimizer, ci::MOI.ConstraintIndex{F, S})
     end
 end
 function MOI.delete(b::AbstractBridgeOptimizer, vis::Vector{MOI.VariableIndex})
-    # Delete all `MOI.SingleVariable` constraint of these variables
-    for vi in vis
-        for ci in Constraint.variable_constraints(Constraint.bridges(b), vi)
-            MOI.delete(b, ci)
+    if Constraint.has_bridges(Constraint.bridges(b))
+        # Delete all `MOI.SingleVariable` constraint of these variables
+        for vi in vis
+            for ci in Constraint.variable_constraints(Constraint.bridges(b), vi)
+                MOI.delete(b, ci)
+            end
         end
     end
     if any(vi -> is_bridged(b, vi), vis)
@@ -179,9 +181,11 @@ function MOI.delete(b::AbstractBridgeOptimizer, vis::Vector{MOI.VariableIndex})
     end
 end
 function MOI.delete(b::AbstractBridgeOptimizer, vi::MOI.VariableIndex)
-    # Delete all `MOI.SingleVariable` constraint of this variable
-    for ci in Constraint.variable_constraints(Constraint.bridges(b), vi)
-        MOI.delete(b, ci)
+    if Constraint.has_bridges(Constraint.bridges(b))
+        # Delete all `MOI.SingleVariable` constraint of this variable
+        for ci in Constraint.variable_constraints(Constraint.bridges(b), vi)
+            MOI.delete(b, ci)
+        end
     end
     if is_bridged(b, vi)
         MOI.throw_if_not_valid(b, vi)
@@ -239,7 +243,7 @@ function get_all_including_bridged(
         MOI.get(b.model, attr)
     end
     if F == MOI.VectorOfVariables || F == MOI.SingleVariable
-        if !is_bridged(b, F, S)
+        if Constraint.has_bridges(Constraint.bridges(b)) && !is_bridged(b, F, S)
             # Even it it is not bridged, it may have been force-bridged because one of the
             # variable in the function was bridged.
             append!(list, Constraint.keys_of_type(Constraint.bridges(b),
@@ -313,14 +317,29 @@ function MOI.get(b::AbstractBridgeOptimizer,
     return s
 end
 function MOI.get(b::AbstractBridgeOptimizer, attr::MOI.ListOfConstraints)
-    set_of_types = Constraint.list_of_key_types(Constraint.bridges(b))
-    # There may be types already in `list_of_types` of a supported constraint
-    # was force-bridged because a variable in the `SingleVariable` or
-    # `VectorOfVariables` function was bridged even though the constraint type
-    # is supported by `b.model`. As `set_of_types` is a set, these duplicates
-    # are merge automatically.
-    union!(set_of_types, MOI.get(b.model, attr))
-    list_of_types = collect(set_of_types)
+    if Constraint.has_bridges(Constraint.bridges(b)) && Variable.has_bridges(Variable.bridges(b))
+        set_of_types = Constraint.list_of_key_types(Constraint.bridges(b))
+        union!(set_of_types, Variable.list_of_constraint_types(Variable.bridges(b)))
+        # There may be types already in `list_of_types` of a supported constraint
+        # was force-bridged because a variable in the `SingleVariable` or
+        # `VectorOfVariables` function was bridged even though the constraint type
+        # is supported by `b.model`. As `set_of_types` is a set, these duplicates
+        # are merge automatically.
+        union!(set_of_types, MOI.get(b.model, attr))
+        list_of_types = collect(set_of_types)
+    elseif Constraint.has_bridges(Constraint.bridges(b))
+        # There should be no duplicate so no need to do `Set` union.
+        list_of_types = [
+            MOI.get(b.model, attr);
+            collect(Constraint.list_of_key_types(Constraint.bridges(b)))
+        ]
+    elseif Variable.has_bridges(Variable.bridges(b))
+        set_of_types = Variable.list_of_constraint_types(Variable.bridges(b))
+        union!(set_of_types, MOI.get(b.model, attr))
+        list_of_types = collect(set_of_types)
+    else
+        list_of_types = copy(MOI.get(b.model, attr))
+    end
     # Some constraint types show up in `list_of_types` including when all the
     # constraints of that type have been created by bridges and not by the user.
     # The code in `NumberOfConstraints` takes care of removing these constraints

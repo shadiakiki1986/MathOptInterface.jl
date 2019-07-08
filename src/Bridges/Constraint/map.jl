@@ -205,6 +205,23 @@ function variable_constraints(map::Map, vi::MOI.VariableIndex)
 end
 
 """
+    has_bridges(map::Map)::Bool
+
+Return a `Bool` indicating whether any bridge were added yet. Note that it
+returns `false` even if all bridges were deleted while `isempty` would return
+`true`. It is computed in `O(1)` while `isempty` needs `O(n)` hence it is used
+by [`MathOptInterface.Bridges.AbstractBridgeOptimizer`](@ref) to shortcut
+operations in case variable bridges are not used.
+"""
+function has_bridges(map::Map)
+    return !isempty(map.bridges) ||
+        !isempty(map.single_variable_constraints) ||
+        !isempty(map.vector_of_variables_constraints)
+end
+
+
+
+"""
     add_key_for_bridge(map::Map, bridge::AbstractBridge,
                        func::MOI.AbstractFunction, set::MOI.AbstractSet)
 
@@ -244,4 +261,3 @@ Base.keys(::EmptyMap) = MOIB.EmptyVector{MOI.VariableIndex}()
 Base.values(::EmptyMap) = MOIB.EmptyVector{AbstractBridge}()
 has_bridges(::EmptyMap) = false
 number_of_type(::EmptyMap, ::Type{<:MOI.ConstraintIndex}) = 0
-keys_of_type(::EmptyMap, C::Type{<:MOI.ConstraintIndex}) = C[]

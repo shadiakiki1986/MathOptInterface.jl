@@ -32,7 +32,7 @@ function MOI.get(::FlipSignBridge{T, S1, S2},
                  ::MOI.NumberOfConstraints{MOI.VectorOfVariables, S2}) where {T, S1, S2<:MOI.AbstractVectorSet}
     return 1
 end
-function MOI.get(::FlipSignBridge{T, S1, S2},
+function MOI.get(bridge::FlipSignBridge{T, S1, S2},
                  ::MOI.ListOfConstraintIndices{MOI.VectorOfVariables, S2}) where {T, S1, S2<:MOI.AbstractVectorSet}
     return [bridge.flipped_constraint]
 end

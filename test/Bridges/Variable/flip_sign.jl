@@ -25,5 +25,9 @@ config = MOIT.TestConfig()
     @test length(MOI.get(mock, MOI.ListOfVariableIndices())) == 1
     @test first(MOI.get(mock, MOI.ListOfVariableIndices())).value ≥ 0
     @test MOI.get(bridged_mock, MOI.NumberOfVariables()) == 1
-    @test MOI.get(bridged_mock, MOI.ListOfVariableIndices()) == [MOI.VariableIndex(-1)]
+    vis = MOI.get(bridged_mock, MOI.ListOfVariableIndices())
+    @test vis == [MOI.VariableIndex(-1)]
+    test_delete_bridged_variable(bridged_mock, vis[1], MOI.Nonpositives, 1, (
+        (MOI.VectorOfVariables, MOI.Nonnegatives, 0),
+    ))
 end

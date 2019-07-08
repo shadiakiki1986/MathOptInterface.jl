@@ -11,7 +11,7 @@ include("../utilities.jl")
 mock = MOIU.MockOptimizer(MOIU.Model{Float64}())
 config = MOIT.TestConfig()
 
-@testset "NonposToNonneg" begin
+@testset "Zeros" begin
     bridged_mock = MOIB.Variable.Zeros{Float64}(mock)
 
     MOIU.set_mock_optimize!(mock,
