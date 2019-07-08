@@ -131,6 +131,28 @@ function constraints_with_set(map::Map, S::Type{<:MOI.AbstractSet})
 end
 
 """
+    list_of_constraint_types(map::Map)
+
+Return a list of all the different types `(F, S)` of `F`-in-`S` constraints in
+`map`.
+"""
+function list_of_constraint_types(map::Map)
+    list = Set{Tuple{DataType, DataType}}()
+    for i in eachindex(map.bridges)
+        if map.bridges[i] !== nothing
+            S = map.sets[i]
+            if S <: MOI.AbstractScalarSet
+                F = MOI.SingleVariable
+            else
+                F = MOI.VectorOfVariables
+            end
+            push!(list, (F, S))
+        end
+    end
+    return list
+end
+
+"""
     has_keys(map::Map, vis::Vector{MOI.VariableIndex})::Bool
 
 Return a `Bool` indicating whether `vis` was returned by

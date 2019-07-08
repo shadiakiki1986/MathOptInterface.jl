@@ -121,20 +121,44 @@ function removevariable(f::MOI.VectorOfVariables, s, vi::VI)
     end
     return g, t
 end
-function _removevar!(constrs::Vector, vi::VI)
+function _remove_variable(constrs::Vector, vi::VI)
     for i in eachindex(constrs)
         ci, f, s = constrs[i]
         constrs[i] = (ci, removevariable(f, s, vi)...)
     end
     return CI{MOI.SingleVariable}[]
 end
-function _removevar!(constrs::Vector{<:ConstraintEntry{MOI.SingleVariable}},
-                     vi::VI)
-    # If a variable is removed, the SingleVariable constraints using this variable
-    # need to be removed too
+function _remove_variable(
+    ::Vector{<:ConstraintEntry{MOI.SingleVariable}}, ::VI)
+end
+function _remove_variable(
+    ::Vector{<:ConstraintEntry{MOI.VectorOfVariables}}, ::VI)
+end
+function _single_variable_with(::Vector, ::VI)
+    return CI{MOI.SingleVariable}[]
+end
+function _single_variable_with(
+    constrs::Vector{<:ConstraintEntry{MOI.SingleVariable}}, vi::VI)
     rm = CI{MOI.SingleVariable}[]
     for (ci, f, s) in constrs
         if f.variable == vi
+            push!(rm, ci)
+        end
+    end
+    return rm
+end
+function _vector_of_variables_with(::Vector, ::VI)
+    return CI{MOI.VectorOfVariables}[]
+end
+function _vector_of_variables_with(
+    constrs::Vector{<:ConstraintEntry{MOI.VectorOfVariables}}, vi::VI)
+    rm = CI{MOI.VectorOfVariables}[]
+    for (ci, f, s) in constrs
+        if vi in f.variables
+            if length(f.variables) > 1
+                error("Cannot remove variable as it is constrained by $ci with",
+                      " other variables.")
+            end
             push!(rm, ci)
         end
     end
@@ -145,10 +169,16 @@ function MOI.delete(model::AbstractModel, vi::VI)
         throw(MOI.InvalidIndex(vi))
     end
     model.objective = removevariable(model.objective, vi)
-    # `ci_to_remove` is the list of indices of the `SingleVariable` constraints
-    # of `vi`
-    ci_to_remove = broadcastvcat(constrs -> _removevar!(constrs, vi), model)
-    for ci in ci_to_remove
+    broadcastcall(constrs -> _remove_variable(constrs, vi), model)
+    # If a variable is removed, the SingleVariable constraints using this
+    # variable need to be removed too. `sv_to_remove` is the list of indices of
+    # the `SingleVariable` constraints of `vi`.
+    sv_to_remove = broadcastvcat(constrs -> _single_variable_with(constrs, vi), model)
+    for ci in sv_to_remove
+        MOI.delete(model, ci)
+    end
+    vov_to_remove = broadcastvcat(constrs -> _vector_of_variables_with(constrs, vi), model)
+    for ci in vov_to_remove
         MOI.delete(model, ci)
     end
     model.single_variable_mask[vi.value] = 0x0
