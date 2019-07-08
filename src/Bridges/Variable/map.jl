@@ -144,8 +144,10 @@ function list_of_constraint_types(map::Map)
     for i in eachindex(map.bridges)
         if map.bridges[i] !== nothing
             S = map.sets[i]
-            F = variable_function_type(S)
-            push!(list, (F, S))
+            if S != MOI.Reals
+                F = variable_function_type(S)
+                push!(list, (F, S))
+            end
         end
     end
     return list

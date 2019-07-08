@@ -7,7 +7,7 @@ to constrained variables in [`MathOptInterface.PositiveSemidefiniteConeTriangle`
 struct RSOCtoPSDBridge{T} <: AbstractBridge
     # `t` is `variables[1]`
     # `u` is `variables[2]/2`
-    # `x` is `variables[3:end]`
+    # `x` is `variables[[3, 5, 8, ...]]`
     variables::Vector{MOI.VariableIndex}
     psd::MOI.ConstraintIndex{MOI.VectorOfVariables, MOI.PositiveSemidefiniteConeTriangle}
     off_diag::Vector{MOI.ConstraintIndex{MOI.SingleVariable, MOI.EqualTo{T}}}
@@ -58,6 +58,16 @@ end
 function MOI.get(bridge::RSOCtoPSDBridge, ::MOI.ListOfVariableIndices)
     return bridge.variables
 end
+function MOI.get(bridge::RSOCtoPSDBridge,
+                 ::MOI.NumberOfConstraints{MOI.VectorOfVariables,
+                                           MOI.PositiveSemidefiniteConeTriangle})
+    return 1
+end
+function MOI.get(bridge::RSOCtoPSDBridge,
+                 ::MOI.ListOfConstraintIndices{MOI.VectorOfVariables,
+                                               MOI.PositiveSemidefiniteConeTriangle})
+    return [bridge.psd]
+end
 function MOI.get(bridge::RSOCtoPSDBridge{T},
                  ::MOI.NumberOfConstraints{MOI.SingleVariable,
                                            MOI.EqualTo{T}}) where T
@@ -77,6 +87,14 @@ function MOI.get(bridge::RSOCtoPSDBridge{T},
                  ::MOI.ListOfConstraintIndices{MOI.ScalarAffineFunction{T},
                                                MOI.EqualTo{T}}) where T
     return bridge.diag
+end
+
+# References
+function MOI.delete(model::MOI.ModelLike, bridge::RSOCtoPSDBridge)
+    for ci in bridge.diag
+        MOI.delete(model, ci)
+    end
+    MOI.delete(model, bridge.variables)
 end
 
 # Attributes, Bridge acting as a constraint

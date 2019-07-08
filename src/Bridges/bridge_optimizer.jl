@@ -105,12 +105,12 @@ function MOI.is_empty(b::AbstractBridgeOptimizer)
 end
 function MOI.empty!(b::AbstractBridgeOptimizer)
     MOI.empty!(b.model)
-    if !isempty(Variable.bridges(b))
+    if Variable.has_bridges(Variable.bridges(b))
         empty!(Variable.bridges(b))
         empty!(b.var_to_name)
         b.name_to_var = nothing
     end
-    if !isempty(Constraint.bridges(b))
+    if Constraint.has_bridges(Constraint.bridges(b))
         empty!(Constraint.bridges(b))
         empty!(b.con_to_name)
         b.name_to_con = nothing
@@ -209,7 +209,7 @@ function MOI.delete(b::AbstractBridgeOptimizer, ci::MOI.ConstraintIndex)
         else
             delete!(Constraint.bridges(b), ci)
         end
-        if !isempty(Constraint.bridges(b))
+        if Constraint.has_bridges(Constraint.bridges(b))
             b.name_to_con = nothing
         end
         if haskey(b.con_to_name, ci)
@@ -433,7 +433,7 @@ end
 function MOI.supports(b::AbstractBridgeOptimizer,
                       attr::MOI.AbstractConstraintAttribute,
                       IndexType::Type{MOI.ConstraintIndex{F, S}}) where {F, S}
-    if is_bridged(b, IndexType)
+    if is_bridged(b, F, S)
         return MOI.supports(b, attr, Constraint.concrete_bridge_type(b, F, S))
     else
         return MOI.supports(b.model, attr, IndexType)
@@ -526,7 +526,7 @@ end
 function MOI.get(b::AbstractBridgeOptimizer,
                  IdxT::Type{MOI.ConstraintIndex{F, S}},
                  name::String) where {F, S}
-    if !isempty(Constraint.bridges(b)) && b.name_to_con === nothing
+    if Constraint.has_bridges(Constraint.bridges(b)) && b.name_to_con === nothing
         b.name_to_con = MOIU.build_name_to_con_map(b.con_to_name)
     end
 
@@ -544,11 +544,11 @@ function MOI.get(b::AbstractBridgeOptimizer,
         end
     else
         ci = MOI.get(b.model, IdxT, name)
-        if ci !== nothing && !isempty(Constraint.bridges(b)) &&
+        if ci !== nothing && Constraint.has_bridges(Constraint.bridges(b)) &&
             haskey(b.name_to_con, name)
             error("Multiple constraints have the name $name.")
         end
-        if !isempty(Constraint.bridges(b)) && ci === nothing &&
+        if Constraint.has_bridges(Constraint.bridges(b)) && ci === nothing &&
             F <: Union{MOI.SingleVariable, MOI.VectorOfVariables}
             # It may have been force-bridged
             ci = get(b.name_to_con, name, nothing)
@@ -569,7 +569,7 @@ end
 # model. Therefore, we try the model first, and then the bridge if that fails.
 function MOI.get(b::AbstractBridgeOptimizer, IdxT::Type{MOI.ConstraintIndex},
                  name::String)
-    if !isempty(Constraint.bridges(b))
+    if Constraint.has_bridges(Constraint.bridges(b))
         if b.name_to_con === nothing
             b.name_to_con = MOIU.build_name_to_con_map(b.con_to_name)
         end
@@ -577,7 +577,7 @@ function MOI.get(b::AbstractBridgeOptimizer, IdxT::Type{MOI.ConstraintIndex},
 
     ci = MOI.get(b.model, IdxT, name)
     if ci === nothing
-        if isempty(Constraint.bridges(b))
+        if !Constraint.has_bridges(Constraint.bridges(b))
             return ci
         else
             b_ci = get(b.name_to_con, name, nothing)
@@ -588,7 +588,7 @@ function MOI.get(b::AbstractBridgeOptimizer, IdxT::Type{MOI.ConstraintIndex},
             end
         end
     else
-        if !isempty(Constraint.bridges(b)) && haskey(b.name_to_con, name)
+        if Constraint.has_bridges(Constraint.bridges(b)) && haskey(b.name_to_con, name)
             error("Multiple constraints have the name $name.")
         end
 

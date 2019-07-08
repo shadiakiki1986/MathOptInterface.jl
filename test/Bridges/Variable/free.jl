@@ -20,6 +20,11 @@ config = MOIT.TestConfig()
         (mock::MOIU.MockOptimizer) -> MOIU.mock_optimize!(mock, [100, 0, 0, -100]))
     MOIT.linear6test(bridged_mock, config)
 
+    loc = MOI.get(bridged_mock, MOI.ListOfConstraints())
+    @test length(loc) == 2
+    @test !((MOI.VectorOfVariables, MOI.Reals) in loc)
+    @test (MOI.ScalarAffineFunction{Float64}, MOI.GreaterThan{Float64}) in loc
+    @test (MOI.ScalarAffineFunction{Float64}, MOI.LessThan{Float64}) in loc
     @test MOI.get(mock, MOI.NumberOfVariables()) == 4
     @test MOI.get(bridged_mock, MOI.NumberOfVariables()) == 2
     vis = MOI.get(bridged_mock, MOI.ListOfVariableIndices())
