@@ -150,14 +150,18 @@ end
 function _vector_of_variables_with(::Vector, ::VI)
     return CI{MOI.VectorOfVariables}[]
 end
+function throw_delete_variable_in_vov(vi::VI)
+    message = string("Cannot delete variable as it is constrained with other",
+                     " other variables in a `MOI.VectorOfVariables`.")
+    throw(MOI.DeleteNotAllowed(vi, message))
+end
 function _vector_of_variables_with(
     constrs::Vector{<:ConstraintEntry{MOI.VectorOfVariables}}, vi::VI)
     rm = CI{MOI.VectorOfVariables}[]
     for (ci, f, s) in constrs
         if vi in f.variables
             if length(f.variables) > 1
-                error("Cannot remove variable as it is constrained by $ci with",
-                      " other variables.")
+                throw_delete_variable_in_vov(vi)
             end
             push!(rm, ci)
         end
