@@ -849,11 +849,87 @@ function rotatedsoc3test(model::MOI.ModelLike, config::TestConfig; n=2, ub=3.0)
     end
 end
 
+function rotatedsoc4test(model::MOI.ModelLike, config::TestConfig; n=2, ub=3.0)
+    atol = config.atol
+    rtol = config.rtol
+    # Problem SOCRotated4
+    # max x + y
+    # s.t.
+    #      t + u ≤ 2              (1)
+    # [t, u, x, y] in RSOC(4)     (2)
+    # Solution:
+    # By AM-QM: (x+y)/2 ≤ √((x^2+y^2)/2) with equality iff x = y
+    # That is,
+    #     (x + y)^2/2 ≤ x^2 + y^2 (3)
+    # By AM-GM: √tu ≤ (t+u)/2 with equality iff t = u
+    # That is,
+    #    2tu ≤ (t + u)^2/2        (4)
+    # Combining (2), (3) and (4), we have
+    #    |x + y| ≤ t + u          (5)
+    # with equality iff x = y and t = u.
+    # Combining (1) and (5), we have
+    #    x + y ≤ 2
+    # with equality iff x = y.
+    # We conclude that the optimal solution is x = y = t = u = 1
+    # with objective value 2.
+
+    @test MOIU.supports_default_copy_to(model, #=copy_names=# false)
+    @test MOI.supports(model, MOI.ObjectiveFunction{MOI.ScalarAffineFunction{Float64}}())
+    @test MOI.supports(model, MOI.ObjectiveSense())
+    @test MOI.supports_constraint(model, MOI.ScalarAffineFunction{Float64}, MOI.LessThan{Float64})
+    @test MOI.supports_constraint(model, MOI.VectorOfVariables, MOI.RotatedSecondOrderCone)
+
+    MOI.empty!(model)
+    @test MOI.is_empty(model)
+
+    v, cv  = MOI.add_constrained_variables(model, MOI.RotatedSecondOrderCone(4))
+    t, u, x, y = v
+    ft = MOI.SingleVariable(t)
+    fu = MOI.SingleVariable(u)
+    c = MOI.add_constraint(model, 1.0ft + 1.0fu, MOI.LessThan(2.0))
+    fx = MOI.SingleVariable(x)
+    fy = MOI.SingleVariable(y)
+    func = 1.0fx + 1.0fy
+    MOI.set(model, MOI.ObjectiveSense(), MOI.MAX_SENSE)
+    MOI.set(model, MOI.ObjectiveFunction{typeof(func)}(), func)
+
+    if config.solve
+        @test MOI.get(model, MOI.TerminationStatus()) == MOI.OPTIMIZE_NOT_CALLED
+
+        MOI.optimize!(model)
+
+        @test MOI.get(model, MOI.TerminationStatus()) == config.optimal_status
+
+        @test MOI.get(model, MOI.PrimalStatus()) == MOI.FEASIBLE_POINT
+        if config.duals
+            @test MOI.get(model, MOI.DualStatus()) == MOI.FEASIBLE_POINT
+        end
+
+        @test MOI.get(model, MOI.ObjectiveValue()) ≈ 2.0 atol=atol rtol=rtol
+        if config.duals
+            @test MOI.get(model, MOI.DualObjectiveValue()) ≈ 2.0 atol=atol rtol=rtol
+        end
+
+        @test MOI.get(model, MOI.VariablePrimal(), t) ≈ 1.0 atol=atol rtol=rtol
+        @test MOI.get(model, MOI.VariablePrimal(), u) ≈ 1.0 atol=atol rtol=rtol
+        @test MOI.get(model, MOI.VariablePrimal(), x) ≈ 1.0 atol=atol rtol=rtol
+        @test MOI.get(model, MOI.VariablePrimal(), y) ≈ 1.0 atol=atol rtol=rtol
+
+        @test MOI.get(model, MOI.ConstraintPrimal(), cv) ≈ ones(4) atol=atol rtol=rtol
+        @test MOI.get(model, MOI.ConstraintPrimal(), c) ≈ 2.0 atol=atol rtol=rtol
+
+        if config.duals
+            @test MOI.get(model, MOI.ConstraintDual(), cv) ≈ [1.0, 1.0, -1.0, -1.0] atol=atol rtol=rtol
+            @test MOI.get(model, MOI.ConstraintDual(), c) ≈ -1.0 atol=atol rtol=rtol
+        end
+    end
+end
 
 const rsoctests = Dict("rotatedsoc1v" => rotatedsoc1vtest,
                        "rotatedsoc1f" => rotatedsoc1ftest,
                        "rotatedsoc2"  => rotatedsoc2test,
-                       "rotatedsoc3"  => rotatedsoc3test)
+                       "rotatedsoc3"  => rotatedsoc3test,
+                       "rotatedsoc4"  => rotatedsoc4test)
 
 @moitestset rsoc
 
