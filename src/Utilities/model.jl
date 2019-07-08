@@ -147,7 +147,7 @@ function _single_variable_with(
     end
     return rm
 end
-function _vector_of_variables_with(::Vector, ::VI)
+function _vector_of_variables_with(::Vector, ::Union{VI, MOI.Vector{VI}})
     return CI{MOI.VectorOfVariables}[]
 end
 function throw_delete_variable_in_vov(vi::VI)
@@ -168,10 +168,20 @@ function _vector_of_variables_with(
     end
     return rm
 end
-function MOI.delete(model::AbstractModel, vi::VI)
-    if !MOI.is_valid(model, vi)
-        throw(MOI.InvalidIndex(vi))
+function _vector_of_variables_with(
+    constrs::Vector{<:ConstraintEntry{MOI.VectorOfVariables}},
+    vis::Vector{VI}
+)
+    rm = CI{MOI.VectorOfVariables}[]
+    for (ci, f, s) in constrs
+        if vis == f.variables
+            push!(rm, ci)
+        end
     end
+    return rm
+end
+function MOI.delete(model::AbstractModel, vi::VI)
+    MOI.throw_if_not_valid(model, vi)
     model.objective = removevariable(model.objective, vi)
     broadcastcall(constrs -> _remove_variable(constrs, vi), model)
     # If a variable is removed, the SingleVariable constraints using this
@@ -194,6 +204,17 @@ function MOI.delete(model::AbstractModel, vi::VI)
     model.name_to_var = nothing
     if haskey(model.var_to_name, vi)
         delete!(model.var_to_name, vi)
+    end
+end
+function MOI.delete(model::AbstractModel, vis::Vector{VI})
+    # Delete `VectorOfVariables(vis)` constraints as otherwise, it will error
+    # when removing variables one by one.
+    vov_to_remove = broadcastvcat(constrs -> _vector_of_variables_with(constrs, vis), model)
+    for ci in vov_to_remove
+        MOI.delete(model, ci)
+    end
+    for vi in vis
+        MOI.delete(model, vi)
     end
 end
 
@@ -493,9 +514,7 @@ function _delete_constraint(model::AbstractModel, ci::CI)
     model.constrmap[ci.value] = 0
 end
 function MOI.delete(model::AbstractModel, ci::CI)
-    if !MOI.is_valid(model, ci)
-        throw(MOI.InvalidIndex(ci))
-    end
+    MOI.throw_if_not_valid(model, ci)
     _delete_constraint(model, ci)
     model.name_to_con = nothing
     if haskey(model.con_to_name, ci)
