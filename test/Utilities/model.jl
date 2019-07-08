@@ -154,6 +154,16 @@ end
     @test 1 == @inferred MOI.get(model, MOI.NumberOfConstraints{MOI.VectorAffineFunction{Int},MOI.SecondOrderCone}())
     @test MOI.get(model, MOI.ConstraintFunction(), c6).constants == f6.constants
 
+    message = string("Cannot delete variable as it is constrained with other",
+                     " other variables in a `MOI.VectorOfVariables`.")
+    err = MOI.DeleteNotAllowed(y, message)
+    @test_throws err MOI.delete(model, y)
+
+    @test MOI.is_valid(model, c7)
+    MOI.delete(model, c7)
+    @test !MOI.is_valid(model, c7)
+    @test 0 == @inferred MOI.get(model, MOI.NumberOfConstraints{MOI.VectorOfVariables,MOI.Nonpositives}())
+
     MOI.delete(model, y)
 
     f = MOI.get(model, MOI.ConstraintFunction(), c2)
@@ -164,13 +174,6 @@ end
     f = MOI.get(model, MOI.ConstraintFunction(), c6)
     @test f.terms == MOI.VectorAffineTerm.([1], MOI.ScalarAffineTerm.([2], [x]))
     @test f.constants == [6, 8]
-
-    f =  MOI.get(model, MOI.ConstraintFunction(), c7)
-    @test f.variables == [x]
-
-    s =  MOI.get(model, MOI.ConstraintSet(), c7)
-    @test MOI.dimension(s) == 1
-
 end
 
 # We create a new function and set to test catching errors if users create their

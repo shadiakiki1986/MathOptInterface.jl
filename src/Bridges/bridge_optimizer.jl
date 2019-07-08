@@ -190,9 +190,7 @@ function MOI.delete(b::AbstractBridgeOptimizer, vi::MOI.VariableIndex)
     if is_bridged(b, vi)
         MOI.throw_if_not_valid(b, vi)
         if Variable.length_of_vector_of_variables(Variable.bridges(b), vi) > 1
-            message = string("Cannot delete a variable part of a bridged",
-                             " vector of constrained variables with length > 1.")
-            throw(MOI.DeleteNotAllowed(vi, message))
+            MOIU.throw_delete_variable_in_vov(vi)
         end
         MOI.delete(b, bridge(b, vi))
         delete!(Variable.bridges(b), vi)
