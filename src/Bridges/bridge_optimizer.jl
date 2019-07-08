@@ -247,7 +247,9 @@ function get_all_including_bridged(
             append!(list, Constraint.keys_of_type(Constraint.bridges(b),
                                                   MOI.ConstraintIndex{F, S}))
         end
-        append!(list, Variable.constraints_with_set(Variable.bridges(b), S))
+        if Variable.has_bridges(Variable.bridges(b))
+            append!(list, Variable.constraints_with_set(Variable.bridges(b), S))
+        end
     end
     return list
 end
