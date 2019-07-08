@@ -11,11 +11,12 @@ include("utilities.jl")
 # Model similar to SDPA format, it gives a good example because it does not
 # support a lot hence need a lot of bridges
 MOIU.@model(SDPAModel,
-            (), (), (MOI.Zeros, MOI.Nonnegatives, MOI.PositiveSemidefiniteConeTriangle), (),
+            (), (MOI.EqualTo,), (MOI.Nonnegatives, MOI.PositiveSemidefiniteConeTriangle), (),
             (), (MOI.ScalarAffineFunction,), (MOI.VectorOfVariables,), ())
 MOI.supports_constraint(::SDPAModel{T}, ::Type{MOI.SingleVariable}, ::Type{MOI.GreaterThan{T}}) where {T} = false
 MOI.supports_constraint(::SDPAModel{T}, ::Type{MOI.SingleVariable}, ::Type{MOI.LessThan{T}}) where {T} = false
 MOI.supports_constraint(::SDPAModel{T}, ::Type{MOI.SingleVariable}, ::Type{MOI.EqualTo{T}}) where {T} = false
+MOI.supports_constraint(::SDPAModel, ::Type{MOI.VectorOfVariables}, ::Type{MOI.Reals}) = false
 
 @testset "SDPA format with $T" for T in [Float64, Int]
     model = SDPAModel{T}()
@@ -26,6 +27,20 @@ MOI.supports_constraint(::SDPAModel{T}, ::Type{MOI.SingleVariable}, ::Type{MOI.E
         MOIB.add_bridge(bridged, MOIB.Variable.NonposToNonnegBridge{T})
         @test MOI.supports_constraint(bridged, MOI.VectorOfVariables, MOI.Nonpositives)
         @test MOIB.bridge_type(bridged, MOI.Nonpositives) == MOIB.Variable.NonposToNonnegBridge{T}
+    end
+    @testset "Zeros" begin
+        @test !MOI.supports_constraint(model, MOI.VectorOfVariables, MOI.Zeros)
+        @test !MOI.supports_constraint(bridged, MOI.VectorOfVariables, MOI.Zeros)
+        MOIB.add_bridge(bridged, MOIB.Variable.ZerosBridge{T})
+        @test MOI.supports_constraint(bridged, MOI.VectorOfVariables, MOI.Zeros)
+        @test MOIB.bridge_type(bridged, MOI.Zeros) == MOIB.Variable.ZerosBridge{T}
+    end
+    @testset "Free" begin
+        @test !MOI.supports_constraint(model, MOI.VectorOfVariables, MOI.Reals)
+        @test !MOI.supports_constraint(bridged, MOI.VectorOfVariables, MOI.Reals)
+        MOIB.add_bridge(bridged, MOIB.Variable.FreeBridge{T})
+        @test MOI.supports_constraint(bridged, MOI.VectorOfVariables, MOI.Reals)
+        @test MOIB.bridge_type(bridged, MOI.Reals) == MOIB.Variable.FreeBridge{T}
     end
     @testset "Vectorize" begin
         @test !MOI.supports_constraint(model, MOI.SingleVariable, MOI.GreaterThan{T})
@@ -41,6 +56,15 @@ MOI.supports_constraint(::SDPAModel{T}, ::Type{MOI.SingleVariable}, ::Type{MOI.E
         @test MOIB.bridge_type(bridged, MOI.LessThan{T}) == MOIB.Variable.VectorizeBridge{T, MOI.Nonpositives}
         @test MOI.supports_constraint(bridged, MOI.SingleVariable, MOI.EqualTo{T})
         @test MOIB.bridge_type(bridged, MOI.EqualTo{T}) == MOIB.Variable.VectorizeBridge{T, MOI.Zeros}
+    end
+    @testset "RSOCtoPSD" begin
+        @test !MOI.supports_constraint(model, MOI.VectorOfVariables, MOI.RotatedSecondOrderCone)
+        @test !MOI.supports_constraint(bridged, MOI.VectorOfVariables, MOI.RotatedSecondOrderCone)
+        MOIB.add_bridge(bridged, MOIB.Variable.RSOCtoPSDBridge{T})
+        @test !MOI.supports_constraint(bridged, MOI.VectorOfVariables, MOI.RotatedSecondOrderCone)
+        MOIB.add_bridge(bridged, MOIB.Constraint.ScalarFunctionizeBridge{T})
+        @test MOI.supports_constraint(bridged, MOI.VectorOfVariables, MOI.RotatedSecondOrderCone)
+        @test MOIB.bridge_type(bridged, MOI.RotatedSecondOrderCone) == MOIB.Variable.RSOCtoPSDBridge{T}
     end
 end
 
