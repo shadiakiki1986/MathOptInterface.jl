@@ -13,6 +13,7 @@ function test_delete_bridge(
     end
     start_num_bridges = num_bridges()
     @test MOI.get(m, MOI.NumberOfVariables()) == nvars
+    @test length(MOI.get(m, MOI.ListOfVariableIndices())) == nvars
     test_noc(m, F, S, num_bridged)
     for noc in nocs
         test_noc(m, noc...)
@@ -25,6 +26,7 @@ function test_delete_bridge(
     test_noc(m, F, S, num_bridged - 1)
     # As the bridge has been removed, if the constraints it has created where not removed, it wouldn't be there to decrease this counter anymore
     @test MOI.get(m, MOI.NumberOfVariables()) == nvars
+    @test length(MOI.get(m, MOI.ListOfVariableIndices())) == nvars
     for noc in nocs
         test_noc(m, noc...)
     end
@@ -37,6 +39,7 @@ function test_delete_bridged_variable(
     end
     start_num_bridges = num_bridges()
     @test MOI.get(m, MOI.NumberOfVariables()) == nvars
+    @test length(MOI.get(m, MOI.ListOfVariableIndices())) == nvars
     if S != MOI.Reals
         F = S <: MOI.AbstractScalarSet ? MOI.SingleVariable : MOI.VectorOfVariables
         test_noc(m, F, S, num_bridged)
@@ -53,6 +56,7 @@ function test_delete_bridged_variable(
         test_noc(m, F, S, num_bridged - 1)
     end
     @test MOI.get(m, MOI.NumberOfVariables()) == nvars - 1
+    @test length(MOI.get(m, MOI.ListOfVariableIndices())) == nvars - 1
     for noc in nocs
         test_noc(m, noc...)
     end
@@ -65,6 +69,7 @@ function test_delete_bridged_variables(
     end
     start_num_bridges = num_bridges()
     @test MOI.get(m, MOI.NumberOfVariables()) == nvars
+    @test length(MOI.get(m, MOI.ListOfVariableIndices())) == nvars
     if S != MOI.Reals
         F = S <: MOI.AbstractScalarSet ? MOI.SingleVariable : MOI.VectorOfVariables
         test_noc(m, F, S, num_bridged)
@@ -81,6 +86,7 @@ function test_delete_bridged_variables(
         test_noc(m, F, S, num_bridged - 1)
     end
     @test MOI.get(m, MOI.NumberOfVariables()) == nvars - length(vis)
+    @test length(MOI.get(m, MOI.ListOfVariableIndices())) == nvars - length(vis)
     for noc in nocs
         test_noc(m, noc...)
     end
