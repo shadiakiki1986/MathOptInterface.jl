@@ -11,9 +11,9 @@ include("../utilities.jl")
 mock = MOIU.MockOptimizer(MOIU.Model{Float64}())
 config = MOIT.TestConfig()
 
-@testset "RSOCtoPSD" begin
-    bridged_mock = MOIB.Variable.RSOCtoPSD{Float64}(mock)
+bridged_mock = MOIB.Variable.RSOCtoPSD{Float64}(mock)
 
+@testset "RSOC4" begin
     mock.optimize! = (mock::MOIU.MockOptimizer) -> MOIU.mock_optimize!(mock, [1.0, 1.0, 2.0, 1.0, 0.0, 2.0],
         (MOI.ScalarAffineFunction{Float64}, MOI.EqualTo{Float64})  => [0.25],
         (MOI.SingleVariable, MOI.EqualTo{Float64})  => [-0.5],

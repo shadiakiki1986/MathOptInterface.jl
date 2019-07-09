@@ -11,9 +11,9 @@ include("../utilities.jl")
 mock = MOIU.MockOptimizer(MOIU.UniversalFallback(MOIU.Model{Float64}()))
 config = MOIT.TestConfig()
 
-@testset "Free" begin
-    bridged_mock = MOIB.Variable.Free{Float64}(mock)
+bridged_mock = MOIB.Variable.Free{Float64}(mock)
 
+@testset "Linear6" begin
     MOIU.set_mock_optimize!(mock,
         (mock::MOIU.MockOptimizer) -> MOIU.mock_optimize!(mock, [0, 0, 0, 0]),
         (mock::MOIU.MockOptimizer) -> MOIU.mock_optimize!(mock, [100, 0, 0, 0]),
@@ -48,7 +48,9 @@ config = MOIT.TestConfig()
         (MOI.VectorOfVariables, MOI.Nonnegatives, 0),
         (MOI.VectorOfVariables, MOI.Nonpositives, 0)
     ))
+end
 
+@testset "Linear7" begin
     function set_mock_optimize_linear7Test!(mock)
         MOIU.set_mock_optimize!(mock,
             (mock::MOIU.MockOptimizer) -> MOIU.mock_optimize!(mock, [0, 0, 0, 0]),
