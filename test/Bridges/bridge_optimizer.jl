@@ -71,11 +71,11 @@ end
     MOIT.failcopytestia(bridged_mock)
     MOIT.failcopytestva(bridged_mock)
     MOIT.failcopytestca(bridged_mock)
-    MOIT.copytest(bridged_mock, SimpleModel{Float64}())
+    MOIT.copytest(bridged_mock, MOIU.Model{Float64}())
 end
 
 @testset "Custom test" begin
-    model = MOIB.Constraint.SplitInterval{Int}(SimpleModel{Int}())
+    model = MOIB.Constraint.SplitInterval{Int}(NoIntervalModel{Int}())
     @test !MOIB.supports_bridging_constraint(model, MOI.VectorAffineFunction{Float64}, MOI.Interval{Float64})
 
     x, y = MOI.add_variables(model, 2)
