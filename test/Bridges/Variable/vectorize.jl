@@ -22,6 +22,12 @@ vis = MOI.get(bridged_mock, MOI.ListOfVariableIndices())
 @test length(vis) == 2
 y = vis[2]
 
+err = ErrorException(
+    "Cannot add two `SingleVariable`-in-`MathOptInterface.LessThan{Float64}`" *
+    " on the same variable MathOptInterface.VariableIndex(-1)."
+)
+@test_throws err MOI.add_constraint(bridged_mock, MOI.SingleVariable(y), MOI.LessThan(4.0))
+
 cis = MOI.get(bridged_mock, MOI.ListOfConstraintIndices{
     MOI.VectorAffineFunction{Float64}, MOI.ExponentialCone}())
 @test length(cis) == 1
