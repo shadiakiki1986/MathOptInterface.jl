@@ -95,7 +95,7 @@ function MOI.delete(uf::UniversalFallback, vi::VI)
                     delete!(constraints, ci)
                 end
             else
-                constraints[ci] = removevariable(f, s, vi)
+                constraints[ci] = remove_variable(f, s, vi)
             end
         end
     end
