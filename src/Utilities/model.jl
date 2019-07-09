@@ -103,7 +103,7 @@ function MOI.add_variables(model::AbstractModel, n::Integer)
 end
 
 """
-    removevariable(f::MOI.AbstractFunction, s::MOI.AbstractSet, vi::MOI.VariableIndex)
+    remove_variable(f::MOI.AbstractFunction, s::MOI.AbstractSet, vi::MOI.VariableIndex)
 
 Return a tuple `(g, t)` representing the constraint `f`-in-`s` with the
 variable `vi` removed. That is, the terms containing the variable `vi` in the
@@ -111,11 +111,11 @@ function `f` are removed and the dimension of the set `s` is updated if
 needed (e.g. when `f` is a `VectorOfVariables` with `vi` being one of the
 variables).
 """
-removevariable(f, s, vi::VI) = removevariable(f, vi), s
-function removevariable(f::MOI.VectorOfVariables, s, vi::VI)
-    g = removevariable(f, vi)
+remove_variable(f, s, vi::VI) = remove_variable(f, vi), s
+function remove_variable(f::MOI.VectorOfVariables, s, vi::VI)
+    g = remove_variable(f, vi)
     if length(g.variables) != length(f.variables)
-        t = updatedimension(s, length(g.variables))
+        t = update_dimension(s, length(g.variables))
     else
         t = s
     end
@@ -124,15 +124,12 @@ end
 function _remove_variable(constrs::Vector, vi::VI)
     for i in eachindex(constrs)
         ci, f, s = constrs[i]
-        constrs[i] = (ci, removevariable(f, s, vi)...)
+        constrs[i] = (ci, remove_variable(f, s, vi)...)
     end
     return CI{MOI.SingleVariable}[]
 end
 function _remove_variable(
     ::Vector{<:ConstraintEntry{MOI.SingleVariable}}, ::VI)
-end
-function _remove_variable(
-    ::Vector{<:ConstraintEntry{MOI.VectorOfVariables}}, ::VI)
 end
 function _single_variable_with(::Vector, ::VI)
     return CI{MOI.SingleVariable}[]
@@ -161,9 +158,14 @@ function _vector_of_variables_with(
     for (ci, f, s) in constrs
         if vi in f.variables
             if length(f.variables) > 1
-                throw_delete_variable_in_vov(vi)
+                # If `s isa DimensionUpdatableSets` then the variable will be
+                # removed in `_remove_variable`.
+                if !(s isa DimensionUpdatableSets)
+                    throw_delete_variable_in_vov(vi)
+                end
+            else
+                push!(rm, ci)
             end
-            push!(rm, ci)
         end
     end
     return rm
@@ -182,8 +184,7 @@ function _vector_of_variables_with(
 end
 function MOI.delete(model::AbstractModel, vi::VI)
     MOI.throw_if_not_valid(model, vi)
-    model.objective = removevariable(model.objective, vi)
-    broadcastcall(constrs -> _remove_variable(constrs, vi), model)
+    model.objective = remove_variable(model.objective, vi)
     # If a variable is removed, the SingleVariable constraints using this
     # variable need to be removed too. `sv_to_remove` is the list of indices of
     # the `SingleVariable` constraints of `vi`.
@@ -195,6 +196,9 @@ function MOI.delete(model::AbstractModel, vi::VI)
     for ci in vov_to_remove
         MOI.delete(model, ci)
     end
+    # `VectorOfVariables` constraints with non-`DimensionUpdatableSets` were
+    # either deleted or an error was thrown. The rest is modified now.
+    broadcastcall(constrs -> _remove_variable(constrs, vi), model)
     model.single_variable_mask[vi.value] = 0x0
     if model.variable_indices === nothing
         model.variable_indices = Set(MOI.get(model,
