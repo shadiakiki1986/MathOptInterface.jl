@@ -201,6 +201,7 @@ MOIB.added_constraint_types(::Type{RootDetBridge{T}}) where T = [(MOI.VectorAffi
 
 # Attributes, Bridge acting as a model
 MOI.get(b::RootDetBridge, ::MOI.NumberOfVariables) = length(b.Δ)
+MOI.get(b::RootDetBridge, ::MOI.ListOfVariableIndices) = b.Δ
 MOI.get(b::RootDetBridge{T}, ::MOI.NumberOfConstraints{MOI.VectorAffineFunction{T}, MOI.PositiveSemidefiniteConeTriangle}) where T = 1
 MOI.get(b::RootDetBridge{T}, ::MOI.NumberOfConstraints{MOI.VectorAffineFunction{T}, MOI.GeometricMeanCone}) where T = 1
 MOI.get(b::RootDetBridge{T}, ::MOI.ListOfConstraintIndices{MOI.VectorAffineFunction{T}, MOI.PositiveSemidefiniteConeTriangle}) where T = [b.sdindex]

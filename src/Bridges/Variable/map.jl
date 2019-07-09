@@ -120,16 +120,13 @@ function number_with_set(map::Map, S::Type{<:MOI.AbstractSet})
     return count(isequal(S), map.sets)
 end
 
-variable_function_type(::Type{<:MOI.AbstractScalarSet}) = MOI.SingleVariable
-variable_function_type(::Type{<:MOI.AbstractVectorSet}) = MOI.VectorOfVariables
-
 """
     constraints_with_set(map::Map, S::Type{<:MOI.AbstractSet})
 
 Return the list of constraints corresponding to bridged variables in `S`.
 """
 function constraints_with_set(map::Map, S::Type{<:MOI.AbstractSet})
-    F = variable_function_type(S)
+    F = MOIB.variable_function_type(S)
     return [MOI.ConstraintIndex{F, S}(-i) for i in eachindex(map.sets) if map.sets[i] == S]
 end
 
@@ -145,7 +142,7 @@ function list_of_constraint_types(map::Map)
         if map.bridges[i] !== nothing
             S = map.sets[i]
             if S != MOI.Reals
-                F = variable_function_type(S)
+                F = MOIB.variable_function_type(S)
                 push!(list, (F, S))
             end
         end
@@ -333,4 +330,4 @@ Base.values(::EmptyMap) = MOIB.EmptyVector{AbstractBridge}()
 has_bridges(::EmptyMap) = false
 number_of_variables(::EmptyMap) = 0
 number_with_set(::EmptyMap, ::Type{<:MOI.AbstractSet}) = 0
-constraints_with_set(::EmptyMap, S::Type{<:MOI.AbstractSet}) = MOI.ConstraintIndex{variable_function_type(S), S}[]
+constraints_with_set(::EmptyMap, S::Type{<:MOI.AbstractSet}) = MOI.ConstraintIndex{MOIB.variable_function_type(S), S}[]

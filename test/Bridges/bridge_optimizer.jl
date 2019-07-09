@@ -6,13 +6,25 @@ const MOIT = MathOptInterface.Test
 const MOIU = MathOptInterface.Utilities
 const MOIB = MathOptInterface.Bridges
 
-include("simple_model.jl")
 include("utilities.jl")
 
 struct UnknownConstraintAttribute <: MOI.AbstractConstraintAttribute end
 MOI.is_set_by_optimize(::UnknownConstraintAttribute) = true
 
-mock = MOIU.MockOptimizer(SimpleModel{Float64}())
+# Model not supporting Interval
+MOIU.@model(NoIntervalModel,
+            (),
+            (MOI.EqualTo, MOI.GreaterThan, MOI.LessThan, MOI.Interval),
+            (MOI.Zeros, MOI.Nonnegatives, MOI.Nonpositives, MOI.SecondOrderCone,
+             MOI.RotatedSecondOrderCone, MOI.GeometricMeanCone,
+             MOI.PositiveSemidefiniteConeTriangle, MOI.ExponentialCone),
+            (MOI.PowerCone, MOI.DualPowerCone),
+            (),
+            (MOI.ScalarAffineFunction, MOI.ScalarQuadraticFunction),
+            (MOI.VectorOfVariables,),
+            (MOI.VectorAffineFunction, MOI.VectorQuadraticFunction))
+
+mock = MOIU.MockOptimizer(NoIntervalModel{Float64}())
 bridged_mock = MOIB.Constraint.LessToGreater{Float64}(MOIB.Constraint.SplitInterval{Float64}(mock))
 
 @testset "Unsupported constraint attribute" begin
