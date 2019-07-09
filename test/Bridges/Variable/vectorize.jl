@@ -21,6 +21,28 @@ config = MOIT.TestConfig()
 
     vis = MOI.get(bridged_mock, MOI.ListOfVariableIndices())
     @test length(vis) == 2
+
+    cis = MOI.get(bridged_mock, MOI.ListOfConstraintIndices{
+        MOI.VectorAffineFunction{Float64}, MOI.ExponentialCone}())
+    @test length(cis) == 1
+
+    @testset "MultirowChange" begin
+        change = MOI.MultirowChange(vis[2], [(3, 0.0)])
+        message = "The change MathOptInterface.MultirowChange{Float64}(MathOptInterface.VariableIndex(-1), Tuple{Int64,Float64}[(3, 0.0)])" *
+            " contains variables bridged into a function with nonzero constant."
+        err = MOI.ModifyConstraintNotAllowed(cis[1], change, message)
+        @test_throws err MOI.modify(bridged_mock, cis[1], change)
+    end
+
+    @testset "ScalarCoefficientChange" begin
+        change = MOI.ScalarCoefficientChange(vis[2], 0.0)
+        attr = MOI.ObjectiveFunction{MOI.ScalarAffineFunction{Float64}}()
+        message = "The change MathOptInterface.ScalarCoefficientChange{Float64}(MathOptInterface.VariableIndex(-1), 0.0)" *
+            " contains variables bridged into a function with nonzero constant."
+        err = MOI.ModifyObjectiveNotAllowed(change, message)
+        @test_throws err MOI.modify(bridged_mock, attr, change)
+    end
+
     test_delete_bridged_variable(bridged_mock, vis[2], MOI.LessThan{Float64}, 2, (
         (MOI.VectorOfVariables, MOI.Nonpositives, 0),
     ))
