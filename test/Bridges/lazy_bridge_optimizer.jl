@@ -66,6 +66,27 @@ MOI.supports_constraint(::SDPAModel, ::Type{MOI.VectorOfVariables}, ::Type{MOI.R
         @test MOI.supports_constraint(bridged, MOI.VectorOfVariables, MOI.RotatedSecondOrderCone)
         @test MOIB.bridge_type(bridged, MOI.RotatedSecondOrderCone) == MOIB.Variable.RSOCtoPSDBridge{T}
     end
+    @testset "Combining two briges" begin
+        xy = MOI.add_variables(bridged, 2)
+        test_delete_bridged_variables(bridged, xy, MOI.Reals, 2, (
+            (MOI.VectorOfVariables, MOI.Nonnegatives, 0),
+            (MOI.VectorOfVariables, MOI.Nonpositives, 0)),
+            used_bridges = 2)
+    end
+end
+
+@testset "Continuous Linear" begin
+    model = SDPAModel{Float64}()
+    bridged = MOIB.full_bridge_optimizer(model, Float64)
+    exclude = ["partial_start"] # `VariablePrimalStart` not supported.
+    MOIT.contlineartest(bridged, MOIT.TestConfig(solve=false), exclude)
+end
+
+@testset "Continuous Conic" begin
+    model = SDPAModel{Float64}()
+    bridged = MOIB.full_bridge_optimizer(model, Float64)
+    exclude = ["exp", "logdet", "rootdets"]
+    MOIT.contconictest(bridged, MOIT.TestConfig(solve=false), exclude)
 end
 
 # Model not supporting RotatedSecondOrderCone
@@ -306,27 +327,4 @@ end
             end
         end
     end
-end
-
-@testset "Combining two briges" begin
-    full_bridged_mock = MOIB.full_bridge_optimizer(mock, Float64)
-    mock.optimize! = (mock::MOIU.MockOptimizer) -> MOIU.mock_optimize!(mock, [1, 1, 0, 1, 1, 0, 1, √2])
-    config = MOIT.TestConfig()
-    MOIT.rootdett1vtest(full_bridged_mock, config)
-    MOIT.rootdett1ftest(full_bridged_mock, config)
-    # Dual is not yet implemented for RootDet and GeoMean bridges
-    ci = first(MOI.get(full_bridged_mock, MOI.ListOfConstraintIndices{MOI.VectorAffineFunction{Float64}, MOI.RootDetConeTriangle}()))
-    test_delete_bridge(full_bridged_mock, ci, 4, ((MOI.VectorAffineFunction{Float64}, MOI.RotatedSecondOrderCone, 0),
-                                                (MOI.VectorAffineFunction{Float64}, MOI.GeometricMeanCone, 0),
-                                                (MOI.VectorAffineFunction{Float64}, MOI.PositiveSemidefiniteConeTriangle, 0)),
-                       used_bridges = 3)
-end
-
-@testset "Continuous Linear" begin
-    exclude = ["partial_start"] # VariablePrimalStart not supported.
-    MOIT.contlineartest(bridged_mock, MOIT.TestConfig(solve=false), exclude)
-end
-
-@testset "Continuous Conic" begin
-    MOIT.contconictest(MOIB.full_bridge_optimizer(mock, Float64), MOIT.TestConfig(solve=false), ["logdets", "rootdets", "psds"])
 end
