@@ -104,6 +104,8 @@ elements = sort(collect(map), by = el -> el.second.id)
     @test MOIB.Constraint.number_of_type(map, typeof(c1)) == 0
     @test MOIB.Constraint.number_of_type(map, typeof(c2)) == 0
     @test MOIB.Constraint.number_of_type(map, typeof(c3)) == 0
+
+    @test isempty(collect(map))
 end
 
 @testset "EmptyMap" begin
