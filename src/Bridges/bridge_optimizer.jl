@@ -689,11 +689,6 @@ function is_bridged(b::AbstractBridgeOptimizer,
                     change::Union{MOI.ScalarCoefficientChange, MOI.MultirowChange})
     return is_bridged(b, change.variable)
 end
-function _modify_not_allowed(::MOI.ConstraintIndex, change, message)
-    throw(MOI.ModifyConstraintNotAllowed(
-        ci, change, "The change $change contains variables into a" *
-        " function with nonzero constant."))
-end
 function modify_bridged_change(b::AbstractBridgeOptimizer, obj,
                                change::MOI.MultirowChange)
     func = variable_bridged_function(b, change.variable)::MOI.ScalarAffineFunction
@@ -701,9 +696,9 @@ function modify_bridged_change(b::AbstractBridgeOptimizer, obj,
         # We would need to get the constant in the function, and the
         # coefficient of `change.variable` to remove its contribution
         # to the constant and then modify the constant.
-        throw(throw_modify_not_allowed(
-            obj, change, "The change $change contains variables into a" *
-            " function with nonzero constant."))
+        MOI.throw_modify_not_allowed(
+            obj, change, "The change $change contains variables bridged into" *
+            " a function with nonzero constant.")
     end
     for t in func.terms
         coefs = [(i, coef * t.coefficient) for (i, coef) in change.new_coefficients]
@@ -717,9 +712,9 @@ function modify_bridged_change(b::AbstractBridgeOptimizer, obj,
         # We would need to get the constant in the set, and the
         # coefficient of `change.variable` to remove its contribution
         # to the constant and then modify the constant.
-        throw(throw_modify_not_allowed(
-            obj, change, "The change $change contains variables into a" *
-            " function with nonzero constant."))
+        MOI.throw_modify_not_allowed(
+            obj, change, "The change $change contains variables bridged into" *
+            " a function with nonzero constant.")
     end
     for t in func.terms
         coef = t.coefficient * change.new_coefficient
