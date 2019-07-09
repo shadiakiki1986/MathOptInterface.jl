@@ -8,11 +8,25 @@ const MOIB = MathOptInterface.Bridges
 
 include("../utilities.jl")
 
-mock = MOIU.MockOptimizer(MOIU.Model{Float64}())
+mock = MOIU.MockOptimizer(MOIU.UniversalFallback(MOIU.Model{Float64}()))
 config = MOIT.TestConfig()
 
 @testset "NonposToNonneg" begin
     bridged_mock = MOIB.Variable.NonposToNonneg{Float64}(mock)
+
+    mock.optimize! = (mock::MOIU.MockOptimizer) -> MOIU.mock_optimize!(mock, [-4, 3, 16, 0],
+        (MOI.VectorAffineFunction{Float64}, MOI.Zeros) => [[7, 2, -4]])
+    MOIT.lin2vtest(bridged_mock, config)
+
+    @test MOI.get(mock, MOI.NumberOfVariables()) == 4
+    @test MOI.get(bridged_mock, MOI.NumberOfVariables()) == 4
+    vis = MOI.get(bridged_mock, MOI.ListOfVariableIndices())
+    y = vis[4]
+    @test y.value == -1
+
+    MOI.set(bridged_mock, MOI.VariablePrimalStart(), y, 1.0)
+    x, y_flipped, z, s = MOI.get(mock, MOI.ListOfVariableIndices())
+    @test MOI.get(mock, MOI.VariablePrimalStart(), y_flipped) == -1
 
     MOIU.set_mock_optimize!(mock,
         (mock::MOIU.MockOptimizer) -> MOIU.mock_optimize!(
