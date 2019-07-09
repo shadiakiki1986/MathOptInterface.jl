@@ -67,6 +67,12 @@ end
 @test collect(keys(map)) == [v1; v2]
 @test collect(values(map)) == [b1, b2]
 
+b3 = VariableDummyBridge(3)
+set3 = MOI.Zeros(0)
+v3, c3 = MOIB.Variable.add_keys_for_bridge(map, b3, set3)
+@test isempty(v3)
+@test c3.value == 0
+
 bridges = collect(values(map))
 @test sort([b.id for b in bridges]) == 1:2
 elements = sort(collect(map), by = el -> el.second.id)
@@ -92,6 +98,12 @@ elements = sort(collect(map), by = el -> el.second.id)
     @test collect(values(map)) == [b2]
     @test !haskey(map, v1)
     @test MOIB.Variable.has_keys(map, v2)
+
+    err = ArgumentError(
+        "MathOptInterface.VariableIndex[VariableIndex(-3), VariableIndex(-2)]" *
+        " is not a valid key vector as returned by `add_keys_for_bridge`."
+    )
+    @test_throws err delete!(map, v2[2:-1:1])
 
     delete!(map, v2)
     @test length(map) == 0
