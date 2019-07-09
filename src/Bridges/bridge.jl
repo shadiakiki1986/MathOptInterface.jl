@@ -39,6 +39,17 @@ function MOI.get(::AbstractBridge,
 end
 
 """
+    MOI.supports(model::MOI.ModelLike, attr::MOI.AbstractConstraintAttribute,
+                 BT::Type{<:AbstractBridge})
+
+Return a `Bool` indicating whether `BT` supports setting `attr` to `model`.
+"""
+function MOI.supports(::MOI.ModelLike, ::MOI.AbstractConstraintAttribute,
+                      ::Type{<:AbstractBridge})
+    return false
+end
+
+"""
     function MOI.get(model::MOI.ModelLike, attr::MOI.AbstractConstraintAttribute,
                      bridge::AbstractBridge)
 

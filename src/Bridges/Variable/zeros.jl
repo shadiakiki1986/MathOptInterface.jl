@@ -39,6 +39,9 @@ function MOI.get(bridge::ZerosBridge, ::MOI.ListOfVariableIndices)
     return MOI.VariableIndex[]
 end
 
+# References
+function MOI.delete(::MOI.ModelLike, ::ZerosBridge) end
+
 # Attributes, Bridge acting as a constraint
 
 function MOI.get(::MOI.ModelLike, ::MOI.ConstraintPrimal,
