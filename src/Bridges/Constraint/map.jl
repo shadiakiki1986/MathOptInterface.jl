@@ -35,6 +35,11 @@ function Base.empty!(map::Map)
     empty!(map.vector_of_variables_constraints)
     return map
 end
+function Base.length(map::Map)
+    return count(bridge -> bridge !== nothing, map.bridges) +
+        length(map.single_variable_constraints) +
+        length(map.vector_of_variables_constraints)
+end
 function Base.haskey(map::Map, ci::MOI.ConstraintIndex{F, S}) where {F, S}
     return 1 ≤ ci.value ≤ length(map.bridges) &&
         map.bridges[ci.value] !== nothing &&
@@ -87,7 +92,7 @@ function _iterate_vov(map::Map, elem_state=iterate(map.vector_of_variables_const
         i, S = elem_state[1].first
         bridge = elem_state[1].second
         ci = MOI.ConstraintIndex{MOI.VectorOfVariables, S}(i)
-        return ci => bridge, (2, elem_state[2])
+        return ci => bridge, (3, elem_state[2])
     end
 end
 function _iterate_sv(map::Map, elem_state=iterate(map.single_variable_constraints))
