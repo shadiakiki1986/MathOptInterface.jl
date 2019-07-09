@@ -632,9 +632,9 @@ function MOI.add_constraint(b::AbstractBridgeOptimizer, f::MOI.AbstractFunction,
                     # The index of the contraint will have positive value hence
                     # it would clash with the index space of `b.model` since
                     # the constraint type is normally not bridged.
-                    error("Cannot `VectorOfVariables`-in-`$(typeof(s))`for",
+                    error("Cannot `VectorOfVariables`-in-`$(typeof(s))` for",
                           " which some variables are bridged but not the",
-                          " first one $(first(f.variables)).")
+                          " first one `$(first(f.variables))`.")
                 end
                 BridgeType = Constraint.concrete_bridge_type(
                     Constraint.VectorFunctionizeBridge{Float64}, typeof(f), typeof(s))

@@ -13,27 +13,36 @@ config = MOIT.TestConfig()
 
 bridged_mock = MOIB.Variable.Zeros{Float64}(mock)
 
-MOIU.set_mock_optimize!(mock,
-    (mock::MOIU.MockOptimizer) -> MOIU.mock_optimize!(
-        mock, [1.0],
-        (MOI.ScalarAffineFunction{Float64}, MOI.EqualTo{Float64}) => 0.0,
-        (MOI.ScalarAffineFunction{Float64}, MOI.GreaterThan{Float64}) => 1.0)
-)
-
 x, cx = MOI.add_constrained_variable(bridged_mock, MOI.GreaterThan(0.0))
 yz, cyz = MOI.add_constrained_variables(bridged_mock, MOI.Zeros(2))
 y, z = yz
 fx = MOI.SingleVariable(x)
 fy = MOI.SingleVariable(y)
 fz = MOI.SingleVariable(z)
-c1 = MOI.add_constraint(bridged_mock, 1.0fy + 1.0fz, MOI.EqualTo(0.0))
-c2 = MOI.add_constraint(bridged_mock, 1.0fx + 1.0fy + 1.0fz, MOI.GreaterThan(1.0))
+c1, c2 = MOI.add_constraints(
+    bridged_mock, [1.0fy + 1.0fz, 1.0fx + 1.0fy + 1.0fz],
+    [MOI.EqualTo(0.0), MOI.GreaterThan(1.0)]
+)
+#c2 = MOI.add_constraint(bridged_mock, , )
 MOI.set(bridged_mock, MOI.ObjectiveSense(), MOI.MIN_SENSE)
 obj = 1.0fx - 1.0fy - 1.0fz
 MOI.set(bridged_mock, MOI.ObjectiveFunction{typeof(obj)}(), obj)
 
 @test MOIB.Variable.unbridged_map(MOIB.bridge(bridged_mock, y), y, MOIB.Variable.IndexInVector(1)) === nothing
 @test MOIB.Variable.unbridged_map(MOIB.bridge(bridged_mock, z), z, MOIB.Variable.IndexInVector(2)) === nothing
+
+err = ErrorException(
+    "Cannot add two `VectorOfVariables`-in-`MathOptInterface.Zeros` on the" *
+    " same first variable MathOptInterface.VariableIndex(-1)."
+)
+@test_throws err MOI.add_constraint(bridged_mock, MOI.VectorOfVariables(yz), MOI.Zeros(2))
+
+err = ErrorException(
+    "Cannot `VectorOfVariables`-in-`MathOptInterface.Zeros` for" *
+    " which some variables are bridged but not the first one" *
+    " `MathOptInterface.VariableIndex(12345679)`."
+)
+@test_throws err MOI.add_constraint(bridged_mock, MOI.VectorOfVariables([x, y]), MOI.Zeros(2))
 
 err = ErrorException(
     "Cannot unbridge function because some variables are bridged by" *
@@ -52,28 +61,45 @@ err = ArgumentError(
 )
 @test_throws err MOI.get(bridged_mock, MOIT.UnknownVariableAttribute(), y)
 
-MOI.optimize!(bridged_mock)
-@test MOI.get(bridged_mock, MOI.VariablePrimal(), x) == 1.0
-@test MOI.get(bridged_mock, MOI.VariablePrimal(), y) == 0.0
-@test MOI.get(bridged_mock, MOI.VariablePrimal(), z) == 0.0
+@testset "Results" begin
+    MOIU.set_mock_optimize!(mock,
+        (mock::MOIU.MockOptimizer) -> MOIU.mock_optimize!(
+            mock, [1.0],
+            (MOI.ScalarAffineFunction{Float64}, MOI.EqualTo{Float64}) => 0.0,
+            (MOI.ScalarAffineFunction{Float64}, MOI.GreaterThan{Float64}) => 1.0)
+    )
+    MOI.optimize!(bridged_mock)
+    @test MOI.get(bridged_mock, MOI.VariablePrimal(), x) == 1.0
+    @test MOI.get(bridged_mock, MOI.VariablePrimal(), y) == 0.0
+    @test MOI.get(bridged_mock, MOI.VariablePrimal(), z) == 0.0
 
-@test MOI.get(bridged_mock, MOI.ConstraintPrimal(), cyz) == zeros(2)
+    @test MOI.get(bridged_mock, MOI.ConstraintPrimal(), cyz) == zeros(2)
 
-@test MOI.get(bridged_mock, MOI.ConstraintDual(), cx) == 0.0
-@test MOI.get(bridged_mock, MOI.ConstraintDual(), c1) == 0.0
-@test MOI.get(bridged_mock, MOI.ConstraintDual(), c2) == 1.0
+    @test MOI.get(bridged_mock, MOI.ConstraintDual(), cx) == 0.0
+    @test MOI.get(bridged_mock, MOI.ConstraintDual(), c1) == 0.0
+    @test MOI.get(bridged_mock, MOI.ConstraintDual(), c2) == 1.0
 
-err = ArgumentError(
-    "Bridge of type `MathOptInterface.Bridges.Variable.ZerosBridge{Float64}`" *
-    " does not support accessing the attribute" *
-    " `MathOptInterface.ConstraintDual(1)`."
-)
-@test_throws err MOI.get(bridged_mock, MOI.ConstraintDual(), cyz)
+    err = ArgumentError(
+        "Bridge of type `MathOptInterface.Bridges.Variable.ZerosBridge{Float64}`" *
+        " does not support accessing the attribute" *
+        " `MathOptInterface.ConstraintDual(1)`."
+    )
+    @test_throws err MOI.get(bridged_mock, MOI.ConstraintDual(), cyz)
+end
 
-@test MOI.get(mock, MOI.NumberOfVariables()) == 1
-@test MOI.get(mock, MOI.ListOfVariableIndices()) == [x]
-@test MOI.get(bridged_mock, MOI.NumberOfVariables()) == 3
-@test MOI.get(bridged_mock, MOI.ListOfVariableIndices()) == [x, y, z]
-@test MOI.get(mock, MOI.NumberOfConstraints{MOI.VectorOfVariables, MOI.Zeros}()) == 0
-@test MOI.get(bridged_mock, MOI.NumberOfConstraints{MOI.VectorOfVariables, MOI.Zeros}()) == 1
-@test MOI.get(bridged_mock, MOI.ListOfConstraintIndices{MOI.VectorOfVariables, MOI.Zeros}()) == [cyz]
+@testset "Query" begin
+    @test MOI.get(mock, MOI.NumberOfVariables()) == 1
+    @test MOI.get(mock, MOI.ListOfVariableIndices()) == [x]
+    @test MOI.get(bridged_mock, MOI.NumberOfVariables()) == 3
+    @test MOI.get(bridged_mock, MOI.ListOfVariableIndices()) == [x, y, z]
+    @test MOI.get(mock, MOI.NumberOfConstraints{MOI.VectorOfVariables, MOI.Zeros}()) == 0
+    @test MOI.get(bridged_mock, MOI.NumberOfConstraints{MOI.VectorOfVariables, MOI.Zeros}()) == 1
+    @test MOI.get(bridged_mock, MOI.ListOfConstraintIndices{MOI.VectorOfVariables, MOI.Zeros}()) == [cyz]
+end
+
+@testset "SingleVariable objective" begin
+    err = ErrorException("Using bridged variable in `SingleVariable` function.")
+    @test_throws err MOI.set(bridged_mock, MOI.ObjectiveFunction{typeof(fy)}(), fy)
+    MOI.set(bridged_mock, MOI.ObjectiveFunction{typeof(fx)}(), fx)
+    @test MOI.get(bridged_mock, MOI.ObjectiveFunction{typeof(fx)}()) == fx
+end
