@@ -24,6 +24,7 @@ config = MOIT.TestConfig()
     y = vis[4]
     @test y.value == -1
 
+    @test MOI.supports(bridged_mock, MOI.VariablePrimalStart(), MOI.VariableIndex)
     MOI.set(bridged_mock, MOI.VariablePrimalStart(), y, 1.0)
     x, y_flipped, z, s = MOI.get(mock, MOI.ListOfVariableIndices())
     @test MOI.get(mock, MOI.VariablePrimalStart(), y_flipped) == -1

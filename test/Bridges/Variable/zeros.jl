@@ -32,6 +32,12 @@ MOI.set(bridged_mock, MOI.ObjectiveFunction{typeof(obj)}(), obj)
 @test MOIB.Variable.unbridged_map(MOIB.bridge(bridged_mock, z), z, MOIB.Variable.IndexInVector(2)) === nothing
 
 err = ErrorException(
+    "Cannot delete constraint index of bridged constrained variables, delete" *
+    " the scalar variable or the vector of variables instead."
+)
+@test_throws err MOI.delete(bridged_mock, cyz)
+
+err = ErrorException(
     "Cannot add two `VectorOfVariables`-in-`MathOptInterface.Zeros` on the" *
     " same first variable MathOptInterface.VariableIndex(-1)."
 )
@@ -88,6 +94,7 @@ err = ArgumentError(
 end
 
 @testset "Query" begin
+    @test MOI.get(bridged_mock, MOI.ConstraintFunction(), cyz).variables == yz
     @test MOI.get(mock, MOI.NumberOfVariables()) == 1
     @test MOI.get(mock, MOI.ListOfVariableIndices()) == [x]
     @test MOI.get(bridged_mock, MOI.NumberOfVariables()) == 3
@@ -102,4 +109,19 @@ end
     @test_throws err MOI.set(bridged_mock, MOI.ObjectiveFunction{typeof(fy)}(), fy)
     MOI.set(bridged_mock, MOI.ObjectiveFunction{typeof(fx)}(), fx)
     @test MOI.get(bridged_mock, MOI.ObjectiveFunction{typeof(fx)}()) == fx
+end
+
+@testset "Delete" begin
+    message = string("Cannot delete variable as it is constrained with other",
+                     " other variables in a `MOI.VectorOfVariables`.")
+    err = MOI.DeleteNotAllowed(y, message)
+    @test_throws err MOI.delete(bridged_mock, y)
+    err = MOI.DeleteNotAllowed(z, message)
+    @test_throws err MOI.delete(bridged_mock, z)
+    test_delete_bridged_variables(bridged_mock, yz, MOI.Zeros, 3, (
+        (MOI.SingleVariable, MOI.GreaterThan{Float64}, 1),
+    ))
+    @test MOI.is_valid(bridged_mock, x)
+    @test !MOI.is_valid(bridged_mock, y)
+    @test !MOI.is_valid(bridged_mock, z)
 end

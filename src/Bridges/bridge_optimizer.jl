@@ -131,10 +131,6 @@ function MOIU.supports_default_copy_to(b::AbstractBridgeOptimizer,
 end
 
 # References
-function _constraint_index(b::AbstractBridgeOptimizer, i::Integer)
-    F, S = b.constraint_types[i]
-    return MOI.ConstraintIndex{F, S}(i)
-end
 function MOI.is_valid(b::AbstractBridgeOptimizer, vi::MOI.VariableIndex)
     if is_bridged(b, vi)
         return haskey(Variable.bridges(b), vi)
@@ -201,7 +197,7 @@ end
 function MOI.delete(b::AbstractBridgeOptimizer, ci::MOI.ConstraintIndex)
     if is_bridged(b, ci)
         MOI.throw_if_not_valid(b, ci)
-        MOI.delete(b, bridge(b, ci))
+        br = bridge(b, ci)
         if is_variable_bridged(b, ci)
             error("Cannot delete constraint index of bridged constrained",
                   " variables, delete the scalar variable or the vector of",
@@ -209,6 +205,7 @@ function MOI.delete(b::AbstractBridgeOptimizer, ci::MOI.ConstraintIndex)
         else
             delete!(Constraint.bridges(b), ci)
         end
+        MOI.delete(b, br)
         if Constraint.has_bridges(Constraint.bridges(b))
             b.name_to_con = nothing
         end
