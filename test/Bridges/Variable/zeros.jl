@@ -46,6 +46,12 @@ err = ErrorException(
 @test_throws err MOI.get(bridged_mock, MOI.ConstraintFunction(), c1)
 @test_throws err MOI.get(bridged_mock, MOI.ConstraintFunction(), c2)
 
+err = ArgumentError(
+    "Variable bridge of type `MathOptInterface.Bridges.Variable.ZerosBridge{Float64}`" *
+    " does not support accessing the attribute `MathOptInterface.Test.UnknownVariableAttribute()`."
+)
+@test_throws err MOI.get(bridged_mock, MOIT.UnknownVariableAttribute(), y)
+
 MOI.optimize!(bridged_mock)
 @test MOI.get(bridged_mock, MOI.VariablePrimal(), x) == 1.0
 @test MOI.get(bridged_mock, MOI.VariablePrimal(), y) == 0.0

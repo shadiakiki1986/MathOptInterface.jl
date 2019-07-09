@@ -26,6 +26,14 @@ cis = MOI.get(bridged_mock, MOI.ListOfConstraintIndices{
     MOI.VectorAffineFunction{Float64}, MOI.ExponentialCone}())
 @test length(cis) == 1
 
+@testset "get `UnknownVariableAttribute``" begin
+    err = ArgumentError(
+        "Variable bridge of type `MathOptInterface.Bridges.Variable.VectorizeBridge{Float64,MathOptInterface.Nonpositives}`" *
+        " does not support accessing the attribute `MathOptInterface.Test.UnknownVariableAttribute()`."
+    )
+    @test_throws err MOI.get(bridged_mock, MOIT.UnknownVariableAttribute(), y)
+end
+
 @testset "set `ConstraintSet`" begin
     ci = MOI.ConstraintIndex{MOI.SingleVariable, MOI.LessThan{Float64}}(y.value)
     attr = MOI.ConstraintSet()
