@@ -203,13 +203,13 @@ include("dummy.jl")
             " `MANUAL` mode."
         end
         @testset "Objective" begin
-            err = MOI.ModifyConstraintNotAllowed(ci, change)
-            @test_throws err MOI.modify(model, ci, change)
-            @test sprint(showerror, err) == "MathOptInterface.ModifyConstraintNotAllowed{MathOptInterface.SingleVariable,MathOptInterface.EqualTo{Float64},MathOptInterface.ScalarConstantChange{Float64}}:" *
-            " Modifying the constraints MathOptInterface.ConstraintIndex{MathOptInterface.SingleVariable,MathOptInterface.EqualTo{Float64}}(1)" *
-            " with MathOptInterface.ScalarConstantChange{Float64}(1.0) cannot" *
-            " be performed. You may want to use a `CachingOptimizer` in" *
-            " `AUTOMATIC` mode or you may need to call `reset_optimizer`" *
+            attr = MOI.ObjectiveFunction{MOI.SingleVariable}()
+            err = MOI.ModifyObjectiveNotAllowed(change)
+            @test_throws err MOI.modify(model, attr, change)
+            @test sprint(showerror, err) == "MathOptInterface.ModifyObjectiveNotAllowed{MathOptInterface.ScalarConstantChange{Float64}}:" *
+            " Modifying the objective function with MathOptInterface.ScalarConstantChange{Float64}(1.0)" *
+            " cannot be performed. You may want to use a `CachingOptimizer`" *
+            " in `AUTOMATIC` mode or you may need to call `reset_optimizer`" *
             " before doing this operation if the `CachingOptimizer` is in" *
             " `MANUAL` mode."
         end
