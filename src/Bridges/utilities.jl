@@ -1,4 +1,5 @@
 struct EmptyVector{T} <: AbstractVector{T} end
+Base.isempty(::EmptyVector) = true
 Base.eltype(::EmptyVector{T}) where {T} = T
 Base.iterate(::EmptyVector) = nothing
 

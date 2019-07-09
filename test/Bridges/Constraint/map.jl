@@ -67,39 +67,53 @@ elements = sort(collect(map), by = el -> el.second.id)
 @test MOIB.Constraint.variable_constraints(map, x) == [c1]
 @test isempty(MOIB.Constraint.variable_constraints(map, y))
 
-delete!(map, c1)
-@test length(map) == 2
-@test !isempty(map)
-@test MOIB.Constraint.has_bridges(map)
+@testset "Delete" begin
+    delete!(map, c1)
+    @test length(map) == 2
+    @test !isempty(map)
+    @test MOIB.Constraint.has_bridges(map)
 
-@test MOIB.Constraint.list_of_key_types(map) == Set([
-    (MOI.VectorOfVariables, MOI.SecondOrderCone),
-    (MOI.ScalarAffineFunction{Float64}, MOI.EqualTo{Float64})
-])
-@test isempty(MOIB.Constraint.variable_constraints(map, x))
-@test isempty(MOIB.Constraint.variable_constraints(map, y))
-@test MOIB.Constraint.number_of_type(map, typeof(c1)) == 0
-@test MOIB.Constraint.number_of_type(map, typeof(c2)) == 1
-@test MOIB.Constraint.number_of_type(map, typeof(c3)) == 1
+    @test MOIB.Constraint.list_of_key_types(map) == Set([
+        (MOI.VectorOfVariables, MOI.SecondOrderCone),
+        (MOI.ScalarAffineFunction{Float64}, MOI.EqualTo{Float64})
+    ])
+    @test isempty(MOIB.Constraint.variable_constraints(map, x))
+    @test isempty(MOIB.Constraint.variable_constraints(map, y))
+    @test MOIB.Constraint.number_of_type(map, typeof(c1)) == 0
+    @test MOIB.Constraint.number_of_type(map, typeof(c2)) == 1
+    @test MOIB.Constraint.number_of_type(map, typeof(c3)) == 1
 
-delete!(map, c2)
-@test length(map) == 1
-@test !isempty(map)
-@test MOIB.Constraint.has_bridges(map)
+    delete!(map, c2)
+    @test length(map) == 1
+    @test !isempty(map)
+    @test MOIB.Constraint.has_bridges(map)
 
-@test MOIB.Constraint.list_of_key_types(map) == Set([
-    (MOI.ScalarAffineFunction{Float64}, MOI.EqualTo{Float64})
-])
-@test MOIB.Constraint.number_of_type(map, typeof(c1)) == 0
-@test MOIB.Constraint.number_of_type(map, typeof(c2)) == 0
-@test MOIB.Constraint.number_of_type(map, typeof(c3)) == 1
+    @test MOIB.Constraint.list_of_key_types(map) == Set([
+        (MOI.ScalarAffineFunction{Float64}, MOI.EqualTo{Float64})
+    ])
+    @test MOIB.Constraint.number_of_type(map, typeof(c1)) == 0
+    @test MOIB.Constraint.number_of_type(map, typeof(c2)) == 0
+    @test MOIB.Constraint.number_of_type(map, typeof(c3)) == 1
 
-delete!(map, c3)
-@test length(map) == 0
-@test isempty(map)
-@test MOIB.Constraint.has_bridges(map)
+    delete!(map, c3)
+    @test length(map) == 0
+    @test isempty(map)
+    @test MOIB.Constraint.has_bridges(map)
 
-@test isempty(MOIB.Constraint.list_of_key_types(map))
-@test MOIB.Constraint.number_of_type(map, typeof(c1)) == 0
-@test MOIB.Constraint.number_of_type(map, typeof(c2)) == 0
-@test MOIB.Constraint.number_of_type(map, typeof(c3)) == 0
+    @test isempty(MOIB.Constraint.list_of_key_types(map))
+    @test MOIB.Constraint.number_of_type(map, typeof(c1)) == 0
+    @test MOIB.Constraint.number_of_type(map, typeof(c2)) == 0
+    @test MOIB.Constraint.number_of_type(map, typeof(c3)) == 0
+end
+
+@testset "EmptyMap" begin
+    map = MOIB.Constraint.EmptyMap()
+    empty!(map)
+    @test isempty(map)
+    @test isempty(keys(map))
+    @test isempty(values(map))
+    @test !MOIB.Constraint.has_bridges(map)
+    @test iszero(MOIB.Constraint.number_of_type(map, typeof(c1)))
+    @test iszero(MOIB.Constraint.number_of_type(map, typeof(c2)))
+    @test iszero(MOIB.Constraint.number_of_type(map, typeof(c3)))
+end
