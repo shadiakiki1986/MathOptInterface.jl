@@ -3,7 +3,7 @@ using MathOptInterface
 const MOI = MathOptInterface
 const MOIB = MOI.Bridges
 
-struct DummyBridge <: MOIB.Constraint.AbstractBridge
+struct ConstraintDummyBridge <: MOIB.Constraint.AbstractBridge
     id::Int
 end
 
@@ -13,7 +13,7 @@ map = MOIB.Constraint.Map()
 x = MOI.VariableIndex(1)
 y = MOI.VariableIndex(2)
 fx = MOI.SingleVariable(x)
-b1 = DummyBridge(1)
+b1 = ConstraintDummyBridge(1)
 c1 = MOIB.Constraint.add_key_for_bridge(map, b1, fx, MOI.EqualTo(0.0))
 @test c1.value == x.value
 @test haskey(map, c1)
@@ -25,7 +25,7 @@ c1 = MOIB.Constraint.add_key_for_bridge(map, b1, fx, MOI.EqualTo(0.0))
 @test !isempty(map)
 @test MOIB.Constraint.has_bridges(map)
 
-b2 = DummyBridge(2)
+b2 = ConstraintDummyBridge(2)
 vov = MOI.VectorOfVariables([x, y])
 c2 = MOIB.Constraint.add_key_for_bridge(map, b2, vov, MOI.SecondOrderCone(2))
 @test c2.value == x.value
@@ -38,7 +38,7 @@ c2 = MOIB.Constraint.add_key_for_bridge(map, b2, vov, MOI.SecondOrderCone(2))
 @test !isempty(map)
 @test MOIB.Constraint.has_bridges(map)
 
-b3 = DummyBridge(3)
+b3 = ConstraintDummyBridge(3)
 c3 = MOIB.Constraint.add_key_for_bridge(map, b3, 1.0fx + 2.0, MOI.EqualTo(0.0))
 @test haskey(map, c3)
 @test map[c3] == b3

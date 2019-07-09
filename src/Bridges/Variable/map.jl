@@ -161,7 +161,8 @@ Return a `Bool` indicating whether `vis` was returned by
 """
 function has_keys(map::Map, vis::Vector{MOI.VariableIndex})
     return length_of_vector_of_variables(map, first(vis)) == length(vis) &&
-        all(vi -> bridge_index(map, vi) == -first(vis).value, vis)
+        all(vi -> bridge_index(map, vi) == -first(vis).value, vis) &&
+        haskey(map, vis[1])
 end
 
 """
@@ -332,4 +333,4 @@ Base.values(::EmptyMap) = MOIB.EmptyVector{AbstractBridge}()
 has_bridges(::EmptyMap) = false
 number_of_variables(::EmptyMap) = 0
 number_with_set(::EmptyMap, ::Type{<:MOI.AbstractSet}) = 0
-constraints_with_set(::EmptyMap, S::Type{<:MOI.AbstractScalarSet}) = MOI.ConstraintIndex{variable_function_type(S), S}[]
+constraints_with_set(::EmptyMap, S::Type{<:MOI.AbstractSet}) = MOI.ConstraintIndex{variable_function_type(S), S}[]
