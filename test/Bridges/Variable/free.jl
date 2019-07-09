@@ -17,7 +17,10 @@ config = MOIT.TestConfig()
     MOIU.set_mock_optimize!(mock,
         (mock::MOIU.MockOptimizer) -> MOIU.mock_optimize!(mock, [0, 0, 0, 0]),
         (mock::MOIU.MockOptimizer) -> MOIU.mock_optimize!(mock, [100, 0, 0, 0]),
-        (mock::MOIU.MockOptimizer) -> MOIU.mock_optimize!(mock, [100, 0, 0, -100]))
+        (mock::MOIU.MockOptimizer) -> MOIU.mock_optimize!(mock, [100, 0, 0, -100],
+        (MOI.ScalarAffineFunction{Float64}, MOI.GreaterThan{Float64}) => [1.0],
+        (MOI.ScalarAffineFunction{Float64}, MOI.LessThan{Float64}) => [-1.0]
+    ))
     MOIT.linear6test(bridged_mock, config)
 
     loc = MOI.get(bridged_mock, MOI.ListOfConstraints())
@@ -29,6 +32,14 @@ config = MOIT.TestConfig()
     @test MOI.get(bridged_mock, MOI.NumberOfVariables()) == 2
     vis = MOI.get(bridged_mock, MOI.ListOfVariableIndices())
     @test vis == MOI.VariableIndex.([-1, -2])
+
+    cx = MOI.ConstraintIndex{MOI.VectorOfVariables, MOI.Reals}(vis[1].value)
+    @test MOI.get(bridged_mock, MOI.ConstraintPrimal(), cx) == [100.0]
+    @test MOI.get(bridged_mock, MOI.ConstraintDual(), cx) == [0.0]
+    cy = MOI.ConstraintIndex{MOI.VectorOfVariables, MOI.Reals}(vis[2].value)
+    @test MOI.get(bridged_mock, MOI.ConstraintPrimal(), cy) == [-100.0]
+    @test MOI.get(bridged_mock, MOI.ConstraintDual(), cy) == [0.0]
+
     test_delete_bridged_variable(bridged_mock, vis[1], MOI.Reals, 2, (
         (MOI.VectorOfVariables, MOI.Nonnegatives, 0),
         (MOI.VectorOfVariables, MOI.Nonpositives, 0)
@@ -42,12 +53,23 @@ config = MOIT.TestConfig()
         MOIU.set_mock_optimize!(mock,
             (mock::MOIU.MockOptimizer) -> MOIU.mock_optimize!(mock, [0, 0, 0, 0]),
             (mock::MOIU.MockOptimizer) -> MOIU.mock_optimize!(mock, [100, 0, 0, 0]),
-            (mock::MOIU.MockOptimizer) -> MOIU.mock_optimize!(mock, [100, 0, 0, -100]))
+            (mock::MOIU.MockOptimizer) -> MOIU.mock_optimize!(mock, [100, 0, 0, -100],
+            (MOI.VectorAffineFunction{Float64}, MOI.Nonnegatives) => [[1.0]],
+            (MOI.VectorAffineFunction{Float64}, MOI.Nonpositives) => [[-1.0]]
+    ))
     end
     set_mock_optimize_linear7Test!(mock)
     MOIT.linear7test(bridged_mock, config)
 
     x, y = MOI.get(bridged_mock, MOI.ListOfVariableIndices())
+
+    cx = MOI.ConstraintIndex{MOI.VectorOfVariables, MOI.Reals}(x.value)
+    @test MOI.get(bridged_mock, MOI.ConstraintPrimal(), cx) == [100.0]
+    @test MOI.get(bridged_mock, MOI.ConstraintDual(), cx) == [0.0]
+    cy = MOI.ConstraintIndex{MOI.VectorOfVariables, MOI.Reals}(y.value)
+    @test MOI.get(bridged_mock, MOI.ConstraintPrimal(), cy) == [-100.0]
+    @test MOI.get(bridged_mock, MOI.ConstraintDual(), cy) == [0.0]
+
     MOI.set(bridged_mock, MOI.VariablePrimalStart(), x, 1.0)
     MOI.set(bridged_mock, MOI.VariablePrimalStart(), y, -1.0)
     xa, xb, ya, yb = MOI.get(mock, MOI.ListOfVariableIndices())
