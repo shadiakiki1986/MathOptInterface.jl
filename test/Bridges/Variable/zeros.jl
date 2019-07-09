@@ -32,6 +32,9 @@ MOI.set(bridged_mock, MOI.ObjectiveSense(), MOI.MIN_SENSE)
 obj = 1.0fx - 1.0fy - 1.0fz
 MOI.set(bridged_mock, MOI.ObjectiveFunction{typeof(obj)}(), obj)
 
+@test MOIB.Variable.unbridged_map(MOIB.bridge(bridged_mock, y), y, MOIB.Variable.IndexInVector(1)) === nothing
+@test MOIB.Variable.unbridged_map(MOIB.bridge(bridged_mock, z), z, MOIB.Variable.IndexInVector(2)) === nothing
+
 err = ErrorException(
     "Cannot unbridge function because some variables are bridged by" *
     " variable bridges that do not support reverse mapping, e.g.," *
@@ -47,6 +50,8 @@ MOI.optimize!(bridged_mock)
 @test MOI.get(bridged_mock, MOI.VariablePrimal(), x) == 1.0
 @test MOI.get(bridged_mock, MOI.VariablePrimal(), y) == 0.0
 @test MOI.get(bridged_mock, MOI.VariablePrimal(), z) == 0.0
+
+@test MOI.get(bridged_mock, MOI.ConstraintPrimal(), cyz) == zeros(2)
 
 @test MOI.get(bridged_mock, MOI.ConstraintDual(), cx) == 0.0
 @test MOI.get(bridged_mock, MOI.ConstraintDual(), c1) == 0.0
