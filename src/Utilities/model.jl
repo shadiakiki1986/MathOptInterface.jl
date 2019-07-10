@@ -206,9 +206,7 @@ function MOI.delete(model::AbstractModel, vi::VI)
     end
     delete!(model.variable_indices, vi)
     model.name_to_var = nothing
-    if haskey(model.var_to_name, vi)
-        delete!(model.var_to_name, vi)
-    end
+    delete!(model.var_to_name, vi)
 end
 function MOI.delete(model::AbstractModel, vis::Vector{VI})
     # Delete `VectorOfVariables(vis)` constraints as otherwise, it will error
@@ -521,9 +519,7 @@ function MOI.delete(model::AbstractModel, ci::CI)
     MOI.throw_if_not_valid(model, ci)
     _delete_constraint(model, ci)
     model.name_to_con = nothing
-    if haskey(model.con_to_name, ci)
-        delete!(model.con_to_name, ci)
-    end
+    delete!(model.con_to_name, ci)
 end
 
 function MOI.modify(model::AbstractModel, ci::CI, change::MOI.AbstractFunctionModification)
