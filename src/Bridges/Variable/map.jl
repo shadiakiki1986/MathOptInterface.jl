@@ -6,24 +6,34 @@ Mapping between bridged variables and the bridge that bridged the variable.
 mutable struct Map <: AbstractDict{MOI.VariableIndex, AbstractBridge}
     # Bridged constrained variables
     # `i` ->  `0`: `VariableIndex(-i)` was added with `add_constrained_variable`.
-    # `i` -> `-j`: `VariableIndex(-i)` is was the first  variable of
+    # `i` -> `-j`: `VariableIndex(-i)` was the first variable of
     #              `add_constrained_variables` with a set of dimension `j`.
-    # `i` ->  `j`: `VariableIndex(-i)` is was the `j`th  variable of
+    # `i` ->  `j`: `VariableIndex(-i)` was the `j`th  variable of
     #             ` add_constrained_variables`.
-    index_in_vector_of_variables::Vector{Int}
+    info::Vector{Int}
+    # `i` ->  `-1`: `VariableIndex(-i)` was deleted.
+    # `i` ->  `0`: `VariableIndex(-i)` was added with `add_constrained_variable`.
+    # `i` ->  `j`: `VariableIndex(-i)` is the `j`th  variable of a constrained
+    #               vector of variables, taking deletion into account.
+    index_in_vector::Vector{Int}
     # `i` -> `bridge`: `VariableIndex(-i)` was bridged by `bridge`.
     bridges::Vector{Union{Nothing, AbstractBridge}}
     sets::Vector{Union{Nothing, DataType}}
     # If `nothing`, it cannot be computed because some bridges does not support it
     unbridged_function::Union{Nothing, Dict{MOI.VariableIndex, MOI.AbstractScalarFunction}}
 end
-Map() = Map(Int[], Union{Nothing, AbstractBridge}[], Union{Nothing, DataType}[], Dict{MOI.VariableIndex, MOI.AbstractScalarFunction}())
+function Map()
+    return Map(Int[], Int[], Union{Nothing, AbstractBridge}[],
+               Union{Nothing, DataType}[],
+               Dict{MOI.VariableIndex, MOI.AbstractScalarFunction}())
+end
 
 # Implementation of `AbstractDict` interface.
 
 Base.isempty(map::Map) = all(bridge -> bridge === nothing, map.bridges)
 function Base.empty!(map::Map)
-    empty!(map.index_in_vector_of_variables)
+    empty!(map.info)
+    empty!(map.index_in_vector)
     empty!(map.bridges)
     empty!(map.sets)
     if map.unbridged_function === nothing
@@ -34,7 +44,7 @@ function Base.empty!(map::Map)
     return map
 end
 function bridge_index(map::Map, vi::MOI.VariableIndex)
-    index = map.index_in_vector_of_variables[-vi.value]
+    index = map.info[-vi.value]
     if index ≤ 0
         return -vi.value
     else
@@ -43,23 +53,45 @@ function bridge_index(map::Map, vi::MOI.VariableIndex)
 end
 function Base.haskey(map::Map, vi::MOI.VariableIndex)
     return -length(map.bridges) ≤ vi.value ≤ -1 &&
-        map.bridges[bridge_index(map, vi)] !== nothing
+        map.bridges[bridge_index(map, vi)] !== nothing &&
+        map.index_in_vector[-vi.value] != -1
 end
 function Base.getindex(map::Map, vi::MOI.VariableIndex)
     return map.bridges[bridge_index(map, vi)]
 end
 function Base.delete!(map::Map, vi::MOI.VariableIndex)
-    map.bridges[bridge_index(map, vi)] = nothing
-    map.sets[bridge_index(map, vi)] = nothing
+    if iszero(map.info[-vi.value])
+        # Delete scalar variable
+        map.bridges[bridge_index(map, vi)] = nothing
+        map.sets[bridge_index(map, vi)] = nothing
+    elseif has_keys(map, [vi])
+        # Delete whole vector
+        delete!(map, [vi])
+    else
+        # Delete variable in vector and resize vector
+        map.info[bridge_index(map, vi)] += 1
+        for i in (-vi.value):length(map.index_in_vector)
+            if map.index_in_vector[i] == -1
+                continue
+            elseif bridge_index(map, vi) != bridge_index(map, MOI.VariableIndex(-i))
+                break
+            end
+            map.index_in_vector[i] -= 1
+        end
+    end
+    map.index_in_vector[-vi.value] = -1
     return map
 end
 function Base.delete!(map::Map, vis::Vector{MOI.VariableIndex})
     if has_keys(map, vis)
+        for vi in vis
+            map.index_in_vector[-vi.value] = -1
+        end
         map.bridges[bridge_index(map, first(vis))] = nothing
         map.sets[bridge_index(map, first(vis))] = nothing
         return
     else
-        throw(ArgumentError("$vis is not a valid key vector as returned by `add_keys_for_bridge`."))
+        throw(ArgumentError("`$vis` is not a valid key vector as returned by `add_keys_for_bridge`."))
     end
 end
 function Base.keys(map::Map)
@@ -74,7 +106,7 @@ function number_of_variables(map::Map)
     num = 0
     for i in eachindex(map.bridges)
         if map.bridges[i] !== nothing
-            if iszero(map.index_in_vector_of_variables[i])
+            if iszero(map.info[i])
                 num += 1
             else
                 num += length_of_vector_of_variables(map, MOI.VariableIndex(-i))
@@ -157,9 +189,12 @@ Return a `Bool` indicating whether `vis` was returned by
 [`add_keys_for_bridge`](@ref) and has not been deleted yet.
 """
 function has_keys(map::Map, vis::Vector{MOI.VariableIndex})
-    return length_of_vector_of_variables(map, first(vis)) == length(vis) &&
-        all(vi -> bridge_index(map, vi) == -first(vis).value, vis) &&
-        haskey(map, vis[1])
+    return isempty(vis) || (
+        length_of_vector_of_variables(map, first(vis)) == length(vis) &&
+        all(vi -> bridge_index(map, vi) == bridge_index(map, first(vis)), vis) &&
+        all(vi -> haskey(map, vi), vis) &&
+        all(i -> vis[i].value < vis[i - 1].value, 2:length(vis))
+    )
 end
 
 """
@@ -169,7 +204,7 @@ If `vi` was bridged in a scalar set, it returns 0. Otherwise, it
 returns the dimension of the set.
 """
 function length_of_vector_of_variables(map::Map, vi::MOI.VariableIndex)
-    return -map.index_in_vector_of_variables[bridge_index(map, vi)]
+    return -map.info[bridge_index(map, vi)]
 end
 
 """
@@ -178,11 +213,7 @@ end
 Return the index of `vi` in the vector of variables in which it was bridged.
 """
 function index_in_vector_of_variables(map::Map, vi::MOI.VariableIndex)
-    index = map.index_in_vector_of_variables[-vi.value]
-    if index < 0
-        index = 1
-    end
-    return IndexInVector(index)
+    return IndexInVector(map.index_in_vector[-vi.value])
 end
 
 """
@@ -194,7 +225,7 @@ returns `false` even if all bridges were deleted while `isempty` would return
 by [`MathOptInterface.Bridges.AbstractBridgeOptimizer`](@ref) to shortcut
 operations in case variable bridges are not used.
 """
-has_bridges(map::Map) = !isempty(map.index_in_vector_of_variables)
+has_bridges(map::Map) = !isempty(map.info)
 
 """
     add_key_for_bridge(map::Map, bridge::AbstractBridge,
@@ -209,7 +240,8 @@ function add_key_for_bridge(map::Map, bridge::AbstractBridge,
                             set::MOI.AbstractScalarSet)
     index = -(length(map.bridges) + 1)
     variable = MOI.VariableIndex(index)
-    push!(map.index_in_vector_of_variables, 0)
+    push!(map.info, 0)
+    push!(map.index_in_vector, 0)
     push!(map.bridges, bridge)
     push!(map.sets, typeof(set))
     if map.unbridged_function !== nothing
@@ -239,11 +271,13 @@ function add_keys_for_bridge(map::Map, bridge::AbstractBridge,
     else
         variables = MOI.VariableIndex[MOI.VariableIndex(-(length(map.bridges) + i))
                                       for i in 1:MOI.dimension(set)]
-        push!(map.index_in_vector_of_variables, -MOI.dimension(set))
+        push!(map.info, -MOI.dimension(set))
+        push!(map.index_in_vector, 1)
         push!(map.bridges, bridge)
         push!(map.sets, typeof(set))
         for i in 2:MOI.dimension(set)
-            push!(map.index_in_vector_of_variables, i)
+            push!(map.info, i)
+            push!(map.index_in_vector, i)
             push!(map.bridges, nothing)
             push!(map.sets, nothing)
         end
@@ -282,7 +316,9 @@ function function_for(map::Map, ci::MOI.ConstraintIndex{MOI.VectorOfVariables})
     variables = MOI.VariableIndex[]
     for i in ci.value:-1:-length(map.bridges)
         vi = MOI.VariableIndex(i)
-        if bridge_index(map, vi) == -ci.value
+        if map.index_in_vector[-vi.value] == -1
+            continue
+        elseif bridge_index(map, vi) == -ci.value
             push!(variables, vi)
         else
             break

@@ -67,6 +67,14 @@ function MOI.delete(model::MOI.ModelLike, bridge::FreeBridge)
     MOI.delete(model, bridge.nonpos_variables)
 end
 
+function MOI.delete(model::MOI.ModelLike, bridge::FreeBridge, i::IndexInVector)
+    MOI.delete(model, bridge.nonneg_variables[i.value])
+    deleteat!(bridge.nonneg_variables, i.value)
+    MOI.delete(model, bridge.nonpos_variables[i.value])
+    deleteat!(bridge.nonpos_variables, i.value)
+end
+
+
 # Attributes, Bridge acting as a constraint
 
 function MOI.get(model::MOI.ModelLike, attr::MOI.ConstraintPrimal,

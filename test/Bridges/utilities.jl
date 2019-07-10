@@ -33,7 +33,7 @@ function test_delete_bridge(
 end
 function test_delete_bridged_variable(
     m::MOIB.AbstractBridgeOptimizer, vi::MOI.VariableIndex, S::Type,
-    nvars::Int, nocs::Tuple; used_bridges = 1, num_bridged = 1)
+    nvars::Int, nocs::Tuple; used_bridges = 1, num_bridged = 1, used_constraints = 1)
     function num_bridges()
         return count(bridge -> true, values(MOIB.Variable.bridges(m)))
     end
@@ -53,7 +53,7 @@ function test_delete_bridged_variable(
     @test !MOI.is_valid(m, vi)
     @test num_bridges() == start_num_bridges - used_bridges
     if S != MOI.Reals
-        test_noc(m, F, S, num_bridged - 1)
+        test_noc(m, F, S, num_bridged - used_constraints)
     end
     @test MOI.get(m, MOI.NumberOfVariables()) == nvars - 1
     @test length(MOI.get(m, MOI.ListOfVariableIndices())) == nvars - 1
