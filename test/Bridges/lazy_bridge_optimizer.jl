@@ -18,6 +18,12 @@ MOI.supports_constraint(::SDPAModel{T}, ::Type{MOI.SingleVariable}, ::Type{MOI.L
 MOI.supports_constraint(::SDPAModel{T}, ::Type{MOI.SingleVariable}, ::Type{MOI.EqualTo{T}}) where {T} = false
 MOI.supports_constraint(::SDPAModel, ::Type{MOI.VectorOfVariables}, ::Type{MOI.Reals}) = false
 
+@testset "Name test" begin
+    model = SDPAModel{Float64}()
+    bridged = MOIB.full_bridge_optimizer(model, Float64)
+    MOIT.nametest(bridged)
+end
+
 @testset "SDPA format with $T" for T in [Float64, Int]
     model = SDPAModel{T}()
     bridged = MOIB.LazyBridgeOptimizer(model)

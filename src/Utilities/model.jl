@@ -128,22 +128,6 @@ function _remove_variable(constrs::Vector, vi::VI)
     end
     return CI{MOI.SingleVariable}[]
 end
-function _remove_variable(
-    ::Vector{<:ConstraintEntry{MOI.SingleVariable}}, ::VI)
-end
-function _single_variable_with(::Vector, ::VI)
-    return CI{MOI.SingleVariable}[]
-end
-function _single_variable_with(
-    constrs::Vector{<:ConstraintEntry{MOI.SingleVariable}}, vi::VI)
-    rm = CI{MOI.SingleVariable}[]
-    for (ci, f, s) in constrs
-        if f.variable == vi
-            push!(rm, ci)
-        end
-    end
-    return rm
-end
 function _vector_of_variables_with(::Vector, ::Union{VI, MOI.Vector{VI}})
     return CI{MOI.VectorOfVariables}[]
 end
@@ -182,16 +166,12 @@ function _vector_of_variables_with(
     end
     return rm
 end
-function MOI.delete(model::AbstractModel, vi::VI)
+function MOI.delete(model::AbstractModel{T}, vi::VI) where T
     MOI.throw_if_not_valid(model, vi)
     model.objective = remove_variable(model.objective, vi)
-    # If a variable is removed, the SingleVariable constraints using this
-    # variable need to be removed too. `sv_to_remove` is the list of indices of
-    # the `SingleVariable` constraints of `vi`.
-    sv_to_remove = broadcastvcat(constrs -> _single_variable_with(constrs, vi), model)
-    for ci in sv_to_remove
-        MOI.delete(model, ci)
-    end
+    # If a variable is removed, the `VectorOfVariables` constraints using this
+    # variable only need to be removed too. `vov_to_remove` is the list of
+    # indices of the `VectorOfVariables` constraints of `vi`.
     vov_to_remove = broadcastvcat(constrs -> _vector_of_variables_with(constrs, vi), model)
     for ci in vov_to_remove
         MOI.delete(model, ci)
@@ -206,9 +186,14 @@ function MOI.delete(model::AbstractModel, vi::VI)
     end
     delete!(model.variable_indices, vi)
     model.name_to_var = nothing
-    if haskey(model.var_to_name, vi)
-        delete!(model.var_to_name, vi)
-    end
+    delete!(model.var_to_name, vi)
+    model.name_to_con = nothing
+    delete!(model.con_to_name, MOI.ConstraintIndex{MOI.SingleVariable, MOI.EqualTo{T}}(vi.value))
+    delete!(model.con_to_name, MOI.ConstraintIndex{MOI.SingleVariable, MOI.GreaterThan{T}}(vi.value))
+    delete!(model.con_to_name, MOI.ConstraintIndex{MOI.SingleVariable, MOI.LessThan{T}}(vi.value))
+    delete!(model.con_to_name, MOI.ConstraintIndex{MOI.SingleVariable, MOI.Interval{T}}(vi.value))
+    delete!(model.con_to_name, MOI.ConstraintIndex{MOI.SingleVariable, MOI.Integer}(vi.value))
+    delete!(model.con_to_name, MOI.ConstraintIndex{MOI.SingleVariable, MOI.ZeroOne}(vi.value))
 end
 function MOI.delete(model::AbstractModel, vis::Vector{VI})
     # Delete `VectorOfVariables(vis)` constraints as otherwise, it will error
@@ -521,9 +506,7 @@ function MOI.delete(model::AbstractModel, ci::CI)
     MOI.throw_if_not_valid(model, ci)
     _delete_constraint(model, ci)
     model.name_to_con = nothing
-    if haskey(model.con_to_name, ci)
-        delete!(model.con_to_name, ci)
-    end
+    delete!(model.con_to_name, ci)
 end
 
 function MOI.modify(model::AbstractModel, ci::CI, change::MOI.AbstractFunctionModification)

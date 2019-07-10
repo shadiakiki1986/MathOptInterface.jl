@@ -152,6 +152,12 @@ function number_with_set(map::Map, S::Type{<:MOI.AbstractSet})
     return count(isequal(S), map.sets)
 end
 
+function constraint(map::Map, vi::MOI.VariableIndex)
+    S = constrained_set(map, vi)
+    F = MOIB.variable_function_type(S)
+    return MOI.ConstraintIndex{F, S}(-bridge_index(map, vi))
+end
+
 """
     constraints_with_set(map::Map, S::Type{<:MOI.AbstractSet})
 

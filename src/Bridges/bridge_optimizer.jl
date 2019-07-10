@@ -106,15 +106,16 @@ end
 function MOI.empty!(b::AbstractBridgeOptimizer)
     MOI.empty!(b.model)
     if Variable.has_bridges(Variable.bridges(b))
-        empty!(Variable.bridges(b))
         empty!(b.var_to_name)
         b.name_to_var = nothing
     end
-    if Constraint.has_bridges(Constraint.bridges(b))
-        empty!(Constraint.bridges(b))
+    if Variable.has_bridges(Variable.bridges(b)) ||
+        Constraint.has_bridges(Constraint.bridges(b))
         empty!(b.con_to_name)
         b.name_to_con = nothing
     end
+    empty!(Variable.bridges(b))
+    empty!(Constraint.bridges(b))
 end
 function MOI.supports(b::AbstractBridgeOptimizer,
                       attr::Union{MOI.AbstractModelAttribute,
@@ -166,6 +167,13 @@ function MOI.delete(b::AbstractBridgeOptimizer, vis::Vector{MOI.VariableIndex})
         end
         if all(vi -> is_bridged(b, vi), vis) && Variable.has_keys(Variable.bridges(b), vis)
             MOI.delete(b, bridge(b, first(vis)))
+            b.name_to_var = nothing
+            for vi in vis
+                delete!(b.var_to_name, vi)
+            end
+            ci = Variable.constraint(Variable.bridges(b), first(vis))
+            b.name_to_con = nothing
+            delete!(b.con_to_name, ci)
             delete!(Variable.bridges(b), vis)
         else
             for vi in vis
@@ -193,8 +201,13 @@ function MOI.delete(b::AbstractBridgeOptimizer, vi::MOI.VariableIndex)
             end
         else
             MOI.delete(b, bridge(b, vi))
+            ci = Variable.constraint(Variable.bridges(b), vi)
+            b.name_to_con = nothing
+            delete!(b.con_to_name, ci)
         end
         delete!(Variable.bridges(b), vi)
+        b.name_to_var = nothing
+        delete!(b.var_to_name, vi)
     else
         MOI.delete(b.model, vi)
     end
@@ -211,12 +224,8 @@ function MOI.delete(b::AbstractBridgeOptimizer, ci::MOI.ConstraintIndex)
             delete!(Constraint.bridges(b), ci)
         end
         MOI.delete(b, br)
-        if Constraint.has_bridges(Constraint.bridges(b))
-            b.name_to_con = nothing
-        end
-        if haskey(b.con_to_name, ci)
-            delete!(b.con_to_name, ci)
-        end
+        b.name_to_con = nothing
+        delete!(b.con_to_name, ci)
     else
         MOI.delete(b.model, ci)
     end
