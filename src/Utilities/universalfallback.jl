@@ -73,30 +73,86 @@ function MOI.delete(uf::UniversalFallback, ci::CI{F, S}) where {F, S}
             throw(MOI.InvalidIndex(ci))
         end
         delete!(uf.constraints[(F, S)], ci)
-        if haskey(uf.con_to_name, ci)
-            delete!(uf.con_to_name, ci)
-        end
+        delete!(uf.con_to_name, ci)
         uf.name_to_con = nothing
     end
     for d in values(uf.conattr)
         delete!(d, ci)
     end
 end
+function _remove_variable(uf::UniversalFallback,
+                          constraints::Dict{<:CI{MOI.SingleVariable}}, vi::VI)
+    to_delete = keytype(constraints)[]
+    for (ci, constraint) in constraints
+        f::MOI.SingleVariable = constraint[1]
+        if f.variable == vi
+            push!(to_delete, ci)
+        end
+    end
+    MOI.delete(uf, to_delete)
+end
+function _remove_variable(uf::UniversalFallback,
+                          constraints::Dict{CI{MOI.VectorOfVariables, S}},
+                          vi::VI) where S
+    to_delete = keytype(constraints)[]
+    for (ci, constraint) in constraints
+        f::MOI.VectorOfVariables, s = constraint
+        if vi in f.variables
+            if length(f.variables) > 1
+                if S <: MOIU.DimensionUpdatableSets
+                    constraints[ci] = remove_variable(f, s, vi)
+                else
+                    throw_delete_variable_in_vov(vi)
+                end
+            else
+                push!(to_delete, ci)
+            end
+        end
+    end
+    MOI.delete(uf, to_delete)
+end
+function _remove_variable(::UniversalFallback, constraints::Dict{<:CI}, vi::VI)
+    for (ci, constraint) in constraints
+        f, s = constraint
+        constraints[ci] = remove_variable(f, s, vi)
+    end
+end
+function _remove_vector_of_variables(
+    uf::UniversalFallback, constraints::Dict{<:CI{MOI.VectorOfVariables}},
+    vis::Vector{VI}
+)
+    to_delete = keytype(constraints)[]
+    for (ci, constraint) in constraints
+        f::MOI.VectorOfVariables = constraint[1]
+        if vis == f.variables
+            push!(to_delete, ci)
+        end
+    end
+    MOI.delete(uf, to_delete)
+end
+function _remove_vector_of_variables(
+    ::UniversalFallback, ::Dict{<:CI}, ::Vector{VI})
+end
 function MOI.delete(uf::UniversalFallback, vi::VI)
     MOI.delete(uf.model, vi)
     for d in values(uf.varattr)
         delete!(d, vi)
     end
-    for (FS, constraints) in uf.constraints
-        for (ci, constraint) in constraints
-            f, s = constraint
-            if f isa MOI.SingleVariable
-                if f.variable == vi
-                    delete!(constraints, ci)
-                end
-            else
-                constraints[ci] = remove_variable(f, s, vi)
-            end
+    for (_, constraints) in uf.constraints
+        _remove_variable(uf, constraints, vi)
+    end
+end
+function MOI.delete(uf::UniversalFallback, vis::Vector{VI})
+    MOI.delete(uf.model, vis)
+    for d in values(uf.varattr)
+        for vi in vis
+            delete!(d, vi)
+        end
+    end
+    for (_, constraints) in uf.constraints
+        _remove_vector_of_variables(uf, constraints, vis)
+        for vi in vis
+            _remove_variable(uf, constraints, vi)
         end
     end
 end
