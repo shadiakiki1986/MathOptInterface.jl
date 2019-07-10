@@ -453,7 +453,7 @@ var documenterSearchIndex = {"docs": [
     "page": "Reference",
     "title": "MathOptInterface.supports",
     "category": "function",
-    "text": "supports(model::ModelLike, attr::AbstractOptimizerAttribute)::Bool\n\nReturn a Bool indicating whether model supports the optimizer attribute attr. That is, it returns false if copy_to(model, src) shows a warning in case attr is in the ListOfOptimizerAttributesSet of src; see copy_to for more details on how unsupported optimizer attributes are handled in copy.\n\nsupports(model::ModelLike, attr::AbstractModelAttribute)::Bool\n\nReturn a Bool indicating whether model supports the model attribute attr. That is, it returns false if copy_to(model, src) cannot be performed in case attr is in the ListOfModelAttributesSet of src.\n\nsupports(model::ModelLike, attr::AbstractVariableAttribute, ::Type{VariableIndex})::Bool\n\nReturn a Bool indicating whether model supports the variable attribute attr. That is, it returns false if copy_to(model, src) cannot be performed in case attr is in the ListOfVariableAttributesSet of src.\n\nsupports(model::ModelLike, attr::AbstractConstraintAttribute, ::Type{ConstraintIndex{F,S}})::Bool where {F,S}\n\nReturn a Bool indicating whether model supports the constraint attribute attr applied to an F-in-S constraint. That is, it returns false if copy_to(model, src) cannot be performed in case attr is in the ListOfConstraintAttributesSet of src.\n\nFor all four methods, if the attribute is only not supported in specific circumstances, it should still return true.\n\nNote that supports is only defined for attributes for which is_copyable returns true as other attributes do not appear in the list of attributes set obtained by ListOf...AttributesSet.\n\n\n\n\n\n"
+    "text": "supports(model::ModelLike, sub::AbstractSubmittable)::Bool\n\nReturn a Bool indicating whether model supports the submittable sub.\n\nsupports(model::ModelLike, attr::AbstractOptimizerAttribute)::Bool\n\nReturn a Bool indicating whether model supports the optimizer attribute attr. That is, it returns false if copy_to(model, src) shows a warning in case attr is in the ListOfOptimizerAttributesSet of src; see copy_to for more details on how unsupported optimizer attributes are handled in copy.\n\nsupports(model::ModelLike, attr::AbstractModelAttribute)::Bool\n\nReturn a Bool indicating whether model supports the model attribute attr. That is, it returns false if copy_to(model, src) cannot be performed in case attr is in the ListOfModelAttributesSet of src.\n\nsupports(model::ModelLike, attr::AbstractVariableAttribute, ::Type{VariableIndex})::Bool\n\nReturn a Bool indicating whether model supports the variable attribute attr. That is, it returns false if copy_to(model, src) cannot be performed in case attr is in the ListOfVariableAttributesSet of src.\n\nsupports(model::ModelLike, attr::AbstractConstraintAttribute, ::Type{ConstraintIndex{F,S}})::Bool where {F,S}\n\nReturn a Bool indicating whether model supports the constraint attribute attr applied to an F-in-S constraint. That is, it returns false if copy_to(model, src) cannot be performed in case attr is in the ListOfConstraintAttributesSet of src.\n\nFor all five methods, if the attribute is only not supported in specific circumstances, it should still return true.\n\nNote that supports is only defined for attributes for which is_copyable returns true as other attributes do not appear in the list of attributes set obtained by ListOf...AttributesSet.\n\n\n\n\n\n"
 },
 
 {
@@ -462,6 +462,30 @@ var documenterSearchIndex = {"docs": [
     "title": "Attributes",
     "category": "section",
     "text": "List of attribute categories.AbstractOptimizerAttribute\nAbstractModelAttribute\nAbstractVariableAttribute\nAbstractConstraintAttributeAttributes can be set in different ways:it is either set when the model is created like SolverName and RawSolver,\nor explicitly when the model is copied like ObjectiveSense,\nor implicitly, e.g., NumberOfVariables is implicitly set by add_variable and ConstraintFunction is implicitly set by add_constraint.\nor it is set to contain the result of the optimization during optimize! like VariablePrimal.The following functions allow to distinguish between some of these different categories:is_set_by_optimize\nis_copyableFunctions for getting and setting attributes.get\nget!\nset\nsupports"
+},
+
+{
+    "location": "apireference/#MathOptInterface.AbstractSubmittable",
+    "page": "Reference",
+    "title": "MathOptInterface.AbstractSubmittable",
+    "category": "type",
+    "text": "AbstractSubmittable\n\nAbstract supertype for objects that can be submitted to the model.\n\n\n\n\n\n"
+},
+
+{
+    "location": "apireference/#MathOptInterface.submit",
+    "page": "Reference",
+    "title": "MathOptInterface.submit",
+    "category": "function",
+    "text": "submit(optimizer::AbstractOptimizer, sub::AbstractSubmittable,\n       value)::Nothing\n\nSubmit value to the submittable sub of the optimizer optimizer.\n\nAn UnsupportedSubmittable error is thrown if model does not support the attribute attr (see supports) and a SubmitNotAllowed error is thrown if it supports the submittable sub but it cannot be submitted.\n\n\n\n\n\n"
+},
+
+{
+    "location": "apireference/#Submit-1",
+    "page": "Reference",
+    "title": "Submit",
+    "category": "section",
+    "text": "Objects may be submitted to an optimizer using submit.AbstractSubmittable\nsubmit"
 },
 
 {
@@ -1045,7 +1069,7 @@ var documenterSearchIndex = {"docs": [
     "page": "Reference",
     "title": "MathOptInterface.SettingSingleVariableFunctionNotAllowed",
     "category": "type",
-    "text": "ListOfOptimizerAttributesSet()\n\nError type that should be thrown when the user set the ConstraintFunction of a SingleVariable constraint.\n\n\n\n\n\n"
+    "text": "SettingSingleVariableFunctionNotAllowed()\n\nError type that should be thrown when the user set the ConstraintFunction of a SingleVariable constraint.\n\n\n\n\n\n"
 },
 
 {
@@ -1873,11 +1897,27 @@ var documenterSearchIndex = {"docs": [
 },
 
 {
+    "location": "apireference/#MathOptInterface.UnsupportedSubmittable",
+    "page": "Reference",
+    "title": "MathOptInterface.UnsupportedSubmittable",
+    "category": "type",
+    "text": "struct UnsupportedSubmittable{SubmitType} <: UnsupportedError\n    sub::SubmitType\n    message::String\nend\n\nAn error indicating that the submittable sub is not supported by the model, i.e. that supports returns false.\n\n\n\n\n\n"
+},
+
+{
+    "location": "apireference/#MathOptInterface.SubmitNotAllowed",
+    "page": "Reference",
+    "title": "MathOptInterface.SubmitNotAllowed",
+    "category": "type",
+    "text": "struct SubmitNotAllowed{SubmitTyp<:AbstractSubmittable} <: NotAllowedError\n    sub::SubmitType\n    message::String # Human-friendly explanation why the attribute cannot be set\nend\n\nAn error indicating that the submittable sub is supported (see supports) but cannot be added for some reason (see the error string).\n\n\n\n\n\n"
+},
+
+{
     "location": "apireference/#Errors-1",
     "page": "Reference",
     "title": "Errors",
     "category": "section",
-    "text": "When an MOI call fails on a model, precise errors should be thrown when possible instead of simply calling error with a message. The docstrings for the respective methods describe the errors that the implementation should thrown in certain situations. This error-reporting system allows code to distinguish between internal errors (that should be shown to the user) and unsupported operations which may have automatic workarounds.When an invalid index is used in an MOI call, an InvalidIndex should be thrown:InvalidIndexAs discussed in JuMP mapping, for scalar constraint with a nonzero function constant, a ScalarFunctionConstantNotZero exception may be thrown:ScalarFunctionConstantNotZeroSome SingleVariable constraints cannot be combined on the same variable:LowerBoundAlreadySet\nUpperBoundAlreadySetThe rest of the errors defined in MOI fall in two categories represented by the following two abstract types:UnsupportedError\nNotAllowedErrorThe different UnsupportedError and NotAllowedError are the following errors:UnsupportedAttribute\nSetAttributeNotAllowed\nAddVariableNotAllowed\nUnsupportedConstraint\nAddConstraintNotAllowed\nModifyConstraintNotAllowed\nModifyObjectiveNotAllowed\nDeleteNotAllowed"
+    "text": "When an MOI call fails on a model, precise errors should be thrown when possible instead of simply calling error with a message. The docstrings for the respective methods describe the errors that the implementation should thrown in certain situations. This error-reporting system allows code to distinguish between internal errors (that should be shown to the user) and unsupported operations which may have automatic workarounds.When an invalid index is used in an MOI call, an InvalidIndex should be thrown:InvalidIndexAs discussed in JuMP mapping, for scalar constraint with a nonzero function constant, a ScalarFunctionConstantNotZero exception may be thrown:ScalarFunctionConstantNotZeroSome SingleVariable constraints cannot be combined on the same variable:LowerBoundAlreadySet\nUpperBoundAlreadySetThe rest of the errors defined in MOI fall in two categories represented by the following two abstract types:UnsupportedError\nNotAllowedErrorThe different UnsupportedError and NotAllowedError are the following errors:UnsupportedAttribute\nSetAttributeNotAllowed\nAddVariableNotAllowed\nUnsupportedConstraint\nAddConstraintNotAllowed\nModifyConstraintNotAllowed\nModifyObjectiveNotAllowed\nDeleteNotAllowed\nUnsupportedSubmittable\nSubmitNotAllowed"
 },
 
 {
