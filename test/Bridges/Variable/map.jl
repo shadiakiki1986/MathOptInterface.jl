@@ -19,7 +19,7 @@ F1 = MOI.SingleVariable
 S1 = typeof(set1)
 v1, c1 = MOIB.Variable.add_key_for_bridge(map, b1, set1)
 @test v1.value == c1.value == -1
-@test Variable.constraint(map, v1) == c1
+@test MOIB.Variable.constraint(map, v1) == c1
 @test haskey(map, v1)
 @test map[v1] == b1
 @test MOIB.Variable.constrained_set(map, v1) == S1
@@ -49,7 +49,7 @@ v2, c2 = MOIB.Variable.add_keys_for_bridge(map, b2, set2)
 @test MOIB.Variable.has_keys(map, v2)
 @test !MOIB.Variable.has_keys(map, v2[4:-1:1])
 for i in 1:4
-    @test Variable.constraint(map, v2[i]) == c2
+    @test MOIB.Variable.constraint(map, v2[i]) == c2
     @test haskey(map, v2[i])
     @test map[v2[i]] == b2
     @test MOIB.Variable.constrained_set(map, v2[i]) == S2
@@ -129,7 +129,7 @@ elements = sort(collect(map), by = el -> el.second.id)
     @test !MOIB.Variable.has_keys(map, v2)
     @test MOIB.Variable.has_keys(map, v2[left])
     for (j, i) in enumerate(left)
-        @test Variable.constraint(map, v2[i]) == c2
+        @test MOIB.Variable.constraint(map, v2[i]) == c2
         @test haskey(map, v2[i])
         @test map[v2[i]] == b2
         @test MOIB.Variable.constrained_set(map, v2[i]) == S2
@@ -162,7 +162,7 @@ elements = sort(collect(map), by = el -> el.second.id)
     @test !MOIB.Variable.has_keys(map, v2[[1, 2, 4]])
     @test MOIB.Variable.has_keys(map, v2[left])
     for (j, i) in enumerate(left)
-        @test Variable.constraint(map, v2[i]) == c2
+        @test MOIB.Variable.constraint(map, v2[i]) == c2
         @test haskey(map, v2[i])
         @test map[v2[i]] == b2
         @test MOIB.Variable.constrained_set(map, v2[i]) == S2
