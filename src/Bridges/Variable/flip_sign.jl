@@ -42,6 +42,10 @@ function MOI.delete(model::MOI.ModelLike, bridge::FlipSignBridge)
     MOI.delete(model, bridge.flipped_variables)
 end
 
+function MOI.delete(model::MOI.ModelLike, bridge::FlipSignBridge, i::IndexInVector)
+    MOI.delete(model, bridge.flipped_variables[i.value])
+    deleteat!(bridge.flipped_variables, i.value)
+end
 
 # Attributes, Bridge acting as a constraint
 

@@ -89,3 +89,22 @@ end
     xa, xb, ya, yb = MOI.get(mock, MOI.ListOfVariableIndices())
     @test MOI.get(mock, MOI.VariablePrimalStart(), [xa, xb, ya, yb]) == [1.0, 0.0, 0.0, -1.0]
 end
+
+@testset "Linear11" begin
+    MOIU.set_mock_optimize!(mock,
+         (mock::MOIU.MockOptimizer) -> MOIU.mock_optimize!(mock, [1.0, 0.0, 1.0, 0.0]),
+         (mock::MOIU.MockOptimizer) -> MOIU.mock_optimize!(mock, [0.5, 0.0, 0.5, 0.0]))
+    MOIT.linear11test(bridged_mock, config)
+
+    vis = MOI.get(bridged_mock, MOI.ListOfVariableIndices())
+    @test vis == MOI.VariableIndex.([-1, -2])
+
+    test_delete_bridged_variable(bridged_mock, vis[1], MOI.Reals, 2, (
+        (MOI.VectorOfVariables, MOI.Nonnegatives, 0),
+        (MOI.VectorOfVariables, MOI.Nonpositives, 0)
+    ), used_bridges = 0, used_constraints = 0)
+    test_delete_bridged_variable(bridged_mock, vis[2], MOI.Reals, 1, (
+        (MOI.VectorOfVariables, MOI.Nonnegatives, 0),
+        (MOI.VectorOfVariables, MOI.Nonpositives, 0)
+    ))
+end

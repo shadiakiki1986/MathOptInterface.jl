@@ -186,9 +186,14 @@ function MOI.delete(b::AbstractBridgeOptimizer, vi::MOI.VariableIndex)
     if is_bridged(b, vi)
         MOI.throw_if_not_valid(b, vi)
         if Variable.length_of_vector_of_variables(Variable.bridges(b), vi) > 1
-            MOIU.throw_delete_variable_in_vov(vi)
+            if Variable.constrained_set(Variable.bridges(b), vi) <: MOIU.DimensionUpdatableSets
+                MOI.delete(b, bridge(b, vi), _index(b, vi)...)
+            else
+                MOIU.throw_delete_variable_in_vov(vi)
+            end
+        else
+            MOI.delete(b, bridge(b, vi))
         end
-        MOI.delete(b, bridge(b, vi))
         delete!(Variable.bridges(b), vi)
     else
         MOI.delete(b.model, vi)

@@ -23,11 +23,21 @@ bridged_mock = MOIB.Variable.RSOCtoPSD{Float64}(mock)
     MOIT.rotatedsoc4test(bridged_mock, config)
     mock.eval_variable_constraint_dual = true
 
-    v = MOI.get(bridged_mock, MOI.ListOfVariableIndices())
-    @test length(v) == 4
-    test_delete_bridged_variables(bridged_mock, v, MOI.RotatedSecondOrderCone, 4, (
-        (MOI.VectorOfVariables, MOI.PositiveSemidefiniteConeTriangle, 0),
-        (MOI.SingleVariable, MOI.EqualTo{Float64}, 0),
-        (MOI.ScalarAffineFunction{Float64}, MOI.EqualTo{Float64}, 0),
-    ))
+    @testset "Delete" begin
+        v = MOI.get(bridged_mock, MOI.ListOfVariableIndices())
+        @test length(v) == 4
+
+        message = string("Cannot delete variable as it is constrained with other",
+                         " other variables in a `MOI.VectorOfVariables`.")
+        for i in 1:4
+            err = MOI.DeleteNotAllowed(v[i], message)
+            @test_throws err MOI.delete(bridged_mock, v[i])
+        end
+
+        test_delete_bridged_variables(bridged_mock, v, MOI.RotatedSecondOrderCone, 4, (
+            (MOI.VectorOfVariables, MOI.PositiveSemidefiniteConeTriangle, 0),
+            (MOI.SingleVariable, MOI.EqualTo{Float64}, 0),
+            (MOI.ScalarAffineFunction{Float64}, MOI.EqualTo{Float64}, 0),
+        ))
+    end
 end

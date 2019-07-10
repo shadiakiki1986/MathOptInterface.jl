@@ -112,12 +112,6 @@ end
 end
 
 @testset "Delete" begin
-    message = string("Cannot delete variable as it is constrained with other",
-                     " other variables in a `MOI.VectorOfVariables`.")
-    err = MOI.DeleteNotAllowed(y, message)
-    @test_throws err MOI.delete(bridged_mock, y)
-    err = MOI.DeleteNotAllowed(z, message)
-    @test_throws err MOI.delete(bridged_mock, z)
     test_delete_bridged_variables(bridged_mock, yz, MOI.Zeros, 3, (
         (MOI.SingleVariable, MOI.GreaterThan{Float64}, 1),
     ))
