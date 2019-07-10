@@ -16,10 +16,14 @@ mutable struct SingleBridgeOptimizer{BT<:AbstractBridge, OT<:MOI.ModelLike} <: M
     map::Map # index of bridged variable -> variable bridge
     var_to_name::Dict{MOI.VariableIndex, String}
     name_to_var::Union{Dict{String, MOI.VariableIndex}, Nothing}
+    con_to_name::Dict{MOI.ConstraintIndex, String}
+    name_to_con::Union{Dict{String, MOI.ConstraintIndex}, Nothing}
 end
 function SingleBridgeOptimizer{BT}(model::OT) where {BT, OT <: MOI.ModelLike}
     SingleBridgeOptimizer{BT, OT}(
-        model, Map(), Dict{MOI.VariableIndex, String}(), nothing)
+        model, Map(),
+        Dict{MOI.VariableIndex, String}(), nothing,
+        Dict{MOI.ConstraintIndex, String}(), nothing)
 end
 
 function bridges(bridge::MOI.Bridges.AbstractBridgeOptimizer)
