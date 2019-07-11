@@ -301,7 +301,7 @@ var documenterSearchIndex = {"docs": [
     "page": "Manual",
     "title": "Implementing copy",
     "category": "section",
-    "text": "Avoid storing extra copies of the problem when possible. This means that solver wrappers should not use CachingOptimizer as part of the wrapper. Instead, do one of the following to load the problem (assuming the solver wrapper type is called Optimizer):If the solver supports loading the problem incrementally, implement add_variable, add_constraint for supported constraints and set for supported attributes and add:\nfunction MOI.copy_to(dest::Optimizer, src::MOI.ModelLike; kws...)\n    return MOI.Utilities.automatic_copy_to(dest, src; kws...)\nend\nwith\nMOI.Utilities.supports_default_copy_to(model::Optimizer, copy_names::Bool) = true\nor\nMOI.Utilities.supports_default_copy_to(model::Optimizer, copy_names::Bool) = !copy_names\ndepending on whether the solver support names; see Utilities.supports_default_copy_to for more details.\nIf the solver does not support loading the problem incrementally, do not implement add_variable and add_constraint as implementing them would require caching the problem. Let users or JuMP decide whether to use a CachingOptimizer instead. Write either a custom implementation of copy_to or implement the Allocate-Load API. If you choose to implement the Allocate-Load API, do\nfunction MOI.copy_to(dest::Optimizer, src::MOI.ModelLike; kws...)\n    return MOI.Utilities.automatic_copy_to(dest, src; kws...)\nend\nwith\nMOI.Utilities.supports_allocate_load(model::Optimizer, copy_names::Bool) = true\nor\nMOI.Utilities.supports_allocate_load(model::Optimizer, copy_names::Bool) = !copy_names\ndepending on whether the solver support names; see Utilities.supports_allocate_load for more details.\nNote that even if both writing a custom implementation of copy_to and implementing the Allocate-Load API requires the user to copy the model from a cache, the Allocate-Load API allows MOI layers to be added between the cache and the solver which allows transformations to be applied without the need for additional caching. For instance, with the proposed Light bridges, no cache will be needed to store the bridged model when bridges are used by JuMP so implementing the Allocate-Load API will allow JuMP to use only one cache instead of two."
+    "text": "Avoid storing extra copies of the problem when possible. This means that solver wrappers should not use Utilities.CachingOptimizer as part of the wrapper. Instead, do one of the following to load the problem (assuming the solver wrapper type is called Optimizer):If the solver supports loading the problem incrementally, implement add_variable, add_constraint for supported constraints and set for supported attributes and add:\nfunction MOI.copy_to(dest::Optimizer, src::MOI.ModelLike; kws...)\n    return MOI.Utilities.automatic_copy_to(dest, src; kws...)\nend\nwith\nMOI.Utilities.supports_default_copy_to(model::Optimizer, copy_names::Bool) = true\nor\nMOI.Utilities.supports_default_copy_to(model::Optimizer, copy_names::Bool) = !copy_names\ndepending on whether the solver support names; see Utilities.supports_default_copy_to for more details.\nIf the solver does not support loading the problem incrementally, do not implement add_variable and add_constraint as implementing them would require caching the problem. Let users or JuMP decide whether to use a CachingOptimizer instead. Write either a custom implementation of copy_to or implement the Allocate-Load API. If you choose to implement the Allocate-Load API, do\nfunction MOI.copy_to(dest::Optimizer, src::MOI.ModelLike; kws...)\n    return MOI.Utilities.automatic_copy_to(dest, src; kws...)\nend\nwith\nMOI.Utilities.supports_allocate_load(model::Optimizer, copy_names::Bool) = true\nor\nMOI.Utilities.supports_allocate_load(model::Optimizer, copy_names::Bool) = !copy_names\ndepending on whether the solver support names; see Utilities.supports_allocate_load for more details.\nNote that even if both writing a custom implementation of copy_to and implementing the Allocate-Load API requires the user to copy the model from a cache, the Allocate-Load API allows MOI layers to be added between the cache and the solver which allows transformations to be applied without the need for additional caching. For instance, with the proposed Light bridges, no cache will be needed to store the bridged model when bridges are used by JuMP so implementing the Allocate-Load API will allow JuMP to use only one cache instead of two."
 },
 
 {
@@ -2337,11 +2337,67 @@ var documenterSearchIndex = {"docs": [
 },
 
 {
+    "location": "apireference/#MathOptInterface.Utilities.CachingOptimizer",
+    "page": "Reference",
+    "title": "MathOptInterface.Utilities.CachingOptimizer",
+    "category": "type",
+    "text": "CachingOptimizer\n\nCachingOptimizer is an intermediate layer that stores a cache of the model and links it with an optimizer. It supports incremental model construction and modification even when the optimizer doesn\'t.\n\nA CachingOptimizer may be in one of three possible states (CachingOptimizerState):\n\nNO_OPTIMIZER: The CachingOptimizer does not have any optimizer.\nEMPTY_OPTIMIZER: The CachingOptimizer has an empty optimizer. The optimizer is not synchronized with the cached model.\nATTACHED_OPTIMIZER: The CachingOptimizer has an optimizer, and it is synchronized with the cached model.\n\nA CachingOptimizer has two modes of operation (CachingOptimizerMode):\n\nMANUAL: The only methods that change the state of the CachingOptimizer are Utilities.reset_optimizer, Utilities.drop_optimizer, and Utilities.attach_optimizer. Attempting to perform an operation in the incorrect state results in an error.\nAUTOMATIC: The CachingOptimizer changes its state when necessary. For example, optimize! will automatically call attach_optimizer (an optimizer must have been previously set). Attempting to add a constraint or perform a modification not supported by the optimizer results in a drop to EMPTY_OPTIMIZER mode.\n\n\n\n\n\n"
+},
+
+{
+    "location": "apireference/#MathOptInterface.Utilities.attach_optimizer",
+    "page": "Reference",
+    "title": "MathOptInterface.Utilities.attach_optimizer",
+    "category": "function",
+    "text": "attach_optimizer(model::CachingOptimizer)\n\nAttaches the optimizer to model, copying all model data into it. Can be called only from the EMPTY_OPTIMIZER state. If the copy succeeds, the CachingOptimizer will be in state ATTACHED_OPTIMIZER after the call, otherwise an error is thrown; see MathOptInterface.copy_to for more details on which errors can be thrown.\n\n\n\n\n\n"
+},
+
+{
+    "location": "apireference/#MathOptInterface.Utilities.reset_optimizer",
+    "page": "Reference",
+    "title": "MathOptInterface.Utilities.reset_optimizer",
+    "category": "function",
+    "text": "reset_optimizer(m::CachingOptimizer, optimizer::MOI.AbstractOptimizer)\n\nSets or resets m to have the given empty optimizer. Can be called from any state. The CachingOptimizer will be in state EMPTY_OPTIMIZER after the call.\n\n\n\n\n\nreset_optimizer(m::CachingOptimizer)\n\nDetaches and empties the current optimizer. Can be called from ATTACHED_OPTIMIZER or EMPTY_OPTIMIZER state. The CachingOptimizer will be in state EMPTY_OPTIMIZER after the call.\n\n\n\n\n\n"
+},
+
+{
+    "location": "apireference/#MathOptInterface.Utilities.drop_optimizer",
+    "page": "Reference",
+    "title": "MathOptInterface.Utilities.drop_optimizer",
+    "category": "function",
+    "text": "drop_optimizer(m::CachingOptimizer)\n\nDrops the optimizer, if one is present. Can be called from any state. The CachingOptimizer will be in state NO_OPTIMIZER after the call.\n\n\n\n\n\n"
+},
+
+{
+    "location": "apireference/#MathOptInterface.Utilities.state",
+    "page": "Reference",
+    "title": "MathOptInterface.Utilities.state",
+    "category": "function",
+    "text": "state(m::CachingOptimizer)::CachingOptimizerState\n\nReturns the state of the CachingOptimizer m. See Utilities.CachingOptimizer.\n\n\n\n\n\n"
+},
+
+{
+    "location": "apireference/#MathOptInterface.Utilities.mode",
+    "page": "Reference",
+    "title": "MathOptInterface.Utilities.mode",
+    "category": "function",
+    "text": "mode(m::CachingOptimizer)::CachingOptimizerMode\n\nReturns the operating mode of the CachingOptimizer m. See Utilities.CachingOptimizer.\n\n\n\n\n\n"
+},
+
+{
+    "location": "apireference/#Caching-optimizer-1",
+    "page": "Reference",
+    "title": "Caching optimizer",
+    "category": "section",
+    "text": "Some solvers do not support incremental definition of optimization models. Nevertheless, you are still able to build incrementally an optimization model with such solvers. MathOptInterface provides a utility, Utilities.CachingOptimizer, that will store in a ModelLike the optimization model during its incremental definition. Once the model is completely defined, the CachingOptimizer specifies all problem information to the underlying solver, all at once.The function Utilities.state allows to query the state of the optimizer cached inside a CachingOptimizer. The state could be:NO_OPTIMIZER, if no optimizer is attached;\nEMPTY_OPTIMIZER, if the attached optimizer is empty;\nATTACHED_OPTIMIZER, if the attached optimizer is synchronized with the cached model defined in CachingOptimizer.The following methods modify the state of the attached optimizer:Utilities.attach_optimizer attachs a new optimizer to a cached_optimizer with state EMPTY_OPTIMIZER. The state of cached_optimizer is set to ATTACHED_OPTIMIZER after the call.\nUtilities.drop_optimizer drops the underlying optimizer from cached_optimizer, without emptying it. The state of cached_optimizer is set to NO_OPTIMIZER after the call.\nUtilities.reset_optimizer empties optimizer inside cached_optimizer, without droping it. The state of cached_optimizer is set to EMPTY_OPTIMIZER after the call.The way to operate a CachingOptimizer depends whether the mode is set to AUTOMATIC or to MANUAL.In MANUAL mode, the state of the CachingOptimizer changes only if the methods Utilities.attach_optimizer, Utilities.reset_optimizer or Utilities.drop_optimizer are being called. Any unattended operation results in an error.\nIn AUTOMATIC mode, the state of the CachingOptimizer changes when necessary. Any modification not supported by the solver (e.g. dropping a constraint) results in a drop to the state EMPTY_OPTIMIZER.When calling Utilities.attach_optimizer, the CachingOptimizer copies the cached model to the optimizer with MathOptInterface.copy_to. We refer to Implementing copy for more details.Utilities.CachingOptimizer\nUtilities.attach_optimizer\nUtilities.reset_optimizer\nUtilities.drop_optimizer\nUtilities.state\nUtilities.mode"
+},
+
+{
     "location": "apireference/#MathOptInterface.Benchmarks.suite",
     "page": "Reference",
     "title": "MathOptInterface.Benchmarks.suite",
     "category": "function",
-    "text": "suite(\n    new_model::Function;\n    exclude::Vector{Regex} = Regex[]\n)\n\nCreate a suite of benchmarks. new_model should be a function that takes no arguments, and returns a new instance of the optimizer you wish to benchmark.\n\nUse exclude to exclude a subset of benchmarks.\n\nExamples\n\nsuite() do\n    GLPK.Optimizer()\nend\n\nsuite(exclude = [r\"delete\"]) do\n    Gurobi.Optimizer(OutputFlag=0)\nend\n\n\n\n\n\n"
+    "text": "suite(\n    new_model::Function;\n    exclude::Vector{Regex} = Regex[]\n)\n\nCreate a suite of benchmarks. new_model should be a function that takes no arguments, and returns a new instance of the optimizer you wish to benchmark.\n\nUse exclude to exclude a subset of benchmarks.\n\nExamples\n\nsuite() do\n    GLPK.Optimizer()\nend\nsuite(exclude = [r\"delete\"]) do\n    Gurobi.Optimizer(OutputFlag=0)\nend\n\n\n\n\n\n"
 },
 
 {
