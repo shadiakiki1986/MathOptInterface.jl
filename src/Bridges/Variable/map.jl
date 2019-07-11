@@ -18,13 +18,13 @@ mutable struct Map <: AbstractDict{MOI.VariableIndex, AbstractBridge}
     index_in_vector::Vector{Int}
     # `i` -> `bridge`: `VariableIndex(-i)` was bridged by `bridge`.
     bridges::Vector{Union{Nothing, AbstractBridge}}
-    sets::Vector{Union{Nothing, DataType}}
+    sets::Vector{Union{Nothing, Type{<:MOI.AbstractSet}}}
     # If `nothing`, it cannot be computed because some bridges does not support it
     unbridged_function::Union{Nothing, Dict{MOI.VariableIndex, MOI.AbstractScalarFunction}}
 end
 function Map()
     return Map(Int[], Int[], Union{Nothing, AbstractBridge}[],
-               Union{Nothing, DataType}[],
+               Union{Nothing, Type{<:MOI.AbstractSet}}[],
                Dict{MOI.VariableIndex, MOI.AbstractScalarFunction}())
 end
 
@@ -175,7 +175,7 @@ Return a list of all the different types `(F, S)` of `F`-in-`S` constraints in
 `map`.
 """
 function list_of_constraint_types(map::Map)
-    list = Set{Tuple{DataType, DataType}}()
+    list = Set{Tuple{Type{<:MOI.AbstractFunction}, Type{<:MOI.AbstractSet}}}()
     for i in eachindex(map.bridges)
         if map.bridges[i] !== nothing
             S = map.sets[i]

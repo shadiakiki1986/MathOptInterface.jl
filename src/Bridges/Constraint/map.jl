@@ -8,17 +8,17 @@ struct Map <: AbstractDict{MOI.ConstraintIndex, AbstractBridge}
     # It is set to `nothing` when the constraint is deleted.
     bridges::Vector{Union{Nothing, AbstractBridge}}
     # Constraint Index of bridged constraint -> Constraint type.
-    constraint_types::Vector{Tuple{DataType, DataType}}
+    constraint_types::Vector{Tuple{Type{<:MOI.AbstractFunction}, Type{<:MOI.AbstractSet}}}
     # For `SingleVariable` constraints: (variable, set type) -> bridge
-    single_variable_constraints::Dict{Tuple{Int64, DataType}, AbstractBridge}
+    single_variable_constraints::Dict{Tuple{Int64, Type{<:MOI.AbstractScalarSet}}, AbstractBridge}
     # For `VectorVariable` constraints: (variable, set type) -> bridge
-    vector_of_variables_constraints::Dict{Tuple{Int64, DataType}, AbstractBridge}
+    vector_of_variables_constraints::Dict{Tuple{Int64, Type{<:MOI.AbstractVectorSet}}, AbstractBridge}
 end
 function Map()
     return Map(Union{Nothing, AbstractBridge}[],
-               Tuple{DataType, DataType}[],
-               Dict{Tuple{Int64, DataType}, AbstractBridge}(),
-               Dict{Tuple{Int64, DataType}, AbstractBridge}())
+               Tuple{Type{<:MOI.AbstractFunction}, Type{<:MOI.AbstractSet}}[],
+               Dict{Tuple{Int64, Type{<:MOI.AbstractScalarSet}}, AbstractBridge}(),
+               Dict{Tuple{Int64, Type{<:MOI.AbstractVectorSet}}, AbstractBridge}())
 end
 
 # Implementation of `AbstractDict` interface.
@@ -178,7 +178,7 @@ end
 Return a list of all the different concrete type of keys in `map`.
 """
 function list_of_key_types(map::Map)
-    list = Set{Tuple{DataType, DataType}}()
+    list = Set{Tuple{Type{<:MOI.AbstractFunction}, Type{<:MOI.AbstractSet}}}()
     for i in eachindex(map.bridges)
         if map.bridges[i] !== nothing
             push!(list, map.constraint_types[i])

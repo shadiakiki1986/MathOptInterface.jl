@@ -22,21 +22,21 @@ mutable struct LazyBridgeOptimizer{OT<:MOI.ModelLike} <: AbstractBridgeOptimizer
     name_to_con::Union{Dict{String, MOI.ConstraintIndex}, Nothing}
     # Bellman-Ford
     variable_bridge_types::Vector{Any} # List of types of available bridges
-    variable_dist::Dict{Tuple{DataType}, Int}      # (S,) -> Number of bridges that need to be used for constrained variables in `S`
-    variable_best::Dict{Tuple{DataType}, DataType} # (S,) -> Bridge to be used for constrained variables in `S`
+    variable_dist::Dict{Tuple{Type{<:MOI.AbstractSet}}, Int}      # (S,) -> Number of bridges that need to be used for constrained variables in `S`
+    variable_best::Dict{Tuple{Type{<:MOI.AbstractSet}}, Type{<:Variable.AbstractBridge}} # (S,) -> Bridge to be used for constrained variables in `S`
     constraint_bridge_types::Vector{Any} # List of types of available bridges
-    constraint_dist::Dict{Tuple{DataType, DataType}, Int}      # (F, S) -> Number of bridges that need to be used for an `F`-in-`S` constraint
-    constraint_best::Dict{Tuple{DataType, DataType}, DataType} # (F, S) -> Bridge to be used for an `F`-in-`S` constraint
+    constraint_dist::Dict{Tuple{Type{<:MOI.AbstractFunction}, Type{<:MOI.AbstractSet}}, Int}      # (F, S) -> Number of bridges that need to be used for an `F`-in-`S` constraint
+    constraint_best::Dict{Tuple{Type{<:MOI.AbstractFunction}, Type{<:MOI.AbstractSet}}, Type{<:Constraint.AbstractBridge}} # (F, S) -> Bridge to be used for an `F`-in-`S` constraint
 end
 function LazyBridgeOptimizer(model::MOI.ModelLike)
     return LazyBridgeOptimizer{typeof(model)}(
         model,
         Variable.Map(), Dict{MOI.VariableIndex, String}(), nothing,
         Constraint.Map(), Dict{MOI.ConstraintIndex, String}(), nothing,
-        Any[], Dict{Tuple{DataType}, Int}(),
-        Dict{Tuple{DataType}, DataType}(),
-        Any[], Dict{Tuple{DataType, DataType}, Int}(),
-        Dict{Tuple{DataType, DataType}, DataType}())
+        Any[], Dict{Tuple{Type{<:MOI.AbstractSet}}, Int}(),
+        Dict{Tuple{Type{<:MOI.AbstractSet}}, Type{<:Variable.AbstractBridge}}(),
+        Any[], Dict{Tuple{Type{<:MOI.AbstractFunction}, Type{<:MOI.AbstractSet}}, Int}(),
+        Dict{Tuple{Type{<:MOI.AbstractFunction}, Type{<:MOI.AbstractSet}}, Type{<:Constraint.AbstractBridge}}())
 end
 
 function Variable.bridges(bridge::LazyBridgeOptimizer)
@@ -117,8 +117,8 @@ function update_dist!(b::LazyBridgeOptimizer, variables, constraints)
     end
 end
 
-function fill_required!(required_variables::Set{Tuple{DataType}},
-                        required_constraints::Set{Tuple{DataType, DataType}},
+function fill_required!(required_variables::Set{Tuple{Type{<:MOI.AbstractSet}}},
+                        required_constraints::Set{Tuple{Type{<:MOI.AbstractFunction}, Type{<:MOI.AbstractSet}}},
                         b::LazyBridgeOptimizer, S::Type{<:MOI.AbstractSet})
     if supports_no_update(b, S)
         return # The constraint is supported
@@ -141,8 +141,8 @@ function fill_required!(required_variables::Set{Tuple{DataType}},
     end
 end
 
-function fill_required!(required_variables::Set{Tuple{DataType}},
-                        required_constraints::Set{Tuple{DataType, DataType}},
+function fill_required!(required_variables::Set{Tuple{Type{<:MOI.AbstractSet}}},
+                        required_constraints::Set{Tuple{Type{<:MOI.AbstractFunction}, Type{<:MOI.AbstractSet}}},
                         b::LazyBridgeOptimizer, F::Type{<:MOI.AbstractFunction},
                         S::Type{<:MOI.AbstractSet})
     if supports_no_update(b, F, S)
@@ -170,8 +170,8 @@ end
 
 # Compute dist[(F, S)], dist[(S,)] and best[(F, S)], best[(S,)]
 function update!(b::LazyBridgeOptimizer, types::Tuple)
-    required_variables = Set{Tuple{DataType}}()
-    required_constraints = Set{Tuple{DataType, DataType}}()
+    required_variables = Set{Tuple{Type{<:MOI.AbstractSet}}}()
+    required_constraints = Set{Tuple{Type{<:MOI.AbstractFunction}, Type{<:MOI.AbstractSet}}}()
     fill_required!(required_variables, required_constraints, b, types...)
     update_dist!(b, required_variables, required_constraints)
 end
