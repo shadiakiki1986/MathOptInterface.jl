@@ -1893,7 +1893,7 @@ var documenterSearchIndex = {"docs": [
     "page": "Reference",
     "title": "MathOptInterface.ModifyConstraintNotAllowed",
     "category": "type",
-    "text": "struct ModifyConstraintNotAllowed{F<:AbstractFunction, S<:AbstractSet,\n                                         C<:AbstractFunctionModification} <: NotAllowedError\n    constraint_index::ConstraintIndex{F, S}\n    change::C\n    message::String\nend\n\nAn error indicating that the constraint modification change cannot be applied to the constraint of index ci.\n\n\n\n\n\n"
+    "text": "struct ModifyConstraintNotAllowed{F<:AbstractFunction, S<:AbstractSet,\n                                  C<:AbstractFunctionModification} <: NotAllowedError\n    constraint_index::ConstraintIndex{F, S}\n    change::C\n    message::String\nend\n\nAn error indicating that the constraint modification change cannot be applied to the constraint of index ci.\n\n\n\n\n\n"
 },
 
 {
