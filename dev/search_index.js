@@ -465,6 +465,22 @@ var documenterSearchIndex = {"docs": [
 },
 
 {
+    "location": "apireference/#MathOptInterface.Utilities.get_fallback",
+    "page": "Reference",
+    "title": "MathOptInterface.Utilities.get_fallback",
+    "category": "function",
+    "text": "get_fallback(model::MOI.ModelLike, ::MOI.ObjectiveValue)\n\nCompute the objective function value using the VariablePrimal results and the ObjectiveFunction value.\n\n\n\n\n\nget_fallback(model::MOI.ModelLike, ::MOI.DualObjectiveValue, T::Type)::T\n\nCompute the dual objective value of type T using the ConstraintDual results and the ConstraintFunction and ConstraintSet values. Note that the nonlinear part of the model is ignored.\n\n\n\n\n\nget_fallback(model::MOI.ModelLike, ::MOI.ConstraintPrimal,\n             constraint_index::MOI.ConstraintIndex)\n\nCompute the value of the function of the constraint of index constraint_index using the VariablePrimal results and the ConstraintFunction values.\n\n\n\n\n\nget_fallback(model::MOI.ModelLike, attr::MOI.ConstraintDual,\n             ci::MOI.ConstraintIndex{Union{MOI.SingleVariable,\n                                           MOI.VectorOfVariables}})\n\nCompute the dual of the constraint of index ci using the ConstraintDual of other constraints and the ConstraintFunction values. Throws an error if some constraints are quadratic or if there is one another MOI.SingleVariable-in-S or MOI.VectorOfVariables-in-S constraint with one of the variables in the function of the constraint ci.\n\n\n\n\n\n"
+},
+
+{
+    "location": "apireference/#Fallbacks-1",
+    "page": "Reference",
+    "title": "Fallbacks",
+    "category": "section",
+    "text": "The value of some attributes can be inferred from the value of other attributes. For instance, the value of ObjectiveValue can be computed using ObjectiveFunction and VariablePrimal. When a solver gives access to the objective value, it is better to return this value but otherwise, Utilities.get_fallback can be used.function MOI.get(optimizer::Optimizer, attr::MOI.ObjectiveValue)\n    return MOI.Utilities.get_fallback(optimizer, attr)\nendUtilities.get_fallback"
+},
+
+{
     "location": "apireference/#MathOptInterface.AbstractSubmittable",
     "page": "Reference",
     "title": "MathOptInterface.AbstractSubmittable",
