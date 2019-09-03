@@ -359,7 +359,7 @@ function reduce_bridged(
     else
         value = model_value()
     end
-    variable_function = F == variable_function_type(S)
+    variable_function = F == MOIU.variable_function_type(S)
     if variable_function && is_bridged(b, S)
         value = operate_variable_bridges!(value)
     end
@@ -872,7 +872,7 @@ function MOI.supports_constraint(b::AbstractBridgeOptimizer,
                                  F::Type{<:MOI.AbstractFunction},
                                  S::Type{<:MOI.AbstractSet})
     if is_bridged(b, F, S)
-        if F == variable_function_type(S) &&
+        if F == MOIU.variable_function_type(S) &&
             supports_bridging_constrained_variable(b, S)
             return true
         end

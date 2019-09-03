@@ -25,7 +25,7 @@ function debug(b::LazyBridgeOptimizer, variable_to_index::Dict,
                constraint_to_index::Dict, objective_to_index::Dict)
     for (v, i) in variable_to_index
         S = v[1]
-        println("[", i, "] constraint variables in `", S, "` not supported because:")
+        println("[", i, "] constrained variables in `", S, "` not supported because:")
         for BT in b.variable_bridge_types
             if Variable.supports_constrained_variable(BT, S)
                 println("  Cannot use `$BT` because:")
