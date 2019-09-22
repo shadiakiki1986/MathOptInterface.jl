@@ -18,14 +18,14 @@ end
 Base.copy(mlt::MutLessThan) = MutLessThan(Base.copy(mlt.upper))
 
 @testset "Sets" begin
+    # By default, `==` redirects to `===`, it works for bits type
+    # but not for `BigInt`s. We define functions creating different
+    # instances so that `a() !== a()`.
+    a() = big(1)
+    b() = big(2)
+    @test a() !== a()
+    @test b() !== b()
     @testset "==" begin
-        # By default, `==` redirects to `===`, it works for bits type
-        # but not for `BigInt`s. We define functions creating different
-        # instances so that `a() !== a()`.
-        a() = big(1)
-        b() = big(2)
-        @test a() !== a()
-        @test b() !== b()
         for S in [MOI.LessThan, MOI.GreaterThan, MOI.EqualTo, MOI.PowerCone, MOI.DualPowerCone]
             @test S(a()) == S(a())
             @test S(a()) != S(b())
@@ -49,6 +49,19 @@ Base.copy(mlt::MutLessThan) = MutLessThan(Base.copy(mlt.upper))
         @test S{MOI.ACTIVATE_ON_ONE}(A()) != S{MOI.ACTIVATE_ON_ONE}(B())
     end
     @testset "Copy" begin
+        for S in [MOI.LessThan, MOI.GreaterThan, MOI.EqualTo]
+            set = S(a())
+            @test MOI.constant(set) !== MOI.constant(copy(set))
+        end
+        for S in [MOI.PowerCone, MOI.DualPowerCone]
+            set = S(a())
+            @test set.exponent !== copy(set).exponent
+        end
+        for S in [MOI.Interval, MOI.Semicontinuous, MOI.Semiinteger]
+            set = S(a(), b())
+            @test set.lower !== copy(set).lower
+            @test set.upper !== copy(set).upper
+        end
         @testset "for $S" for S in [MOI.SOS1, MOI.SOS2]
             s = S([1.0])
             s_copy = copy(s)

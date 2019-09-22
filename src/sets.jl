@@ -148,6 +148,9 @@ struct EqualTo{T <: Number} <: AbstractScalarSet
     value::T
 end
 
+function Base.copy(set::Union{GreaterThan, LessThan, EqualTo})
+    return typeof(set)(constant(set))
+end
 function Base.:(==)(set1::S, set2::S) where S <: Union{GreaterThan, LessThan, EqualTo}
     return constant(set1) == constant(set2)
 end
@@ -283,6 +286,9 @@ dual_set(s::DualPowerCone{T}) where T <: Real = PowerCone{T}(s.exponent)
 
 dimension(s::Union{ExponentialCone, DualExponentialCone, PowerCone, DualPowerCone}) = 3
 
+function Base.copy(set::Union{PowerCone, DualPowerCone})
+    return typeof(set)(set.exponent)
+end
 function Base.:(==)(set1::S, set2::S) where S <: Union{PowerCone, DualPowerCone}
     return set1.exponent == set2.exponent
 end
@@ -581,6 +587,9 @@ struct Semiinteger{T <: Real} <: AbstractScalarSet
     upper::T
 end
 
+function Base.copy(set::Union{Interval, Semicontinuous, Semiinteger})
+    return typeof(set)(copy(set.lower), copy(set.upper))
+end
 function Base.:(==)(set1::S, set2::S) where S <: Union{Interval, Semicontinuous, Semiinteger}
     return set1.lower == set2.lower && set1.upper == set2.upper
 end
@@ -671,16 +680,15 @@ Base.:(==)(set1::IndicatorSet{A, S}, set2::IndicatorSet{A, S}) where {A, S} = se
 
 # isbits types, nothing to copy
 function Base.copy(set::Union{Reals, Zeros, Nonnegatives, Nonpositives,
-                              GreaterThan, LessThan, EqualTo, Interval,
                               NormInfinityCone, NormOneCone,
                               SecondOrderCone, RotatedSecondOrderCone,
                               GeometricMeanCone, ExponentialCone,
-                              DualExponentialCone, PowerCone, DualPowerCone,
+                              DualExponentialCone,
                               PositiveSemidefiniteConeTriangle,
                               PositiveSemidefiniteConeSquare,
                               LogDetConeTriangle, LogDetConeSquare,
                               RootDetConeTriangle, RootDetConeSquare,
-                              Integer, ZeroOne, Semicontinuous, Semiinteger})
+                              Integer, ZeroOne})
     return set
 end
 Base.copy(set::S) where {S <: Union{SOS1, SOS2}} = S(copy(set.weights))
