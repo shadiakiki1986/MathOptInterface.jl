@@ -5,6 +5,21 @@ struct NanEvaluator <: MOI.AbstractNLPEvaluator
     nan_objective::Bool
 end
 
+function MOI.initialize(d::NanEvaluator, requested_features::Vector{Symbol})
+    for feat in requested_features
+        if !(feat in MOI.features_available(d))
+            error("Unsupported feature $feat")
+            # TODO: implement Jac-vec and Hess-vec products
+            # for solvers that need them
+        end
+    end
+end
+
+function MOI.features_available(d::NanEvaluator)
+    return [:Grad, :Jac, :Hess, :ExprGraph]
+end
+
+
 
 # Example from readme of https://github.com/jump-dev/Ipopt.jl#invalid_model-error
 MOI.objective_expr(d::NanEvaluator) = :(1 / x[$(VI(1))])
@@ -26,6 +41,60 @@ end
 function MOI.eval_objective_gradient(d::NanEvaluator, grad_f, x)
     grad_f[1] = 1
 end
+
+function MOI.jacobian_structure(d::NanEvaluator)
+    return Tuple{Int64,Int64}[(1,1), (1,2), (1,3), (1,4), (2,1), (2,2),
+                              (2,3), (2,4)]
+end
+# lower triangle only
+function MOI.hessian_lagrangian_structure(d::NanEvaluator)
+    return Tuple{Int64,Int64}[(1,1), (2,1), (2,2), (3,1), (3,2), (3,3),
+                              (4,1), (4,2), (4,3), (4,4)]
+end
+
+function MOI.eval_constraint_jacobian(d::NanEvaluator, J, x)
+    # Constraint (row) 1
+    J[1] = x[2]*x[3]*x[4]  # 1,1
+    J[2] = x[1]*x[3]*x[4]  # 1,2
+    J[3] = x[1]*x[2]*x[4]  # 1,3
+    J[4] = x[1]*x[2]*x[3]  # 1,4
+    # Constraint (row) 2
+    J[5] = 2*x[1]  # 2,1
+    J[6] = 2*x[2]  # 2,2
+    J[7] = 2*x[3]  # 2,3
+    J[8] = 2*x[4]  # 2,4
+end
+
+function MOI.eval_hessian_lagrangian(d::NanEvaluator, H, x, σ, μ)
+    # Again, only lower left triangle
+    # Objective
+    H[1] = σ * (2*x[4])               # 1,1
+    H[2] = σ * (  x[4])               # 2,1
+    H[3] = 0                          # 2,2
+    H[4] = σ * (  x[4])               # 3,1
+    H[5] = 0                          # 3,2
+    H[6] = 0                          # 3,3
+    H[7] = σ* (2*x[1] + x[2] + x[3])  # 4,1
+    H[8] = σ * (  x[1])               # 4,2
+    H[9] = σ * (  x[1])               # 4,3
+    H[10] = 0                         # 4,4
+
+    # First constraint
+    H[2] += μ[1] * (x[3] * x[4])  # 2,1
+    H[4] += μ[1] * (x[2] * x[4])  # 3,1
+    H[5] += μ[1] * (x[1] * x[4])  # 3,2
+    H[7] += μ[1] * (x[2] * x[3])  # 4,1
+    H[8] += μ[1] * (x[1] * x[3])  # 4,2
+    H[9] += μ[1] * (x[1] * x[2])  # 4,3
+
+    # Second constraint
+    H[1]  += μ[2] * 2  # 1,1
+    H[3]  += μ[2] * 2  # 2,2
+    H[6]  += μ[2] * 2  # 3,3
+    H[10] += μ[2] * 2  # 4,4
+
+end
+
 
 function nancb_template(model::MOI.ModelLike, config::TestConfig, evaluator::NanEvaluator)
     atol = config.atol
@@ -79,5 +148,3 @@ function nancb_template(model::MOI.ModelLike, config::TestConfig, evaluator::Nan
 end
 
 nancb_test(model, config) = nancb_template(model, config, NanEvaluator(true))
-nancb_no_hessian_test(model, config) = nancb_template(model, config, NanEvaluator(false))
-
