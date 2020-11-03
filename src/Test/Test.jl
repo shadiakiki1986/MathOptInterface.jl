@@ -18,6 +18,7 @@ include("intlinear.jl")
 include("intconic.jl")
 
 include("nlp.jl")
+include("nlp_nancallback.jl")
 
 include("UnitTests/unit_tests.jl")
 
