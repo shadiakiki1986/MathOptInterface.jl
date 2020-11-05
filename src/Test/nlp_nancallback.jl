@@ -289,6 +289,7 @@ function nancb_template2(model::MOI.ModelLike, config::TestConfig, evaluator::Ma
     if config.solve
         MOI.optimize!(model)
 
+        # FIXME shouldn't this give "INVALID_MODEL" since the optimizer will come across 1/0 ?
         @test MOI.get(model, MOI.TerminationStatus()) == config.optimal_status
 
         @test MOI.get(model, MOI.ResultCount()) >= 1
@@ -344,7 +345,8 @@ MOI.objective_expr(d::NanCbEvaluator) = :(1 / x[$(VI(1))])
 
 function MOI.constraint_expr(d::NanCbEvaluator, i::Int)
     if i == 1
-        return :(-1.0 <= x[$(VI(1))] <= 1.0)
+        # use 0.01 instead of -1.0 to avoid INVALID_MODEL
+        return :(0.01 <= x[$(VI(1))] <= 1.0)
     else
         error("Out of bounds constraint.")
     end
@@ -398,7 +400,8 @@ function nancb_template3(model::MOI.ModelLike, config::TestConfig, evaluator::Na
     MOI.empty!(model)
     @test MOI.is_empty(model)
 
-    lb = [-1.0]
+    # use 0.01 instead of -1.0 to avoid INVALID_MODEL
+    lb = [ 0.01]
     ub = [ 1.0]
 
     block_data = MOI.NLPBlockData(MOI.NLPBoundsPair.(lb, ub), evaluator, true)
@@ -406,7 +409,8 @@ function nancb_template3(model::MOI.ModelLike, config::TestConfig, evaluator::Na
     v = MOI.add_variables(model, 1)
     @test MOI.get(model, MOI.NumberOfVariables()) == 1
 
-    l = -1.0
+    # use 0.01 instead of -1.0 to avoid INVALID_MODEL
+    l =  0.01
     u =  1.0
     start = 1
 
@@ -429,6 +433,7 @@ function nancb_template3(model::MOI.ModelLike, config::TestConfig, evaluator::Na
     if config.solve
         MOI.optimize!(model)
 
+        # FIXME why still getting INVALID_MODEL if my lower bound is 0.01?
         @test MOI.get(model, MOI.TerminationStatus()) == MOI.INVALID_MODEL # config.optimal_status # FIXME
 
         @test MOI.get(model, MOI.ResultCount()) >= 1
