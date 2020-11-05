@@ -152,7 +152,7 @@ function nancb_template(model::MOI.ModelLike, config::TestConfig, evaluator::Max
 
         @test MOI.get(model, MOI.PrimalStatus()) == MOI.UNKNOWN_RESULT_STATUS
 
-        optimal_v = [4.941613455254625e27] # Inf !?
+        optimal_v = [4.941613455254625e27] # FIXME # Inf !?
        
         @test MOI.get(model, MOI.ObjectiveValue()) ≈ optimal_v[1] atol=atol rtol=rtol
 
@@ -162,3 +162,288 @@ function nancb_template(model::MOI.ModelLike, config::TestConfig, evaluator::Max
 end
 
 nancb_test(model, config) = nancb_template(model, config, MaxXEvaluator(true))
+
+
+###########################
+# Maximize 1/x
+# Similar to the hs071 test
+###########################
+
+# Simple maximization that results in Inf
+# max 1/x
+# st  x >= -1
+# Start at (1,)
+# End at (Inf,)
+
+struct MaxInvXEvaluator <: MOI.AbstractNLPEvaluator
+    enable_hessian::Bool
+end
+
+function MOI.initialize(d::MaxInvXEvaluator, requested_features::Vector{Symbol})
+    for feat in requested_features
+        if !(feat in MOI.features_available(d))
+            error("Unsupported feature $feat")
+            # TODO: implement Jac-vec and Hess-vec products
+            # for solvers that need them
+        end
+    end
+end
+
+function MOI.features_available(d::MaxInvXEvaluator)
+    if d.enable_hessian
+        return [:Grad, :Jac, :Hess, :ExprGraph]
+    else
+        return [:Grad, :Jac, :ExprGraph]
+    end
+end
+
+
+
+# Example from readme of https://github.com/jump-dev/Ipopt.jl#invalid_model-error
+MOI.objective_expr(d::MaxInvXEvaluator) = :(1 / x[$(VI(1))])
+
+function MOI.constraint_expr(d::MaxInvXEvaluator, i::Int)
+    if i == 1
+        return :(-1.0 <= x[$(VI(1))] <= 1.0)
+    else
+        error("Out of bounds constraint.")
+    end
+end
+
+MOI.eval_objective(d::MaxInvXEvaluator, x) = x[1]
+
+function MOI.eval_constraint(d::MaxInvXEvaluator, g, x)
+    g[1] = x[1]
+end
+
+function MOI.eval_objective_gradient(d::MaxInvXEvaluator, grad_f, x)
+    grad_f[1] = -1 / x[1]^2
+end
+
+function MOI.jacobian_structure(d::MaxInvXEvaluator)
+    return Tuple{Int64,Int64}[(1,1)]
+end
+# lower triangle only
+function MOI.hessian_lagrangian_structure(d::MaxInvXEvaluator)
+    @assert d.enable_hessian
+    return Tuple{Int64,Int64}[(1,1), (2,1), (2,2)]
+end
+
+function MOI.eval_constraint_jacobian(d::MaxInvXEvaluator, J, x)
+    # Constraint (row) 1
+    J[1] = 2 / x[1]^3
+end
+
+function MOI.eval_hessian_lagrangian(d::MaxInvXEvaluator, H, x, σ, μ)
+    # Again, only lower left triangle
+    # Objective
+    H[1] = σ * 2 / (x[1]^3)               # 1,1
+    H[2] = 0               # 2,1
+    H[3] = 0                          # 2,2
+
+    # First constraint
+    H[2] += μ[1] * 2 / x[1]^3  # 2,1
+end
+
+
+function nancb_template2(model::MOI.ModelLike, config::TestConfig, evaluator::MaxInvXEvaluator)
+    atol = config.atol
+    rtol = config.rtol
+
+    @test MOI.supports(model, MOI.NLPBlock())
+    @test MOI.supports_constraint(model, MOI.SingleVariable, MOI.LessThan{Float64})
+    @test MOI.supports_constraint(model, MOI.SingleVariable, MOI.GreaterThan{Float64})
+    @test MOI.supports(model, MOI.VariablePrimalStart(), MOI.VariableIndex)
+
+    MOI.empty!(model)
+    @test MOI.is_empty(model)
+
+    lb = [-1.0]
+    ub = [ 1.0]
+
+    block_data = MOI.NLPBlockData(MOI.NLPBoundsPair.(lb, ub), evaluator, true)
+
+    v = MOI.add_variables(model, 1)
+    @test MOI.get(model, MOI.NumberOfVariables()) == 1
+
+    l = -1.0
+    u =  1.0
+    start = 1
+
+    cub = MOI.add_constraint(model, MOI.SingleVariable(v[1]), MOI.LessThan(u))
+    # We test this after the creation of every `SingleVariable` constraint
+    # to ensure a good coverage of corner cases.
+    @test cub.value == v[1].value
+
+    clb = MOI.add_constraint(model, MOI.SingleVariable(v[1]), MOI.GreaterThan(l))
+    # We test this after the creation of every `SingleVariable` constraint
+    # to ensure a good coverage of corner cases.
+    @test clb.value == v[1].value
+
+    MOI.set(model, MOI.VariablePrimalStart(), v[1], start)
+
+    MOI.set(model, MOI.NLPBlock(), block_data)
+    MOI.set(model, MOI.ObjectiveSense(), MOI.MAX_SENSE)
+
+    # TODO: config.query tests
+    if config.solve
+        MOI.optimize!(model)
+
+        @test MOI.get(model, MOI.TerminationStatus()) == config.optimal_status
+
+        @test MOI.get(model, MOI.ResultCount()) >= 1
+
+        @test MOI.get(model, MOI.PrimalStatus()) == MOI.UNKNOWN_RESULT_STATUS
+
+        optimal_v = [0.061214969544819954] # FIXME # Inf !?
+       
+        @test MOI.get(model, MOI.ObjectiveValue()) ≈ optimal_v[1] atol=atol rtol=rtol
+
+        @test MOI.get(model, MOI.VariablePrimal(), v) ≈ optimal_v atol=atol rtol=rtol
+
+    end
+end
+
+nancb_test2(model, config) = nancb_template2(model, config, MaxInvXEvaluator(true))
+
+
+###########################
+# Optimization with NaN in callbacks
+# Similar to the hs071 test
+###########################
+
+# Model is copied from the 1/x maximization above
+# but modified such that gradient, jacobian, hessian contain NaN
+
+struct NanCbEvaluator <: MOI.AbstractNLPEvaluator
+    enable_hessian::Bool
+end
+
+function MOI.initialize(d::NanCbEvaluator, requested_features::Vector{Symbol})
+    for feat in requested_features
+        if !(feat in MOI.features_available(d))
+            error("Unsupported feature $feat")
+            # TODO: implement Jac-vec and Hess-vec products
+            # for solvers that need them
+        end
+    end
+end
+
+function MOI.features_available(d::NanCbEvaluator)
+    if d.enable_hessian
+        return [:Grad, :Jac, :Hess, :ExprGraph]
+    else
+        return [:Grad, :Jac, :ExprGraph]
+    end
+end
+
+
+
+# Example from readme of https://github.com/jump-dev/Ipopt.jl#invalid_model-error
+MOI.objective_expr(d::NanCbEvaluator) = :(1 / x[$(VI(1))])
+
+function MOI.constraint_expr(d::NanCbEvaluator, i::Int)
+    if i == 1
+        return :(-1.0 <= x[$(VI(1))] <= 1.0)
+    else
+        error("Out of bounds constraint.")
+    end
+end
+
+MOI.eval_objective(d::NanCbEvaluator, x) = x[1]
+
+function MOI.eval_constraint(d::NanCbEvaluator, g, x)
+    g[1] = x[1]
+end
+
+function MOI.eval_objective_gradient(d::NanCbEvaluator, grad_f, x)
+    grad_f[1] = -1 / x[1]^2
+end
+
+function MOI.jacobian_structure(d::NanCbEvaluator)
+    return Tuple{Int64,Int64}[(1,1)]
+end
+# lower triangle only
+function MOI.hessian_lagrangian_structure(d::NanCbEvaluator)
+    @assert d.enable_hessian
+    return Tuple{Int64,Int64}[(1,1), (2,1), (2,2)]
+end
+
+function MOI.eval_constraint_jacobian(d::NanCbEvaluator, J, x)
+    # Constraint (row) 1
+    J[1] = NaN
+end
+
+function MOI.eval_hessian_lagrangian(d::NanCbEvaluator, H, x, σ, μ)
+    # Again, only lower left triangle
+    # Objective
+    H[1] = NaN               # 1,1
+    H[2] = 0               # 2,1
+    H[3] = 0                          # 2,2
+
+    # First constraint
+    H[2] += NaN  # 2,1
+end
+
+
+function nancb_template3(model::MOI.ModelLike, config::TestConfig, evaluator::NanCbEvaluator)
+    atol = config.atol
+    rtol = config.rtol
+
+    @test MOI.supports(model, MOI.NLPBlock())
+    @test MOI.supports_constraint(model, MOI.SingleVariable, MOI.LessThan{Float64})
+    @test MOI.supports_constraint(model, MOI.SingleVariable, MOI.GreaterThan{Float64})
+    @test MOI.supports(model, MOI.VariablePrimalStart(), MOI.VariableIndex)
+
+    MOI.empty!(model)
+    @test MOI.is_empty(model)
+
+    lb = [-1.0]
+    ub = [ 1.0]
+
+    block_data = MOI.NLPBlockData(MOI.NLPBoundsPair.(lb, ub), evaluator, true)
+
+    v = MOI.add_variables(model, 1)
+    @test MOI.get(model, MOI.NumberOfVariables()) == 1
+
+    l = -1.0
+    u =  1.0
+    start = 1
+
+    cub = MOI.add_constraint(model, MOI.SingleVariable(v[1]), MOI.LessThan(u))
+    # We test this after the creation of every `SingleVariable` constraint
+    # to ensure a good coverage of corner cases.
+    @test cub.value == v[1].value
+
+    clb = MOI.add_constraint(model, MOI.SingleVariable(v[1]), MOI.GreaterThan(l))
+    # We test this after the creation of every `SingleVariable` constraint
+    # to ensure a good coverage of corner cases.
+    @test clb.value == v[1].value
+
+    MOI.set(model, MOI.VariablePrimalStart(), v[1], start)
+
+    MOI.set(model, MOI.NLPBlock(), block_data)
+    MOI.set(model, MOI.ObjectiveSense(), MOI.MAX_SENSE)
+
+    # TODO: config.query tests
+    if config.solve
+        MOI.optimize!(model)
+
+        @test MOI.get(model, MOI.TerminationStatus()) == MOI.INVALID_MODEL # config.optimal_status # FIXME
+
+        @test MOI.get(model, MOI.ResultCount()) >= 1
+
+        @test MOI.get(model, MOI.PrimalStatus()) == MOI.UNKNOWN_RESULT_STATUS
+
+       
+        obj_v = -0.0 # FIXME
+        @test MOI.get(model, MOI.ObjectiveValue()) ≈ obj_v atol=atol rtol=rtol
+
+        optimal_v = [0.9900000098999999] # Inf !? # FIXME
+
+        @test MOI.get(model, MOI.VariablePrimal(), v) ≈ optimal_v atol=atol rtol=rtol
+
+    end
+end
+
+nancb_test3(model, config) = nancb_template3(model, config, NanCbEvaluator(true))
