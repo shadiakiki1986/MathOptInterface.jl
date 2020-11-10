@@ -1,3 +1,5 @@
+# The code here is mostly copied from the flip_sign.jl code for FlipSignBridge and GreaterToLessBridge
+
 """
     AbstractToIntervalBridge{T, S1, S2, F, G}
 Bridge a `G`-in-`S1` constraint into an `F`-in-`Interval` constraint by multiplying
