@@ -20,7 +20,9 @@ const GT = MOI.GreaterThan{Float64}
     MOIT.basic_constraint_tests(
         bridged_mock, config,
         include = [(F, S)
-                   for F in [MOI.SingleVariable, MOI.ScalarAffineFunction{Float64},
+                   for F in [
+                             #MOI.SingleVariable,
+                             MOI.ScalarAffineFunction{Float64},
                              MOI.ScalarQuadraticFunction{Float64}]
                    for S in [MOI.GreaterThan{Float64}]])
 
@@ -38,15 +40,7 @@ const GT = MOI.GreaterThan{Float64}
         @test MOI.get(bridged_mock, attr, ci) ≈ 2.0
     end
 
-    println(">>>>")
-    println("pre test del")
-    print(ci)
-    println("")
-    print(MOIB.added_constraint_types(typeof(MOIB.bridge(bridged_mock, ci))))
-    println("")
-    println("<<<<")
-
     test_delete_bridge(bridged_mock, ci, 2,
                        ((MOI.ScalarAffineFunction{Float64},
-                         MOI.LessThan{Float64}, 1),))
+                         MOI.Interval{Float64}, 0),))
 end

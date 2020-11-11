@@ -128,6 +128,7 @@ function solve_set_scalaraffine_lessthan(model::MOI.ModelLike, config::TestConfi
 end
 modificationtests["solve_set_scalaraffine_lessthan"] = solve_set_scalaraffine_lessthan
 
+
 """
     solve_coef_scalaraffine_lessthan(model::MOI.ModelLike, config::TestConfig)
 

@@ -31,7 +31,7 @@ function MOI.modify(model::MOI.ModelLike, bridge::AbstractToIntervalBridge,
                     change::MOI.MultirowChange{T}) where T
     MOI.modify(model, bridge.constraint,
                MOI.MultirowChange(change.variable,
-                                  change))
+                                  change.new_coefficients))
 end
 
 """

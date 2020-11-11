@@ -52,7 +52,7 @@ const GT = MOI.GreaterThan{Float64}
 
     test_delete_bridge(bridged_mock, ci, 2,
                        ((MOI.ScalarAffineFunction{Float64},
-                         MOI.Interval{Float64}, 1),
+                         MOI.Interval{Float64}, 0),
                        ))
 end
 
