@@ -105,3 +105,7 @@ const LessToInterval{T, OT<:MOI.ModelLike} = SingleBridgeOptimizer{LessToInterva
 #    LessToIntervalBridge{T},
 #    SingleBridgeOptimizer{GreaterToIntervalBridge{T}, OT}
 #  }
+
+# FIXME merge the two when working
+include("ltgt2.jl")
+const GreaterToInterval2{T, OT<:MOI.ModelLike} = SingleBridgeOptimizer{GreaterToInterval2Bridge{T}, OT}
