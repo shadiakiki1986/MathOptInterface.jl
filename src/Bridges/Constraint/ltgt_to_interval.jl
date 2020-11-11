@@ -1,15 +1,15 @@
 # The code here is mostly copied from the flip_sign.jl code for FlipSignBridge and GreaterToLessBridge
 
 """
-    AbstractToIntervalBridge{T, S1, S2, F}
+    AbstractToIntervalBridge{T, S1, F}
 
 Bridge a `F`-in-`GreaterThan` or `F`-in-`LessThan` constraint into an `F`-in-`Interval` constraint by
 using Inf or -Inf for the upper or lower limit respectively. The `F`-in-`S` constraint is stored in the `constraint`
 field by convention.
 """
 abstract type AbstractToIntervalBridge{
-    T, S1<:MOI.AbstractSet, S2<:MOI.AbstractSet,
-    F<:MOI.AbstractFunction} <: SetMapBridge{T, S2, S1, F, F} end
+    T, S1<:MOI.AbstractSet,
+    F<:MOI.AbstractFunction} <: SetMapBridge{T, MOI.Interval{T}, S1, F, F} end
 
 # The function map is the identity. It is also an involution, symmetric, and a symmetric involution.
 map_function(::Type{<:AbstractToIntervalBridge{T}}, func) where {T} = func
@@ -42,13 +42,13 @@ end
 
 """
     GreaterToIntervalBridge{T, F<:MOI.AbstractScalarFunction} <:
-        AbstractToIntervalBridge{T, MOI.GreaterThan{T}}
+        AbstractToIntervalBridge{T, MOI.GreaterThan{T}, F}
 
 Transforms a `F`-in-`GreaterThan{T}` constraint into an `F`-in-`Interval{T}`
 constraint.
 """
 struct GreaterToIntervalBridge{T, F<:MOI.AbstractScalarFunction} <:
-    AbstractToIntervalBridge{T, MOI.GreaterThan{T}, MOI.Interval{T}, F}
+    AbstractToIntervalBridge{T, MOI.GreaterThan{T}, F}
     constraint::CI{F, MOI.Interval{T}}
 end
 map_set(::Type{<:GreaterToIntervalBridge}, set::MOI.GreaterThan) = MOI.Interval(set.lower, Inf)
@@ -61,13 +61,13 @@ end
 
 """
     LessToIntervalBridge{T, F<:MOI.AbstractScalarFunction} <:
-        AbstractToIntervalBridge{T, MOI.LessThan{T}}
+        AbstractToIntervalBridge{T, MOI.LessThan{T}, F}
 
 Transforms a `F`-in-`LessThan{T}` constraint into an `F`-in-`Interval{T}`
 constraint.
 """
 struct LessToIntervalBridge{T, F<:MOI.AbstractScalarFunction} <:
-    AbstractToIntervalBridge{T, MOI.LessThan{T}, MOI.Interval{T}, F}
+    AbstractToIntervalBridge{T, MOI.LessThan{T}, F}
     constraint::CI{F, MOI.Interval{T}}
 end
 map_set(::Type{<:LessToIntervalBridge}, set::MOI.LessThan) = MOI.Interval(-Inf, set.upper)
