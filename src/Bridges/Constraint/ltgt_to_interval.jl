@@ -17,16 +17,7 @@ inverse_map_function(BT::Type{<:AbstractToIntervalBridge}, func) = func
 adjoint_map_function(BT::Type{<:AbstractToIntervalBridge}, func) = func
 inverse_adjoint_map_function(BT::Type{<:AbstractToIntervalBridge}, func) = func
 
-function MOI.delete(model::MOI.ModelLike, bridge::AbstractToIntervalBridge, i::IndexInVector)
-    func = MOI.get(model, MOI.ConstraintFunction(), bridge.constraint)
-    idx = setdiff(1:MOI.output_dimension(func), i.value)
-    new_func = MOIU.eachscalar(func)[idx]
-    set = MOI.get(model, MOI.ConstraintSet(), bridge.constraint)
-    new_set = MOI.update_dimension(set, MOI.dimension(set) - 1)
-    MOI.delete(model, bridge.constraint)
-    bridge.constraint = MOI.add_constraint(model, new_func, new_set)
-end
-
+# FIXME are these modify functions necessary?
 function MOI.modify(model::MOI.ModelLike, bridge::AbstractToIntervalBridge,
                     change::MOI.ScalarCoefficientChange)
     MOI.modify(
