@@ -3,8 +3,11 @@
 """
     AbstractToIntervalBridge{T, S1, F}
 
-Bridge a `F`-in-`GreaterThan` or `F`-in-`LessThan` constraint into an `F`-in-`Interval` constraint by
-using Inf or -Inf for the upper or lower limit respectively. The `F`-in-`S` constraint is stored in the `constraint`
+Bridge a `F`-in-`S1` constraint into an `F`-in-`Interval` constraint where we have either:
+* `S1 = MOI.GreaterThan{T}`
+* `S1 = MOI.LessThan{T}`
+
+The `F`-in-`S1` constraint is stored in the `constraint`
 field by convention.
 """
 abstract type AbstractToIntervalBridge{

@@ -1,4 +1,17 @@
 function test_num_constraints(bridged_mock, F, S, n)
+    println(">>>>>")
+    println("test num constr")
+    println("parameters")
+    println("mock: ", bridged_mock)
+    println("F: ", F)
+    println("S: ", S)
+    println("n: ", n)
+    print("get num: ", MOI.get(bridged_mock, MOI.NumberOfConstraints{F, S}()))
+    println("")
+    print("get list: ", MOI.get(bridged_mock, MOI.ListOfConstraintIndices{F, S}()))
+    println("")
+    println("<<<<<")
+
     @test MOI.get(bridged_mock, MOI.NumberOfConstraints{F, S}()) == n
     @test length(MOI.get(bridged_mock, MOI.ListOfConstraintIndices{F, S}())) == n
     @test ((F, S) in MOI.get(bridged_mock, MOI.ListOfConstraints())) == !iszero(n)

@@ -13,6 +13,9 @@ include("../utilities.jl")
 mock = MOIU.MockOptimizer(MOIU.UniversalFallback(MOIU.Model{Float64}()))
 config = MOIT.TestConfig()
 
+const SAF = MOI.ScalarAffineFunction{Float64}
+const GT = MOI.GreaterThan{Float64}
+
 @testset "GreaterToInterval" begin
     bridged_mock = MOIB.Constraint.GreaterToInterval{Float64}(mock)
 
@@ -37,9 +40,20 @@ config = MOIT.TestConfig()
         @test MOI.get(bridged_mock, attr, ci) ≈ 2.0
     end
 
+    println(">>>>")
+    println("pre test del")
+    print(ci)
+    println("")
+    print(MOIB.added_constraint_types(typeof(MOIB.bridge(bridged_mock, ci))))
+    println("")
+    bridged_2 = MOIB.LazyBridgeOptimizer(mock)
+    println(sprint(MOIB.print_graph, bridged_2))
+    println("<<<<")
+
     test_delete_bridge(bridged_mock, ci, 2,
                        ((MOI.ScalarAffineFunction{Float64},
-                         MOI.Interval{Float64}, 1),))
+                         MOI.Interval{Float64}, 1),
+                       ))
 end
 
 
@@ -83,8 +97,7 @@ end
       
       mutable struct Optimizer <: MOI.AbstractOptimizer
         function Optimizer()
-          m = new()
-          return m
+          return new()
         end
       end
         
@@ -93,16 +106,15 @@ end
       MOI.supports_constraint(::Optimizer, ::Type{MOI.ScalarAffineFunction{Float64}}, ::Type{MOI.Interval{Float64}}) = true
     end
 
-    model = OnlyIntervalOptimizer.Optimizer()
-
     # model supports Interval but not LessThan or GreaterThan
+    model = OnlyIntervalOptimizer.Optimizer()
     @test  MOI.supports_constraint(model, MOI.ScalarAffineFunction{Float64}, MOI.Interval{Float64})
     @test !MOI.supports_constraint(model, MOI.ScalarAffineFunction{Float64}, MOI.LessThan{Float64})
     @test !MOI.supports_constraint(model, MOI.ScalarAffineFunction{Float64}, MOI.GreaterThan{Float64})
 
     # bridged model supports all
     bridged = GreaterToInterval{Float64}(LessToInterval{Float64}(model))
-    @test  MOI.supports_constraint(b5, MOI.ScalarAffineFunction{Float64}, MOI.Interval{Float64})
-    @test  MOI.supports_constraint(b5, MOI.ScalarAffineFunction{Float64}, MOI.LessThan{Float64})
-    @test  MOI.supports_constraint(b5, MOI.ScalarAffineFunction{Float64}, MOI.GreaterThan{Float64})
+    @test  MOI.supports_constraint(bridged, MOI.ScalarAffineFunction{Float64}, MOI.Interval{Float64})
+    @test  MOI.supports_constraint(bridged, MOI.ScalarAffineFunction{Float64}, MOI.LessThan{Float64})
+    @test  MOI.supports_constraint(bridged, MOI.ScalarAffineFunction{Float64}, MOI.GreaterThan{Float64})
 end
